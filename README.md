@@ -3,7 +3,7 @@
 
 ## Professional Data Analytics Portfolio: DEPI Initiative 🇪🇬
 
-This repository showcases the culminating work of the **Digital Egypt Pioneers (DEP I)** initiative, conducted under the supervision of the **Ministry of Communication and Information Technology (MCIT)**. The projects contained herein represent a comprehensive, end-to-end application of the data analysis lifecycle, utilizing a unified dataset across five distinct projects to demonstrate proficiency with the industry's most essential tools.
+This repository showcases the culminating work of the **Digital Egypt Pioneers initiative (DEPI)**, conducted under the supervision of the **Ministry of Communication and Information Technology (MCIT)**. The projects contained herein represent a comprehensive, end-to-end application of the data analysis lifecycle, utilizing a unified dataset across five distinct projects to demonstrate proficiency with the industry's most essential tools.
 
 ---
 
