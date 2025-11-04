@@ -42,9 +42,8 @@ This analysis is built entirely using the Python data analysis stack, ensuring r
 | **NumPy** | Provides support for large, multi-dimensional arrays and high-level mathematical functions. | 🔢 |
 | **Seaborn & Matplotlib** | Used for creating aesthetically pleasing and informative visualizations, including the multi-metric bar chart. | 🎨 |
 
----
 
-Would you like to continue building out the rest of your `README` file based on the template I provided earlier?
+
 -----
 
 
