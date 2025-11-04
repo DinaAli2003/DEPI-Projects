@@ -42,16 +42,7 @@ This analysis is built entirely using the Python data analysis stack, ensuring r
 | **NumPy** | Provides support for large, multi-dimensional arrays and high-level mathematical functions. | 🔢 |
 | **Seaborn & Matplotlib** | Used for creating aesthetically pleasing and informative visualizations, including the multi-metric bar chart. | 🎨 |
 
-
-
 -----
-
-
-🚀 Access the Dashboard
-The live dashboard is hosted on Streamlit Cloud and can be accessed here:
-
-➡️ [https://sustainability-dashboard-x0mm4vwmxzd.streamlit.app/] 
-
 
 Enjoy exploring the data\! If you have any questions or suggestions, please feel free to reach out. Happy analyzing\! 💡
 
