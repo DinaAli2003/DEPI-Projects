@@ -1,12 +1,10 @@
 # 🌳 Sustainability Project (Excel)
-This project was developed as part of the DEPI Internship organized by the Ministry of Communications and Information Technology.
 
-# Sustainability Dashboard Analysis 🌍
-
+##  Project Title:  Sustainability Dashboard Analysis  🌍
 ---
 
 ### 1. Overview 🌐
-
+This project was developed as part of the DEPI Internship organized by the Ministry of Communications and Information Technology.
 This document serves as the **README** for the **Sustainability Project**, an analytical tool developed in Microsoft Excel. The project is designed to provide comprehensive insights into various aspects of **product sustainability, environmental impact, and market trends**. The core of the project is a set of interactive dashboards that visualize key performance indicators (KPIs) to aid in data-driven decision-making regarding sustainability initiatives.
 
 ### 2. Objectives ✨
