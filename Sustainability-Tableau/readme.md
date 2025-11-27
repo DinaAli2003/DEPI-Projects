@@ -1,4 +1,4 @@
-# 🌳  Sustainability Project (PowerBI)
+# 🌳  Sustainability Project (Tableau)
 
 ## 1. Project Title:  Sustainability Dashboard Analysis  🌍
 
