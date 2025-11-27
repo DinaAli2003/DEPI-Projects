@@ -1,5 +1,5 @@
 
-# DEPI Projects
+# Digital Egypt Pioneers initiative (DEPI) Projects
 
 ## Professional Data Analytics Portfolio: DEPI Initiative 🇪🇬
 
