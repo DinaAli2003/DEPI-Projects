@@ -1,5 +1,5 @@
 
-# 🌿 DEPI Sustainability Projects
+# DEPI Projects
 
 ## Professional Data Analytics Portfolio: DEPI Initiative 🇪🇬
 
