@@ -12,7 +12,7 @@ This repository showcases the culminating work of the **Digital Egypt Pioneers i
 | Metric | Detail | Icon |
 | :--- | :--- | :--- |
 | **Program** | Digital Egypt Pioneers initiative  (DEPI) Initiative | 🎓 |
-| **Oversight** | Ministry of Communication and Information Technology (MCIT) | 🏛️ |
+| **Oversight** | Ministry of Communications and Information Technology (MCIT) | 🏛️ |
 | **Duration** | 6 Months | 📅 |
 | **Total Effort** | $\text{200+}$ Intensive Hours | ⏳ |
 | **Total Projects** | 5 Independent, Integrated Projects | ⭐ |
