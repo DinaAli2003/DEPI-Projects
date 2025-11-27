@@ -43,9 +43,6 @@ This analysis is built entirely using the Python data analysis stack, ensuring r
 | **Seaborn & Matplotlib** | Used for creating aesthetically pleasing and informative visualizations, including the multi-metric bar chart. | 🎨 |
 
 -----
-Certainly\! Here is a ready-to-use section for your `README.md` file.
-
-You should replace the placeholder text with the actual details.
 
 ## 📊 Sustainability Dashboard
 
