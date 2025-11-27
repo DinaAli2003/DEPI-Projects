@@ -1,7 +1,7 @@
 
 # Digital Egypt Pioneers initiative (DEPI) Projects
 
-## Professional Data Analytics Portfolio: DEPI Initiative 🇪🇬
+##  Data Analysis Projects (Excel-SQL-Python-PowerBI-Tableau)
 
 This repository showcases the culminating work of the **Digital Egypt Pioneers initiative (DEPI)**, conducted under the supervision of the **Ministry of Communication and Information Technology (MCIT)**. The projects contained herein represent a comprehensive, end-to-end application of the data analysis lifecycle, utilizing a unified dataset across five distinct projects to demonstrate proficiency with the industry's most essential tools.
 
