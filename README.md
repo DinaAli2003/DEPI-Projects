@@ -1,9 +1,6 @@
 
 # 🌿 DEPI Sustainability Projects
 
-![DEPI Project Icon - Digital Sustainability](https://lh3.googleusercontent.com/gg-dl/ABS2GSk4ZTTt25OSv84P7YgcB6kYC8gf1Xzvm89mUFhVjotPIk0AYXWamB0yhga446jdpwO5Pddn1-FzIs-rlSx5DoipOewW-QTWhhYtNKW4IjgDUa6o14AX5s8o7FYh6fhy-HLzqqb-x1R9klRTNCwWnXfS2aLTtA6TO8HovQrMp4NnRgS7Cw=s1024-rj)
-
-
 ## Professional Data Analytics Portfolio: DEPI Initiative 🇪🇬
 
 This repository showcases the culminating work of the **Digital Egypt Pioneers initiative (DEPI)**, conducted under the supervision of the **Ministry of Communication and Information Technology (MCIT)**. The projects contained herein represent a comprehensive, end-to-end application of the data analysis lifecycle, utilizing a unified dataset across five distinct projects to demonstrate proficiency with the industry's most essential tools.
