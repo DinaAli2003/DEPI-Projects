@@ -1,7 +1,7 @@
 
 # 🌿 DEPI Sustainability Projects
 
-![DEPI Project Icon - Digital Sustainability](https://example.com/path/to/your/depi-icon.png)
+![DEPI Project Icon - Digital Sustainability](https://lh3.googleusercontent.com/gg-dl/ABS2GSk4ZTTt25OSv84P7YgcB6kYC8gf1Xzvm89mUFhVjotPIk0AYXWamB0yhga446jdpwO5Pddn1-FzIs-rlSx5DoipOewW-QTWhhYtNKW4IjgDUa6o14AX5s8o7FYh6fhy-HLzqqb-x1R9klRTNCwWnXfS2aLTtA6TO8HovQrMp4NnRgS7Cw=s1024-rj)
 
 
 ## Professional Data Analytics Portfolio: DEPI Initiative 🇪🇬
