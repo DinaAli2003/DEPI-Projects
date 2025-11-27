@@ -1,7 +1,7 @@
 # SustainabilityProject (Excel)
 This project was developed as part of the DEPI Internship organized by the Ministry of Communications and Information Technology.
 
-# 🌳 Project README: Sustainability Dashboard Analysis
+# 🌳 Sustainability Dashboard Analysis
 
 ---
 
@@ -56,15 +56,9 @@ The project features two main analytical dashboards:
 2.  ➡️ Navigate between **'Dashboard 1'** and **'Dashboard 2'** tabs.
 3.  🖱️ Use the **Slicers** (left panel) to dynamically filter all visualizations based on **Region, Country, Year,** etc.
 4.  🧠 Interpret the updated charts and KPIs to derive insights.
-
-#### Maintenance:
-
-* **Data Refresh:** 🔄 Use **'Data Streamer'** or **'Power Pivot'** to refresh the data connection if the source is external.
-* **Update:** ➕ Integrate new data entries into the source tables and ensure PivotTable ranges are updated.
-* **Formulas:** ✔️ Review formulas and data connections periodically for data integrity.
-
+ 
 ---
-*Created by: [Dina Ali]*
-*Date: October 2025*
+* Created by: [Dina Ali]*
+* Date: October 2025*
 ---
 
