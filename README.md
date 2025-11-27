@@ -96,5 +96,4 @@ Each project systematically applied the full data analysis workflow, from prepar
 
 ---
 
-We welcome your feedback and are excited to discuss the technical details further!
-
+I welcome your feedback and look forward to discussing the technical details further!
