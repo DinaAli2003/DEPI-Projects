@@ -84,3 +84,4 @@ Each project systematically applied the full data analysis workflow, from prepar
 * **Insight Generation:** Extracted over **30 quantifiable and actionable business insights** across the projects. 🥇
 * **Documentation:** All cleaning, modeling, and insight extraction steps are meticulously documented in the respective project files. 📚
 * **Professional Portfolio:** This repository stands as a testament to the rigorous, multi-faceted training received during the DEP I initiative, certifying the ability to execute the complete data analysis process with accuracy and professional integrity. 💼
+
