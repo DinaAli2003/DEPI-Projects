@@ -48,7 +48,7 @@ The project features two main analytical dashboards:
 | **Company Type Sustainability** | Comparing the sustainability of Local, Multinational, and Startup companies. |
 | **KPIs** | Displays key aggregate metrics: Price, Carbon, Water, Waste, Rating. |
 
-### 4. Usage and Maintenance ⚙️
+### 4. Usage  ⚙️
 
 #### How to Use:
 
@@ -58,7 +58,6 @@ The project features two main analytical dashboards:
 4.  🧠 Interpret the updated charts and KPIs to derive insights.
  
 ---
-* Created by: [Dina Ali]*
-* Date: October 2025*
+ Created by: Dina Ali , October 2025
 ---
 
