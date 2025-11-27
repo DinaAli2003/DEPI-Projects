@@ -43,6 +43,19 @@ This analysis is built entirely using the Python data analysis stack, ensuring r
 | **Seaborn & Matplotlib** | Used for creating aesthetically pleasing and informative visualizations, including the multi-metric bar chart. | 🎨 |
 
 -----
+Certainly\! Here is a ready-to-use section for your `README.md` file.
+
+You should replace the placeholder text with the actual details.
+
+## 📊 Sustainability Dashboard
+
+We believe in transparency and tracking our progress\! You can view the live data and key performance indicators (KPIs) related to the sustainability aspects of this project on our dedicated dashboard.
+
+### **View the Dashboard on Streamlit**
+
+Click the link below to access the interactive dashboard:
+
+  * **[Go to the Live Sustainability Dashboard]()**
 
 Enjoy exploring the data\! If you have any questions or suggestions, please feel free to reach out. Happy analyzing\! 💡
 
