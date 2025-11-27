@@ -1,6 +1,6 @@
-# 🌳  Global Sustainability Performance & Impact Analyzer
+# 🌳  Sustainability Project (PowerBI)
 
-## 1. Project Title: **Global Sustainability Performance & Impact Analyzer** 🌍
+## 1. Project Title: ** Sustainability Dashboard Analysis ** 🌍
 
 ***
 
