@@ -80,8 +80,8 @@ Each project systematically applied the full data analysis workflow, from prepar
 
 ## Key Achievements & Deliverables 🏆
 
-* **Five Production-Ready Projects:** Demonstrated the ability to tackle a single business problem using five different industry-leading toolsets. ✅
-* **Insight Generation:** Extracted over **30 quantifiable and actionable business insights** across the projects. 🥇
-* **Documentation:** All cleaning, modeling, and insight extraction steps are meticulously documented in the respective project files. 📚
-* **Professional Portfolio:** This repository stands as a testament to the rigorous, multi-faceted training received during the DEP I initiative, certifying the ability to execute the complete data analysis process with accuracy and professional integrity. 💼
+* **Five Production-Ready Projects:** Demonstrated the ability to tackle a single business problem using five different industry-leading toolsets.✅
+* **Insight Generation:** Extracted over **30 quantifiable and actionable business insights** across the projects.🥇
+* **Documentation:** All cleaning, modeling, and insight extraction steps are meticulously documented in the respective project files.📚
+* **Professional Portfolio:** This repository stands as a testament to the rigorous, multi-faceted training received during the DEP I initiative, certifying the ability to execute the complete data analysis process with accuracy and professional integrity.💼
 
