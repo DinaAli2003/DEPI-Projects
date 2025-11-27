@@ -1,4 +1,4 @@
-# Sustainability Project (SQL)
+# 🌳 Sustainability Project (SQL)
 ## SQL Data Analysis Project: Global Sustainability Performance 🌍
 
 This repository contains the complete SQL workflow for an in-depth **Sustainability Data Analysis Project**. This project covers the entire data pipeline, from data cleaning and transformation to building an optimized Star Schema (Data Warehouse) and extracting critical business insights.
