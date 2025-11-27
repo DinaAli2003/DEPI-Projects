@@ -1,5 +1,4 @@
-
-# 🌳 Sustainability Data Analysis Project 
+# 🌳  Sustainability Project (Python)
 
 -----
  **Sustainability Metrics Data Analysis** project\! This repository contains a Python-based analysis focused on evaluating and comparing the **environmental performance** of various brands. Using the power of data Analysis, we aim to transform raw information into clear, actionable insights that highlight leaders and areas for improvement in corporate sustainability.
