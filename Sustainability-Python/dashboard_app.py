@@ -644,31 +644,53 @@ def main():
 
     if df.empty:
         return
+from PIL import Image
 
+# In your main function, replace the logo section with:
+
+col1, col2, col3 = st.columns([1, 2, 1])
+
+with col1:
+    try:
+        left_logo = Image.open('Sustainability-Python/logo_ministry.png')
+        st.image(left_logo, width=150, use_column_width=False)
+    except Exception as e:
+        st.warning("Left logo not available")
+
+with col2:
+    # Your main title will be here
+    pass
+
+with col3:
+    try:
+        right_logo = Image.open('Sustainability-Python/logo_project.png')
+        st.image(right_logo, width=150, use_column_width=False)
+    except Exception as e:
+        st.warning("Right logo not available")
     # --- LOGOS AT THE TOP ---
-    col1, col2, col3 = st.columns([1, 2, 1])
+    # col1, col2, col3 = st.columns([1, 2, 1])
     
-    with col1:
-        # Left Logo - Replace with your actual logo path or URL
-        st.markdown("""
-        <div style="display: flex; justify-content: flex-start; align-items: center; height: 80px;">
-            <img src="Sustainability-Python/logo_ministry.png" 
-                 class="logo" alt="Left Logo" style="max-height: 80px; max-width: 200px;">
-        </div>
-        """, unsafe_allow_html=True)
+    # with col1:
+    #     # Left Logo - Replace with your actual logo path or URL
+    #     st.markdown("""
+    #     <div style="display: flex; justify-content: flex-start; align-items: center; height: 80px;">
+    #         <img src="Sustainability-Python/logo_ministry.png" 
+    #              class="logo" alt="Left Logo" style="max-height: 80px; max-width: 200px;">
+    #     </div>
+    #     """, unsafe_allow_html=True)
     
-    with col2:
-        # Center content - main title will go here
-        pass
+    # with col2:
+    #     # Center content - main title will go here
+    #     pass
     
-    with col3:
-        # Right Logo - Replace with your actual logo path or URL
-        st.markdown("""
-        <div style="display: flex; justify-content: flex-end; align-items: center; height: 80px;">
-            <img src="Sustainability-Python/logo_project.png" 
-                 class="logo" alt="Right Logo" style="max-height: 80px; max-width: 200px;">
-        </div>
-        """, unsafe_allow_html=True)
+    # with col3:
+    #     # Right Logo - Replace with your actual logo path or URL
+    #     st.markdown("""
+    #     <div style="display: flex; justify-content: flex-end; align-items: center; height: 80px;">
+    #         <img src="Sustainability-Python/logo_project.png" 
+    #              class="logo" alt="Right Logo" style="max-height: 80px; max-width: 200px;">
+    #     </div>
+    #     """, unsafe_allow_html=True)
 
     # --- Enhanced Header with Consistent Background ---
     st.markdown("""
@@ -1056,6 +1078,7 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
+
 
 
 
