@@ -175,23 +175,9 @@ def apply_custom_css():
         border: 1px solid #C8E6C9;
         margin-bottom: 20px;
         transition: transform 0.2s ease;
-        height: 450px; /* Consistent height */
+        height: 450px;
         display: flex;
         flex-direction: column;
-    }
-    
-    .chart-container h4 {
-        color: #1B5E20;
-        font-size: 1.1rem;
-        margin-bottom: 15px;
-        text-align: center;
-        font-weight: bold;
-        min-height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        line-height: 1.3;
-        padding: 0 10px;
     }
     
     .chart-container:hover {
@@ -283,10 +269,13 @@ def apply_custom_css():
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 100%;
+        height: 300px;
         color: #78909C;
         text-align: center;
         padding: 40px 20px;
+        background: linear-gradient(135deg, #FFFFFF 0%, #F8FDF8 100%);
+        border-radius: 12px;
+        border: 2px dashed #C8E6C9;
     }
     
     .empty-state .icon {
@@ -346,7 +335,7 @@ def safe_kpi_calc(series, func, rounding=2):
 GREEN_PALETTE = ['#1B5E20', '#2E7D32', '#388E3C', '#4CAF50', '#66BB6A', '#81C784', '#A5D6A7']
 sns.set_palette(GREEN_PALETTE)
 
-def create_figure(df, title, func, figsize=(6, 4)):  # Consistent default size
+def create_figure(df, title, func, figsize=(6, 4)):
     if df.empty: 
         return None
     try:
@@ -401,7 +390,7 @@ def plot_top_brands(df_brands):
         ax.set_xticklabels(df["brand_name"], rotation=rotation_angle, ha='right', fontsize=9)
         ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
     
-    return create_figure(df_brands, "Top Sustainable Brands", plot_func, figsize=(7, 4.5))
+    return create_figure(df_brands, "Top 10 Sustainable Brands", plot_func, figsize=(7, 4.5))
 
 def plot_top_product_lines(df_categories): 
     def plot_func(fig, ax, df):
@@ -421,7 +410,7 @@ def plot_top_product_lines(df_categories):
         ax.set_xticklabels(df["product_line"], rotation=rotation_angle, ha='right', fontsize=10)
         ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
     
-    return create_figure(df_categories, "Top Product Lines", plot_func, figsize=(6, 4))
+    return create_figure(df_categories, "Top 5 Sustainable Product Lines", plot_func, figsize=(6, 4))
 
 def plot_top_countries(df_countries):
     def plot_func(fig, ax, df):
@@ -440,7 +429,7 @@ def plot_top_countries(df_countries):
         ax.set_xticklabels(df["country_name"], rotation=25, ha='right', fontsize=10)
         ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
     
-    return create_figure(df_countries, "Top Countries", plot_func, figsize=(6, 4))
+    return create_figure(df_countries, "Top 5 Countries by Sustainability", plot_func, figsize=(6, 4))
 
 def plot_certifications_per_product(df_cert_counts): 
     def plot_func(fig, ax, df):
@@ -457,7 +446,7 @@ def plot_certifications_per_product(df_cert_counts):
         ax.set_ylabel('Number of Certifications', fontsize=11, fontweight='600')
         ax.tick_params(axis='x', rotation=30, labelsize=9)
     
-    return create_figure(df_cert_counts, "Certifications by Product", plot_func, figsize=(6, 4))
+    return create_figure(df_cert_counts, "Certifications per Product Line", plot_func, figsize=(6, 4))
 
 def plot_environmental_metrics(df_melted):
     def plot_func(fig, ax, df):
@@ -475,7 +464,7 @@ def plot_environmental_metrics(df_melted):
                  loc='upper right', bbox_to_anchor=(1.25, 1), 
                  frameon=True, facecolor='#E8F5E8', edgecolor='#C8E6C9')
     
-    return create_figure(df_melted, "Environmental Metrics", plot_func, figsize=(8, 4.5))
+    return create_figure(df_melted, "Environmental Metrics by Product Line", plot_func, figsize=(8, 4.5))
 
 def plot_time_improvement(df_time_avg): 
     def plot_func(fig, ax, df):
@@ -493,7 +482,7 @@ def plot_time_improvement(df_time_avg):
         ax.grid(True, alpha=0.3, color='#C8E6C9')
         ax.set_ylim(df['avg_rating'].min() * 0.95, df['avg_rating'].max() * 1.05)
     
-    return create_figure(df_time_avg, "Rating Trend", plot_func, figsize=(7, 4))
+    return create_figure(df_time_avg, "Sustainability Trend Over Years", plot_func, figsize=(7, 4))
 
 def plot_audience_sustainability(df_audience_sus): 
     def plot_func(fig, ax, df):
@@ -510,7 +499,7 @@ def plot_audience_sustainability(df_audience_sus):
         ax.set_ylabel('Sustainability Rating', fontsize=11, fontweight='600')
         ax.tick_params(axis='x', rotation=15, labelsize=9)
     
-    return create_figure(df_audience_sus, "Audience Rating", plot_func, figsize=(6, 4))
+    return create_figure(df_audience_sus, "Sustainability by Target Audience", plot_func, figsize=(6, 4))
 
 def plot_material_status(df_material_sus): 
     if df_material_sus.empty or len(df_material_sus) < 2 or 'sustainability_rating' not in df_material_sus.columns:
@@ -537,7 +526,7 @@ def plot_material_status(df_material_sus):
             ha='center', va='center', fontsize=12, fontweight='bold', color='#1B5E20')
     
     ax.axis('equal')
-    ax.set_title('Material Status', fontsize=13, color='#1B5E20', fontweight='bold', pad=20)
+    ax.set_title('Sustainability by Material Status', fontsize=13, color='#1B5E20', fontweight='bold', pad=20)
     plt.tight_layout()
     return fig
 
@@ -580,7 +569,7 @@ def plot_price_vs_sustainability(df_price_sus):
                  bbox_to_anchor=(1.05, 1), loc="upper left", 
                  frameon=True, facecolor='#E8F5E8', edgecolor='#C8E6C9')
     
-    return create_figure(df_price_sus, "Price vs Rating", plot_func, figsize=(7, 4))
+    return create_figure(df_price_sus, "Price vs Sustainability Rating", plot_func, figsize=(7, 4))
 
 def plot_certification_impact(df_certification_avg): 
     def plot_func(fig, ax, df):
@@ -598,7 +587,7 @@ def plot_certification_impact(df_certification_avg):
         ax.set_ylabel("Average Sustainability Rating", fontsize=11, fontweight='600')
         ax.tick_params(axis='x', rotation=45, labelsize=9)
     
-    return create_figure(df_certification_avg, "Certification Impact", plot_func, figsize=(7, 4))
+    return create_figure(df_certification_avg, "Certification Impact on Rating", plot_func, figsize=(7, 4))
 
 def plot_market_trend(df_trend_avg): 
     if df_trend_avg.empty or len(df_trend_avg) < 2 or 'sustainability_rating' not in df_trend_avg.columns:
@@ -635,7 +624,7 @@ def plot_market_trend(df_trend_avg):
             ha='center', va='center', fontsize=12, fontweight='bold', color='#1B5E20')
     
     ax.axis('equal')
-    ax.set_title("Market Trend", fontsize=13, color="#1B5E20", fontweight="bold", pad=20)
+    ax.set_title("Market Trend Analysis", fontsize=13, color="#1B5E20", fontweight="bold", pad=20)
     plt.tight_layout()
     return fig
 
@@ -763,35 +752,29 @@ def main():
         df_to_use_for_insights = df_filtered.copy()
 
     # ----------------------------------------------------
-    # 3. Calculate all Insights (same as before)
+    # 3. Calculate all Insights
     # ----------------------------------------------------
     available_cols_for_insights = df_to_use_for_insights.columns.tolist()
 
-    # Calculate all insights (same as your original code)
-    # [All the insight calculations remain exactly the same...]
-    
-    # 1. Top 10 Sustainable Brands 
+    # Calculate all insights
     df_top_brands = pd.DataFrame()
     if 'brand_name' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
         df_top_brands = (
             df_to_use_for_insights.groupby("brand_name")["sustainability_rating"].mean().round(2).reset_index()
             .sort_values(by="sustainability_rating", ascending=False).head(10))
 
-    # 2. Top 5 Product lines
     df_top_categories = pd.DataFrame()
     if 'product_line' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
         df_top_categories = (
             df_to_use_for_insights.groupby("product_line")["sustainability_rating"].mean().round(2).reset_index()
             .sort_values(by="sustainability_rating", ascending=False).head(5))
 
-    # 3. Top 5 Countries
     df_top_countries = pd.DataFrame()
     if 'country_name' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
         df_top_countries = (
             df_to_use_for_insights.groupby("country_name")["sustainability_rating"].mean().round(2).reset_index()
             .sort_values(by="sustainability_rating", ascending=False).head(5))
     
-    # 4. Certifications per Product line
     df_category_cert = pd.DataFrame()
     if 'product_line' in available_cols_for_insights and 'certification' in available_cols_for_insights and not df_to_use_for_insights.empty:
         df_category_cert = (
@@ -799,46 +782,38 @@ def main():
             .rename(columns={"certification": "num_certification"})
             .sort_values(by="num_certification", ascending=False))
     
-    # 5. Environmental Metrics
     df_melted = pd.DataFrame()
     env_cols = ['waste_production', 'water_usage', 'carbon_footprint']
     if all(col in available_cols_for_insights for col in env_cols) and 'product_line' in available_cols_for_insights and not df_to_use_for_insights.empty:
         df_avg = df_to_use_for_insights.groupby('product_line')[env_cols].mean().reset_index()
         df_melted = df_avg.melt(id_vars='product_line', value_vars=env_cols, var_name='Metric', value_name='Average Value')
     
-    # 6. Time Improvement
     df_avg_time = pd.DataFrame()
     if 'year' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
         df_avg_time = df_to_use_for_insights.groupby('year')['sustainability_rating'].mean().reset_index(name='avg_rating')
     
-    # 7. Audience Sustainability
     audience_sustainability = pd.DataFrame()
     if 'target_audience' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
         audience_sustainability = df_to_use_for_insights.groupby('target_audience')['sustainability_rating'].mean().round(3).reset_index().sort_values(by='sustainability_rating', ascending=False)
     
-    # 8. Material Status
     material_sustainability = pd.DataFrame(columns=['material_status', 'sustainability_rating', 'label'])
     if 'material_status' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
         material_sustainability = df_to_use_for_insights.groupby('material_status')['sustainability_rating'].mean().round(3).reset_index().sort_values(by='sustainability_rating', ascending=False)
         if not material_sustainability.empty:
              material_sustainability['label'] = (material_sustainability['material_status'] + ' (' + material_sustainability['sustainability_rating'].astype(str) + ')')
     
-    # 9. Eco-Friendly Counts
     eco_counts = pd.Series()
     if 'eco_friendly_manufacturing' in available_cols_for_insights and not df_to_use_for_insights.empty:
         eco_counts = df_to_use_for_insights['eco_friendly_manufacturing'].value_counts()
     
-    # 10. Price vs Sustainability
     df_price_vs_sus = pd.DataFrame()
     if all(col in available_cols_for_insights for col in ['average_price', 'sustainability_rating', 'brand_category']) and not df_to_use_for_insights.empty:
         df_price_vs_sus = df_to_use_for_insights.copy() 
     
-    # 11. Certification Impact
     certification_avg = pd.DataFrame()
     if 'certification' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
         certification_avg = df_to_use_for_insights.groupby("certification", as_index=False).agg(avg_rating=("sustainability_rating", "mean")).round(3).sort_values("avg_rating", ascending=False)
     
-    # 12. Market Trend 
     trend_avg = pd.DataFrame()
     if 'market_trend' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
         trend_avg = (
@@ -914,179 +889,97 @@ def main():
         "🏅 Certifications"
     ])
     
-    # Professional helper function to display charts - hides empty charts
-    def display_chart(fig, title="", col=None):
+    # Professional helper function to display charts without title boxes
+    def display_chart(fig, col=None):
         if fig is not None:
             if col:
                 with col:
-                    st.markdown(f'<div class="chart-container"><h4>{title}</h4>', unsafe_allow_html=True)
+                    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
                     st.pyplot(fig)
                     st.markdown('</div>', unsafe_allow_html=True)
-        # If fig is None, don't display anything (professional approach)
+            else:
+                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+                st.pyplot(fig)
+                st.markdown('</div>', unsafe_allow_html=True)
 
     # ====================================================
-    # Tab 1: Top Performance - Only show if data exists
+    # Tab 1: Top Performance - Always show both charts
     # ====================================================
     with tab1:
         st.markdown('<div class="section-header"><h3>🏆 Top Sustainable Performers Analysis</h3></div>', unsafe_allow_html=True)
         
         col1, col2 = st.columns(2)
         
-        # Only create columns if we have data to display
-        charts_to_display = []
-        if not df_top_brands.empty:
-            charts_to_display.append(("Top Sustainable Brands", plot_top_brands(df_top_brands)))
-        if not df_top_categories.empty:
-            charts_to_display.append(("Top Product Lines", plot_top_product_lines(df_top_categories)))
+        with col1:
+            display_chart(plot_top_brands(df_top_brands))
         
-        if charts_to_display:
-            for i, (title, fig) in enumerate(charts_to_display):
-                if i % 2 == 0:
-                    with col1:
-                        display_chart(fig, title)
-                else:
-                    with col2:
-                        display_chart(fig, title)
-        else:
-            st.markdown("""
-            <div class="empty-state">
-                <div class="icon">📊</div>
-                <h3>No Data Available</h3>
-                <p>Adjust your filters to see performance data</p>
-            </div>
-            """, unsafe_allow_html=True)
-            
+        with col2:
+            display_chart(plot_top_product_lines(df_top_categories))
+
     # ====================================================
-    # Tab 2: Geographic & Material - Only show if data exists
+    # Tab 2: Geographic & Material - Balanced layout
     # ====================================================
     with tab2:
         st.markdown('<div class="section-header"><h3>🌍 Geographic & Material Impact Analysis</h3></div>', unsafe_allow_html=True)
         
-        charts_to_display = []
-        if not df_top_countries.empty:
-            charts_to_display.append(("Top Countries", plot_top_countries(df_top_countries)))
-        if not material_sustainability.empty:
-            charts_to_display.append(("Material Status", plot_material_status(material_sustainability)))
-        if not eco_counts.empty:
-            charts_to_display.append(("Eco-friendly Manufacturing", plot_eco_friendly_counts(eco_counts)))
+        col1, col2, col3 = st.columns([2, 1, 1])
         
-        if charts_to_display:
-            if len(charts_to_display) == 3:
-                col1, col2, col3 = st.columns([2, 1, 1])
-                display_chart(charts_to_display[0][1], charts_to_display[0][0], col1)
-                display_chart(charts_to_display[1][1], charts_to_display[1][0], col2)
-                display_chart(charts_to_display[2][1], charts_to_display[2][0], col3)
-            elif len(charts_to_display) == 2:
-                col1, col2 = st.columns(2)
-                display_chart(charts_to_display[0][1], charts_to_display[0][0], col1)
-                display_chart(charts_to_display[1][1], charts_to_display[1][0], col2)
-            else:
-                display_chart(charts_to_display[0][1], charts_to_display[0][0])
-        else:
-            st.markdown("""
-            <div class="empty-state">
-                <div class="icon">🌍</div>
-                <h3>No Geographic Data</h3>
-                <p>Adjust your filters to see geographic analysis</p>
-            </div>
-            """, unsafe_allow_html=True)
+        with col1:
+            display_chart(plot_top_countries(df_top_countries))
+        
+        with col2:
+            display_chart(plot_material_status(material_sustainability))
+
+        with col3:
+            display_chart(plot_eco_friendly_counts(eco_counts))
 
     # ====================================================
-    # Tab 3: Trends Over Time - Only show if data exists
+    # Tab 3: Trends Over Time - Balanced layout
     # ====================================================
     with tab3:
         st.markdown('<div class="section-header"><h3>📈 Sustainability Trends & Market Analysis</h3></div>', unsafe_allow_html=True)
         
-        charts_to_display = []
-        if not df_avg_time.empty:
-            charts_to_display.append(("Rating Trend", plot_time_improvement(df_avg_time)))
-        if not trend_avg.empty:
-            charts_to_display.append(("Market Trend", plot_market_trend(trend_avg)))
-        
-        if charts_to_display:
-            if len(charts_to_display) == 2:
-                col1, col2 = st.columns(2)
-                display_chart(charts_to_display[0][1], charts_to_display[0][0], col1)
-                display_chart(charts_to_display[1][1], charts_to_display[1][0], col2)
-            else:
-                display_chart(charts_to_display[0][1], charts_to_display[0][0])
-        else:
-            st.markdown("""
-            <div class="empty-state">
-                <div class="icon">📈</div>
-                <h3>No Trend Data</h3>
-                <p>Adjust your filters to see trend analysis</p>
-            </div>
-            """, unsafe_allow_html=True)
+        col1, col2 = st.columns(2)
+
+        with col1:
+            display_chart(plot_time_improvement(df_avg_time))
+            
+        with col2:
+            display_chart(plot_market_trend(trend_avg))
 
     # ====================================================
-    # Tab 4: Environmental Metrics - Only show if data exists
+    # Tab 4: Environmental Metrics - Full width
     # ====================================================
     with tab4:
         st.markdown('<div class="section-header"><h3>🌱 Core Environmental Metrics Analysis</h3></div>', unsafe_allow_html=True)
         
-        if not df_melted.empty:
-            display_chart(plot_environmental_metrics(df_melted), "Environmental Metrics")
-        else:
-            st.markdown("""
-            <div class="empty-state">
-                <div class="icon">🌱</div>
-                <h3>No Environmental Data</h3>
-                <p>Adjust your filters to see environmental metrics</p>
-            </div>
-            """, unsafe_allow_html=True)
+        display_chart(plot_environmental_metrics(df_melted))
         
     # ====================================================
-    # Tab 5: Price & Audience - Only show if data exists
+    # Tab 5: Price & Audience - Balanced layout
     # ====================================================
     with tab5:
         st.markdown('<div class="section-header"><h3>💰 Market & Customer Analysis</h3></div>', unsafe_allow_html=True)
         
-        charts_to_display = []
-        if not df_price_vs_sus.empty:
-            charts_to_display.append(("Price vs Rating", plot_price_vs_sustainability(df_price_vs_sus)))
-        if not audience_sustainability.empty:
-            charts_to_display.append(("Audience Rating", plot_audience_sustainability(audience_sustainability)))
+        col1, col2 = st.columns(2)
         
-        if charts_to_display:
-            if len(charts_to_display) == 2:
-                col1, col2 = st.columns(2)
-                display_chart(charts_to_display[0][1], charts_to_display[0][0], col1)
-                display_chart(charts_to_display[1][1], charts_to_display[1][0], col2)
-            else:
-                display_chart(charts_to_display[0][1], charts_to_display[0][0])
-        else:
-            st.markdown("""
-            <div class="empty-state">
-                <div class="icon">💰</div>
-                <h3>No Market Data</h3>
-                <p>Adjust your filters to see market analysis</p>
-            </div>
-            """, unsafe_allow_html=True)
+        with col1:
+            display_chart(plot_price_vs_sustainability(df_price_vs_sus))
+            
+        with col2:
+            display_chart(plot_audience_sustainability(audience_sustainability))
     
     # ====================================================
-    # Tab 6: Certifications - Only show if data exists
+    # Tab 6: Certifications - Sequential layout
     # ====================================================
     with tab6:
         st.markdown('<div class="section-header"><h3>🏅 Certification Impact Analysis</h3></div>', unsafe_allow_html=True)
         
-        charts_to_display = []
-        if not certification_avg.empty:
-            charts_to_display.append(("Certification Impact", plot_certification_impact(certification_avg)))
-        if not df_category_cert.empty:
-            charts_to_display.append(("Certifications by Product", plot_certifications_per_product(df_category_cert)))
+        display_chart(plot_certification_impact(certification_avg))
         
-        if charts_to_display:
-            for fig, title in charts_to_display:
-                display_chart(fig, title)
-        else:
-            st.markdown("""
-            <div class="empty-state">
-                <div class="icon">🏅</div>
-                <h3>No Certification Data</h3>
-                <p>Adjust your filters to see certification analysis</p>
-            </div>
-            """, unsafe_allow_html=True)
+        st.markdown("---")
+       
+        display_chart(plot_certifications_per_product(df_category_cert))
 
     # Enhanced Footer
     st.markdown("""
