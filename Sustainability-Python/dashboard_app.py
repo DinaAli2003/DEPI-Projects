@@ -309,11 +309,11 @@ def main():
     
     col_logo1, col_title, col_logo2 = st.columns([1, 4, 1])
     with col_logo1:
-        st.image("logo_ministry.png", width=100) #  "logo_ministry.png" 
+       st.image("Sustainability-Python/logo_ministry.png", width=100) #  "logo_ministry.png" 
     with col_title:
         st.title("Sustainability Dashboard")
     with col_logo2:
-        st.image("logo_project.png", width=100) #  "logo_project.png" 
+        st.image("Sustainability-Python/logo_project.png", width=100) #  "logo_project.png" 
     st.markdown("---")
     
     # ----------------------------------------------------
@@ -626,3 +626,4 @@ def main():
 if __name__ == "__main__":
 
     main()
+
