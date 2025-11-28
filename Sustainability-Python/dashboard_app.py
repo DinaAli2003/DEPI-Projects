@@ -19,7 +19,7 @@ st.set_page_config(
 ) 
 
 # ====================================================================
-# ENHANCED CUSTOM CSS STYLING FOR COMPLETE GREEN THEME
+# FIXED CUSTOM CSS STYLING - PERFECT CHART CONTAINMENT
 # ====================================================================
 def apply_custom_css():
     st.markdown("""
@@ -166,8 +166,8 @@ def apply_custom_css():
         padding: 0;
     }
     
-    /* PROFESSIONAL CHART CONTAINERS - FIXED CONTAINMENT */
-    .chart-container {
+    /* FIXED CHART CONTAINERS - PERFECT CONTAINMENT */
+    .chart-container-wrapper {
         background: linear-gradient(135deg, #FFFFFF 0%, #F8FDF8 100%);
         padding: 20px;
         border-radius: 12px;
@@ -175,43 +175,43 @@ def apply_custom_css():
         border: 1px solid #C8E6C9;
         margin-bottom: 20px;
         transition: transform 0.2s ease;
-        height: 450px; /* CONSISTENT HEIGHT */
+        height: 450px; /* FIXED HEIGHT */
         display: flex;
         flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        overflow: hidden;
         position: relative;
+        overflow: hidden;
     }
     
-    .chart-container:hover {
+    .chart-container-wrapper:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 16px rgba(27, 94, 32, 0.2);
     }
     
-    /* Fix chart containment - ensure proper sizing */
-    .chart-container > div {
+    /* FIXED: Ensure chart fills the container properly */
+    .chart-container-wrapper .stPyplot {
         width: 100% !important;
         height: 100% !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
+        flex: 1 !important;
     }
     
-    /* Ensure matplotlib figures are properly contained */
-    .chart-container .stPyplot {
-        width: 100% !important;
-        height: 100% !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-    
-    .chart-container .stPyplot figure {
+    /* FIXED: Proper matplotlib figure containment */
+    .chart-container-wrapper .stPyplot figure {
         width: 100% !important;
         height: 100% !important;
         margin: 0 !important;
         padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    /* FIXED: Ensure the plot itself is properly sized */
+    .chart-container-wrapper .stPyplot figure .plot-container {
+        width: 100% !important;
+        height: 100% !important;
     }
     
     /* Custom green button style */
@@ -295,12 +295,15 @@ def apply_custom_css():
         display: none !important;
     }
     
-    /* Ensure consistent chart proportions */
-    .chart-container figure {
+    /* FIXED: Ensure Streamlit columns properly contain content */
+    [data-testid="column"] {
         width: 100% !important;
-        height: 350px !important;
-        margin: 0 !important;
-        padding: 10px !important;
+        min-height: 500px !important;
+    }
+    
+    [data-testid="column"] > div {
+        width: 100% !important;
+        height: 100% !important;
     }
     
     /* Professional grid alignment */
@@ -318,14 +321,10 @@ def apply_custom_css():
         grid-template-columns: 1fr 1fr 1fr;
     }
     
-    /* Ensure proper column containment */
-    [data-testid="column"] {
-        width: 100% !important;
-    }
-    
-    /* Fix for Streamlit columns to properly contain charts */
-    [data-testid="column"] > div {
-        width: 100% !important;
+    /* FIXED: Prevent chart overflow and ensure proper containment */
+    .stPlotlyChart, .stPyplot {
+        container: true !important;
+        overflow: hidden !important;
     }
     
     </style>
@@ -379,7 +378,7 @@ def safe_kpi_calc(series, func, rounding=2):
 GREEN_PALETTE = ['#1B5E20', '#2E7D32', '#388E3C', '#4CAF50', '#66BB6A', '#81C784', '#A5D6A7']
 sns.set_palette(GREEN_PALETTE)
 
-def create_professional_figure(df, title, func, figsize=(6, 4.5)):
+def create_professional_figure(df, title, func, figsize=(6, 4)):
     """Enhanced figure creation with perfect container alignment"""
     if df.empty: 
         return None
@@ -413,9 +412,10 @@ def create_professional_figure(df, title, func, figsize=(6, 4.5)):
         ax.grid(True, alpha=0.2, color='#C8E6C9')
         
         # EXTREMELY TIGHT LAYOUT for perfect container fit
-        plt.tight_layout(pad=2.0)
+        plt.tight_layout(pad=1.5)
         return fig
     except Exception as e:
+        st.error(f"Chart error: {e}")
         return None
 
 # All plotting functions with PERFECT CONTAINMENT
@@ -437,7 +437,7 @@ def plot_top_brands(df_brands):
         ax.set_xticklabels(df["brand_name"], rotation=rotation_angle, ha='right', fontsize=9)
         ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
     
-    return create_professional_figure(df_brands, "Top 10 Sustainable Brands", plot_func, figsize=(7, 4.5))
+    return create_professional_figure(df_brands, "Top 10 Sustainable Brands", plot_func, figsize=(7, 4))
 
 def plot_top_product_lines(df_categories): 
     def plot_func(fig, ax, df):
@@ -457,7 +457,7 @@ def plot_top_product_lines(df_categories):
         ax.set_xticklabels(df["product_line"], rotation=rotation_angle, ha='right', fontsize=10)
         ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
     
-    return create_professional_figure(df_categories, "Top 5 Sustainable Product Lines", plot_func, figsize=(6, 4.5))
+    return create_professional_figure(df_categories, "Top 5 Sustainable Product Lines", plot_func, figsize=(6, 4))
 
 def plot_top_countries(df_countries):
     def plot_func(fig, ax, df):
@@ -476,7 +476,7 @@ def plot_top_countries(df_countries):
         ax.set_xticklabels(df["country_name"], rotation=25, ha='right', fontsize=10)
         ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
     
-    return create_professional_figure(df_countries, "Top 5 Countries by Sustainability", plot_func, figsize=(6, 4.5))
+    return create_professional_figure(df_countries, "Top 5 Countries by Sustainability", plot_func, figsize=(6, 4))
 
 def plot_certifications_per_product(df_cert_counts): 
     def plot_func(fig, ax, df):
@@ -493,7 +493,7 @@ def plot_certifications_per_product(df_cert_counts):
         ax.set_ylabel('Number of Certifications', fontsize=11, fontweight='600')
         ax.tick_params(axis='x', rotation=30, labelsize=9)
     
-    return create_professional_figure(df_cert_counts, "Certifications per Product Line", plot_func, figsize=(6, 4.5))
+    return create_professional_figure(df_cert_counts, "Certifications per Product Line", plot_func, figsize=(6, 4))
 
 def plot_environmental_metrics(df_melted):
     def plot_func(fig, ax, df):
@@ -511,7 +511,7 @@ def plot_environmental_metrics(df_melted):
                  loc='upper right', bbox_to_anchor=(1.25, 1), 
                  frameon=True, facecolor='#E8F5E8', edgecolor='#C8E6C9')
     
-    return create_professional_figure(df_melted, "Environmental Metrics by Product Line", plot_func, figsize=(8, 4.5))
+    return create_professional_figure(df_melted, "Environmental Metrics by Product Line", plot_func, figsize=(8, 4))
 
 def plot_time_improvement(df_time_avg): 
     def plot_func(fig, ax, df):
@@ -529,7 +529,7 @@ def plot_time_improvement(df_time_avg):
         ax.grid(True, alpha=0.3, color='#C8E6C9')
         ax.set_ylim(df['avg_rating'].min() * 0.95, df['avg_rating'].max() * 1.05)
     
-    return create_professional_figure(df_time_avg, "Sustainability Trend Over Years", plot_func, figsize=(7, 4.5))
+    return create_professional_figure(df_time_avg, "Sustainability Trend Over Years", plot_func, figsize=(7, 4))
 
 def plot_audience_sustainability(df_audience_sus): 
     def plot_func(fig, ax, df):
@@ -546,13 +546,13 @@ def plot_audience_sustainability(df_audience_sus):
         ax.set_ylabel('Sustainability Rating', fontsize=11, fontweight='600')
         ax.tick_params(axis='x', rotation=15, labelsize=9)
     
-    return create_professional_figure(df_audience_sus, "Sustainability by Target Audience", plot_func, figsize=(6, 4.5))
+    return create_professional_figure(df_audience_sus, "Sustainability by Target Audience", plot_func, figsize=(6, 4))
 
 def plot_material_status(df_material_sus): 
     if df_material_sus.empty or len(df_material_sus) < 2 or 'sustainability_rating' not in df_material_sus.columns:
         return None
         
-    fig, ax = plt.subplots(figsize=(5, 5))
+    fig, ax = plt.subplots(figsize=(5, 4))
     fig.patch.set_alpha(0.0)
     ax.patch.set_alpha(0.0)
     
@@ -581,7 +581,7 @@ def plot_eco_friendly_counts(eco_counts_series):
     if eco_counts_series.empty or len(eco_counts_series) < 2: 
         return None
 
-    fig, ax = plt.subplots(figsize=(5, 5))
+    fig, ax = plt.subplots(figsize=(5, 4))
     fig.patch.set_alpha(0.0)
     ax.patch.set_alpha(0.0)
     
@@ -616,7 +616,7 @@ def plot_price_vs_sustainability(df_price_sus):
                  bbox_to_anchor=(1.05, 1), loc="upper left", 
                  frameon=True, facecolor='#E8F5E8', edgecolor='#C8E6C9')
     
-    return create_professional_figure(df_price_sus, "Price vs Sustainability Rating", plot_func, figsize=(7, 4.5))
+    return create_professional_figure(df_price_sus, "Price vs Sustainability Rating", plot_func, figsize=(7, 4))
 
 def plot_certification_impact(df_certification_avg): 
     def plot_func(fig, ax, df):
@@ -634,13 +634,13 @@ def plot_certification_impact(df_certification_avg):
         ax.set_ylabel("Average Sustainability Rating", fontsize=11, fontweight='600')
         ax.tick_params(axis='x', rotation=45, labelsize=9)
     
-    return create_professional_figure(df_certification_avg, "Certification Impact on Rating", plot_func, figsize=(7, 4.5))
+    return create_professional_figure(df_certification_avg, "Certification Impact on Rating", plot_func, figsize=(7, 4))
 
 def plot_market_trend(df_trend_avg): 
     if df_trend_avg.empty or len(df_trend_avg) < 2 or 'sustainability_rating' not in df_trend_avg.columns:
         return None
         
-    fig, ax = plt.subplots(figsize=(5, 5))
+    fig, ax = plt.subplots(figsize=(5, 4))
     fig.patch.set_alpha(0.0)
     ax.patch.set_alpha(0.0)
     
@@ -936,19 +936,19 @@ def main():
         "🏅 Certifications"
     ])
     
-    # PROFESSIONAL helper function to display charts with PERFECT CONTAINMENT
+    # FIXED: PROFESSIONAL helper function to display charts with PERFECT CONTAINMENT
     def display_chart(fig, col=None):
         """Display chart with perfect container alignment and consistent sizing"""
         if fig is not None:
             if col:
                 with col:
-                    # Perfectly contained chart container
-                    st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+                    # FIXED: Perfectly contained chart container
+                    st.markdown('<div class="chart-container-wrapper">', unsafe_allow_html=True)
                     st.pyplot(fig, use_container_width=True)
                     st.markdown('</div>', unsafe_allow_html=True)
             else:
-                # Perfectly contained chart container
-                st.markdown('<div class="chart-container">', unsafe_allow_html=True)
+                # FIXED: Perfectly contained chart container
+                st.markdown('<div class="chart-container-wrapper">', unsafe_allow_html=True)
                 st.pyplot(fig, use_container_width=True)
                 st.markdown('</div>', unsafe_allow_html=True)
 
