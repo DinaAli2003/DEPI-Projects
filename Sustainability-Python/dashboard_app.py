@@ -646,35 +646,59 @@ def main():
         return
 
     # --- LOGOS AT THE TOP ---
-    col1, col2, col3 = st.columns([1, 2, 1])
-    
-    with col1:
-        # Left Logo - Replace with your actual logo path or URL
-        st.markdown("""
-        <div style="display: flex; justify-content: flex-start; align-items: center; height: 80px;">
-            <img src="Sustainability-Python/logo_ministry.png" 
-                 class="logo" alt="Left Logo" style="max-height: 80px; max-width: 200px;">
-        </div>
-        """, unsafe_allow_html=True)
-    
-    with col2:
-        # Center content - main title will go here
-        pass
-    
-    with col3:
-        # Right Logo - Replace with your actual logo path or URL
-        st.markdown("""
-        <div style="display: flex; justify-content: flex-end; align-items: center; height: 80px;">
-            <img src="Sustainability-Python/logo_project.png" 
-                 class="logo" alt="Right Logo" style="max-height: 80px; max-width: 200px;">
-        </div>
-        """, unsafe_allow_html=True)
 
-    # --- Enhanced Header with Consistent Background ---
-    st.markdown("""
-    <div class="main-header">
-        <div style="display: flex; align-items: center; justify-content: center; gap: 25px; text-align: center;">
-            <div>
+ from PIL import Image
+
+# In your main function, replace the logo section with:
+
+col1, col2, col3 = st.columns([1, 2, 1])
+
+with col1:
+    try:
+        left_logo = Image.open('Sustainability-Python/logo_ministry.png')
+        st.image(left_logo, width=150, use_column_width=False)
+    except Exception as e:
+        st.warning("Left logo not available")
+
+with col2:
+    # Your main title will be here
+    pass
+
+with col3:
+    try:
+        right_logo = Image.open('Sustainability-Python/logo_project.png')
+        st.image(right_logo, width=150, use_column_width=False)
+    except Exception as e:
+        st.warning("Right logo not available")
+    # col1, col2, col3 = st.columns([1, 2, 1])
+    
+    # with col1:
+    #     # Left Logo - Replace with your actual logo path or URL
+    #     st.markdown("""
+    #     <div style="display: flex; justify-content: flex-start; align-items: center; height: 80px;">
+    #         <img src="Sustainability-Python/logo_ministry.png" 
+    #              class="logo" alt="Left Logo" style="max-height: 80px; max-width: 200px;">
+    #     </div>
+    #     """, unsafe_allow_html=True)
+    
+    # with col2:
+    #     # Center content - main title will go here
+    #     pass
+    
+    # with col3:
+    #     # Right Logo - Replace with your actual logo path or URL
+    #     st.markdown("""
+    #     <div style="display: flex; justify-content: flex-end; align-items: center; height: 80px;">
+    #         <img src="Sustainability-Python/logo_project.png" 
+    #              class="logo" alt="Right Logo" style="max-height: 80px; max-width: 200px;">
+    #     </div>
+    #     """, unsafe_allow_html=True)
+
+    # # --- Enhanced Header with Consistent Background ---
+    # st.markdown("""
+    # <div class="main-header">
+    #     <div style="display: flex; align-items: center; justify-content: center; gap: 25px; text-align: center;">
+    #         <div>
                 <h1 style="margin: 0; font-size: 2.8rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">🌱 Sustainability Analytics Dashboard</h1>
                 <p style="margin: 10px 0 0 0; font-size: 1.3rem; opacity: 0.95; font-weight: 300;">Comprehensive Environmental Impact & Sustainable Performance Tracking</p>
             </div>
@@ -1056,6 +1080,7 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
+
 
 
 
