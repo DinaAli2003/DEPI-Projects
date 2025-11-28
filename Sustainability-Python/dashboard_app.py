@@ -19,7 +19,7 @@ st.set_page_config(page_title="Sustainability Dashboard", layout="wide")
 @st.cache_data
 def load_raw_data():
     try:
-        df = pd.read_csv('Sustainability_Raw_Data.csv')
+        df = pd.read_csv('Sustainability-Python/Sustainability_Raw_Data.csv')
         # Standardize column names for safe processing
         df.columns = df.columns.str.lower().str.replace(' ', '_').str.replace('[^a-z0-9_]', '', regex=True)
         # Ensure 'year' is numeric and handle potential errors
@@ -299,11 +299,11 @@ def main():
     
     col_logo1, col_title, col_logo2 = st.columns([1, 4, 1])
     with col_logo1:
-        st.image("logo_ministry.png", width=100) #  "logo_ministry.png" 
+        st.image("Sustainability-Python/logo_ministry.png", width=100) #  "logo_ministry.png" 
     with col_title:
         st.title("Sustainability Dashboard")
     with col_logo2:
-        st.image("logo_project.png", width=100) #  "logo_project.png" 
+        st.image("Sustainability-Python/logo_project.png", width=100) #  "logo_project.png" 
     st.markdown("---")
     
     # ----------------------------------------------------
@@ -614,4 +614,5 @@ def main():
 
 # Run the main function
 if __name__ == "__main__":
+
     main()
