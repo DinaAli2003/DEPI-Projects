@@ -681,7 +681,7 @@ def load_logo(image_path, default_width=30):
         st.warning(f"Error loading logo {image_path}: {e}")
         return None
 
-def display_logo_column(logo, position, width=60):
+def display_logo_column(logo, position, width=30):
     """Display logo in a column with consistent sizing"""
     if logo:
         st.image(logo, width=width, use_column_width=False)
@@ -713,14 +713,14 @@ def main():
     right_logo = load_logo('Sustainability-Python/logo_project.png')
     
     with col1:
-        display_logo_column(left_logo, "left", width=60)
+        display_logo_column(left_logo, "left", width=30)
     
     with col2:
         # Center content - main title will go here
         pass
     
     with col3:
-        display_logo_column(right_logo, "right", width=60)
+        display_logo_column(right_logo, "right", width=30)
 
     # --- Enhanced Header with Consistent Background ---
     st.markdown("""
@@ -1108,4 +1108,5 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
+
 
