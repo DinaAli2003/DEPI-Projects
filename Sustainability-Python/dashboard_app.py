@@ -14,29 +14,40 @@ warnings.filterwarnings("ignore")
 st.set_page_config(
     page_title="Sustainability Dashboard", 
     layout="wide",
-    page_icon="🌱"
+    page_icon="🌱",
+    initial_sidebar_state="expanded"
 ) 
 
 # ====================================================================
-# CUSTOM CSS STYLING FOR COMPLETE GREEN THEME
+# ENHANCED CUSTOM CSS STYLING FOR COMPLETE GREEN THEME
 # ====================================================================
 def apply_custom_css():
     st.markdown("""
     <style>
-    /* Complete background - no white spaces */
+    /* Complete background - consistent green theme */
     .stApp {
         background: linear-gradient(135deg, #F0F9F0 0%, #E8F5E8 50%, #F0F9F0 100%) !important;
     }
     
-    /* Remove all white containers */
+    /* Remove all white containers and ensure consistent background */
     .main .block-container {
         padding-top: 1rem;
         padding-bottom: 1rem;
         background: transparent !important;
     }
     
-    /* Header containers */
-    .stHeader {
+    /* Header area - consistent with dashboard */
+    header[data-testid="stHeader"] {
+        background: linear-gradient(135deg, #1B5E20 0%, #388E3C 100%) !important;
+    }
+    
+    /* Fix header toolbar area */
+    [data-testid="stToolbar"] {
+        background: transparent !important;
+    }
+    
+    /* Remove header decoration */
+    .decoration {
         background: transparent !important;
     }
     
@@ -52,17 +63,25 @@ def apply_custom_css():
         color: #FFFFFF !important;
     }
     
-    /* Sidebar select boxes */
+    /* Sidebar select boxes - green theme */
     .stMultiSelect > div > div > div {
         background-color: #E8F5E8 !important;
         border-color: #4CAF50 !important;
         border-radius: 8px !important;
+        color: #1B5E20 !important;
     }
     
     /* Multi-select dropdown options */
     div[data-baseweb="select"] > div {
         background-color: #E8F5E8 !important;
         color: #1B5E20 !important;
+    }
+    
+    /* Fix multi-select selected items */
+    [data-baseweb="tag"] {
+        background-color: #4CAF50 !important;
+        color: white !important;
+        border: none !important;
     }
     
     /* Main header styling */
@@ -75,26 +94,36 @@ def apply_custom_css():
         box-shadow: 0 4px 15px rgba(27, 94, 32, 0.3);
     }
     
-    /* KPI metrics styling - green cards */
+    /* KPI metrics styling - enhanced green cards */
     [data-testid="stMetricValue"] {
-        color: #1B5E20;
-        font-weight: bold;
-        font-size: 1.5rem;
+        color: #1B5E20 !important;
+        font-weight: bold !important;
+        font-size: 1.5rem !important;
     }
     
     [data-testid="stMetricLabel"] {
-        color: #2E7D32;
-        font-weight: 600;
-        font-size: 0.9rem;
+        color: #2E7D32 !important;
+        font-weight: 600 !important;
+        font-size: 0.9rem !important;
     }
     
     [data-testid="stMetric"] {
-        background: linear-gradient(135deg, #E8F5E8 0%, #F1F8E9 100%);
-        padding: 15px;
-        border-radius: 12px;
-        border-left: 5px solid #4CAF50;
-        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2);
-        margin: 5px;
+        background: linear-gradient(135deg, #E8F5E8 0%, #F1F8E9 100%) !important;
+        padding: 15px !important;
+        border-radius: 12px !important;
+        border-left: 5px solid #4CAF50 !important;
+        box-shadow: 0 2px 8px rgba(76, 175, 80, 0.2) !important;
+        margin: 5px !important;
+        height: 120px !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: center !important;
+    }
+    
+    /* Ensure KPI text is fully visible */
+    [data-testid="stMetric"] div {
+        overflow: visible !important;
+        white-space: normal !important;
     }
     
     /* Tab styling - complete green theme */
@@ -125,7 +154,7 @@ def apply_custom_css():
         padding: 0;
     }
     
-    /* Cards for charts - consistent green theme */
+    /* Cards for charts - consistent green theme and sizing */
     .chart-container {
         background: linear-gradient(135deg, #FFFFFF 0%, #F8FDF8 100%);
         padding: 20px;
@@ -134,11 +163,34 @@ def apply_custom_css():
         border: 1px solid #C8E6C9;
         margin-bottom: 20px;
         transition: transform 0.2s ease;
+        height: 450px; /* Consistent height */
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .chart-container h4 {
+        color: #1B5E20;
+        font-size: 1.1rem;
+        margin-bottom: 15px;
+        text-align: center;
+        font-weight: bold;
+        min-height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     .chart-container:hover {
         transform: translateY(-2px);
         box-shadow: 0 6px 16px rgba(27, 94, 32, 0.2);
+    }
+    
+    /* Chart figure styling */
+    .chart-container .stPyplot {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
     
     /* Custom green button style */
@@ -198,6 +250,19 @@ def apply_custom_css():
         border: 1px solid rgba(255, 255, 255, 0.2);
     }
     
+    /* Consistent chart sizing */
+    .element-container {
+        height: 100% !important;
+    }
+    
+    /* Fix for any remaining orange elements */
+    [style*="background-color: rgb(250, 250, 250)"],
+    [style*="background-color: #fafafa"],
+    [style*="background-color: rgb(255, 255, 255)"],
+    [style*="background-color: white"] {
+        background: transparent !important;
+    }
+    
     </style>
     """, unsafe_allow_html=True)
 
@@ -242,14 +307,14 @@ def safe_kpi_calc(series, func, rounding=2):
         return "N/A"
 
 # ====================================================================
-# 1. Visualization Functions (Fixed Version)
+# 1. Visualization Functions (Enhanced with Consistent Sizing)
 # ====================================================================
 
 # Set global green color palette
 GREEN_PALETTE = ['#1B5E20', '#2E7D32', '#388E3C', '#4CAF50', '#66BB6A', '#81C784', '#A5D6A7']
 sns.set_palette(GREEN_PALETTE)
 
-def create_figure(df, title, func, figsize=(6, 3.5)): 
+def create_figure(df, title, func, figsize=(6, 4)):  # Consistent default size
     if df.empty: 
         return None
     try:
@@ -285,7 +350,7 @@ def create_figure(df, title, func, figsize=(6, 3.5)):
     except Exception as e:
         return None
 
-# 1. Top 10 Sustainable Brands - FIXED
+# All your existing plotting functions remain the same but with consistent figsize
 def plot_top_brands(df_brands): 
     def plot_func(fig, ax, df):
         sns.set_theme(style="whitegrid")
@@ -304,9 +369,8 @@ def plot_top_brands(df_brands):
         ax.set_xticklabels(df["brand_name"], rotation=rotation_angle, ha='right', fontsize=9)
         ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
     
-    return create_figure(df_brands, "Top 10 Sustainable Brands", plot_func, figsize=(8, 4.5))
+    return create_figure(df_brands, "Top 10 Sustainable Brands", plot_func, figsize=(7, 4.5))
 
-# 2. Top 5 Product lines - FIXED
 def plot_top_product_lines(df_categories): 
     def plot_func(fig, ax, df):
         sns.set_theme(style="whitegrid")
@@ -327,7 +391,6 @@ def plot_top_product_lines(df_categories):
     
     return create_figure(df_categories, "Top 5 Sustainable Product Lines", plot_func, figsize=(6, 4))
 
-# 3. Top 5 Countries - FIXED
 def plot_top_countries(df_countries):
     def plot_func(fig, ax, df):
         sns.set_theme(style="whitegrid")
@@ -345,9 +408,8 @@ def plot_top_countries(df_countries):
         ax.set_xticklabels(df["country_name"], rotation=25, ha='right', fontsize=10)
         ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
     
-    return create_figure(df_countries, "Top 5 Countries by Sustainability Rating", plot_func, figsize=(7, 5))
+    return create_figure(df_countries, "Top 5 Countries by Sustainability Rating", plot_func, figsize=(6, 4))
 
-# 4. Number of Certifications per Product line - FIXED
 def plot_certifications_per_product(df_cert_counts): 
     def plot_func(fig, ax, df):
         colors = [GREEN_PALETTE[i % len(GREEN_PALETTE)] for i in range(len(df))]
@@ -365,7 +427,6 @@ def plot_certifications_per_product(df_cert_counts):
     
     return create_figure(df_cert_counts, "Certifications per Product Line", plot_func, figsize=(6, 4))
 
-# 5. Average Environmental Metrics per Product Line - FIXED
 def plot_environmental_metrics(df_melted):
     def plot_func(fig, ax, df):
         sns.barplot(data=df, x='product_line', y='Average Value', hue='Metric', 
@@ -382,9 +443,8 @@ def plot_environmental_metrics(df_melted):
                  loc='upper right', bbox_to_anchor=(1.25, 1), 
                  frameon=True, facecolor='#E8F5E8', edgecolor='#C8E6C9')
     
-    return create_figure(df_melted, "Environmental Metrics by Product Line", plot_func, figsize=(8, 5))
+    return create_figure(df_melted, "Environmental Metrics by Product Line", plot_func, figsize=(8, 4.5))
 
-# 6. Sustainability Improvements Over Time - FIXED
 def plot_time_improvement(df_time_avg): 
     def plot_func(fig, ax, df):
         sns.lineplot(data=df, x='year', y='avg_rating', marker='o', color='#2E7D32', 
@@ -401,9 +461,8 @@ def plot_time_improvement(df_time_avg):
         ax.grid(True, alpha=0.3, color='#C8E6C9')
         ax.set_ylim(df['avg_rating'].min() * 0.95, df['avg_rating'].max() * 1.05)
     
-    return create_figure(df_time_avg, "Sustainability Rating Trend Over Years", plot_func, figsize=(7, 4.5))
+    return create_figure(df_time_avg, "Sustainability Rating Trend Over Years", plot_func, figsize=(7, 4))
 
-# 7. Average Sustainability Rating by Target Audience - FIXED
 def plot_audience_sustainability(df_audience_sus): 
     def plot_func(fig, ax, df):
         colors = [GREEN_PALETTE[i % len(GREEN_PALETTE)] for i in range(len(df))]
@@ -419,9 +478,8 @@ def plot_audience_sustainability(df_audience_sus):
         ax.set_ylabel('Sustainability Rating', fontsize=11, fontweight='600')
         ax.tick_params(axis='x', rotation=15, labelsize=9)
     
-    return create_figure(df_audience_sus, "Sustainability Rating by Target Audience", plot_func, figsize=(6, 4.5))
+    return create_figure(df_audience_sus, "Sustainability Rating by Target Audience", plot_func, figsize=(6, 4))
 
-# 8. Average Sustainability Rating by Material Status (Donut Chart) - FIXED
 def plot_material_status(df_material_sus): 
     if df_material_sus.empty or len(df_material_sus) < 2 or 'sustainability_rating' not in df_material_sus.columns:
         return None
@@ -451,7 +509,6 @@ def plot_material_status(df_material_sus):
     plt.tight_layout()
     return fig
 
-# 9. Eco-friendly vs Non Eco-friendly Brands (Pie Chart) - FIXED
 def plot_eco_friendly_counts(eco_counts_series): 
     if eco_counts_series.empty or len(eco_counts_series) < 2: 
         return None
@@ -480,7 +537,6 @@ def plot_eco_friendly_counts(eco_counts_series):
     plt.tight_layout()
     return fig
 
-# 10. Relationship Between Price and Sustainability Rating (Scatter Plot) - FIXED
 def plot_price_vs_sustainability(df_price_sus): 
     def plot_func(fig, ax, df):
         sns.scatterplot(data=df, x="average_price", y="sustainability_rating", 
@@ -492,9 +548,8 @@ def plot_price_vs_sustainability(df_price_sus):
                  bbox_to_anchor=(1.05, 1), loc="upper left", 
                  frameon=True, facecolor='#E8F5E8', edgecolor='#C8E6C9')
     
-    return create_figure(df_price_sus, "Price vs. Sustainability Rating", plot_func, figsize=(8, 5))
+    return create_figure(df_price_sus, "Price vs. Sustainability Rating", plot_func, figsize=(7, 4))
 
-# 11. Impact of Certification on Sustainability Rating - FIXED
 def plot_certification_impact(df_certification_avg): 
     def plot_func(fig, ax, df):
         colors = [GREEN_PALETTE[i % len(GREEN_PALETTE)] for i in range(len(df))]
@@ -511,9 +566,8 @@ def plot_certification_impact(df_certification_avg):
         ax.set_ylabel("Average Sustainability Rating", fontsize=11, fontweight='600')
         ax.tick_params(axis='x', rotation=45, labelsize=9)
     
-    return create_figure(df_certification_avg, "Impact of Certification on Sustainability Rating", plot_func, figsize=(8, 5))
+    return create_figure(df_certification_avg, "Impact of Certification on Sustainability Rating", plot_func, figsize=(7, 4))
 
-# 12. Market Trend vs Sustainability Rating (Donut Chart) - FIXED
 def plot_market_trend(df_trend_avg): 
     if df_trend_avg.empty or len(df_trend_avg) < 2 or 'sustainability_rating' not in df_trend_avg.columns:
         return None
@@ -554,7 +608,7 @@ def plot_market_trend(df_trend_avg):
     return fig
 
 # ====================================================================
-# 2. Main Streamlit App (Rest of the code remains the same)
+# 2. Enhanced Main Streamlit App with Consistent Layout
 # ====================================================================
 
 def main():
@@ -564,7 +618,7 @@ def main():
     if df.empty:
         return
 
-    # --- Enhanced Header with Gradient Background ---
+    # --- Enhanced Header with Consistent Background ---
     st.markdown("""
     <div class="main-header">
         <div style="display: flex; align-items: center; justify-content: center; gap: 25px; text-align: center;">
@@ -577,7 +631,7 @@ def main():
     """, unsafe_allow_html=True)
     
     # ----------------------------------------------------
-    # 2. Enhanced Filtering Section
+    # 2. Enhanced Filtering Section with Consistent Green Theme
     # ----------------------------------------------------
     
     # Style the sidebar header with enhanced design
@@ -667,7 +721,7 @@ def main():
         df_to_use_for_insights = df_filtered.copy()
 
     # ----------------------------------------------------
-    # 3. Calculate all Insights
+    # 3. Calculate all Insights (same as before)
     # ----------------------------------------------------
     available_cols_for_insights = df_to_use_for_insights.columns.tolist()
 
@@ -749,7 +803,7 @@ def main():
         )
 
     # ----------------------------------------------------
-    # 4. Enhanced KPI Section
+    # 4. Enhanced KPI Section with Better Visibility
     # ----------------------------------------------------
     
     # Calculate KPIs
@@ -805,7 +859,7 @@ def main():
     
     st.markdown("---")
 
-    # --- Enhanced Tabs with Consistent Green Theme ---
+    # --- Enhanced Tabs with Consistent Layout ---
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
         "🏆 Top Performance", 
         "🌍 Geographic & Material", 
@@ -815,25 +869,32 @@ def main():
         "🏅 Certifications"
     ])
     
-    # Helper function to display charts with enhanced styling
+    # Enhanced helper function to display charts with consistent sizing
     def display_chart(fig, title="", col=None):
         if fig:
             if col:
                 with col:
-                    st.markdown(f'<div class="chart-container"><h4>{title}</h4></div>', unsafe_allow_html=True)
+                    st.markdown(f'<div class="chart-container"><h4>{title}</h4>', unsafe_allow_html=True)
                     st.pyplot(fig)
+                    st.markdown('</div>', unsafe_allow_html=True)
             else:
-                st.markdown(f'<div class="chart-container"><h4>{title}</h4></div>', unsafe_allow_html=True)
+                st.markdown(f'<div class="chart-container"><h4>{title}</h4>', unsafe_allow_html=True)
                 st.pyplot(fig)
+                st.markdown('</div>', unsafe_allow_html=True)
         else:
-            st.info("📊 No data available for this chart with current filters.")
+            placeholder_text = f"📊 No data available for {title} with current filters."
+            if col:
+                with col:
+                    st.markdown(f'<div class="chart-container"><h4>{title}</h4><p style="text-align: center; color: #666; padding: 50px;">{placeholder_text}</p></div>', unsafe_allow_html=True)
+            else:
+                st.markdown(f'<div class="chart-container"><h4>{title}</h4><p style="text-align: center; color: #666; padding: 50px;">{placeholder_text}</p></div>', unsafe_allow_html=True)
 
     # ====================================================
-    # Tab 1: Top Performance
+    # Tab 1: Top Performance - Consistent 2-column layout
     # ====================================================
     with tab1:
         st.markdown('<div class="section-header"><h3>🏆 Top Sustainable Performers Analysis</h3></div>', unsafe_allow_html=True)
-        colA, colB = st.columns([1.5, 1])
+        colA, colB = st.columns(2)
         
         with colA:
             display_chart(plot_top_brands(df_top_brands), "Top 10 Sustainable Brands by Rating")
@@ -842,7 +903,7 @@ def main():
             display_chart(plot_top_product_lines(df_top_categories), "Top 5 Sustainable Product Lines")
             
     # ====================================================
-    # Tab 2: Geographic & Material Impact
+    # Tab 2: Geographic & Material Impact - Balanced layout
     # ====================================================
     with tab2:
         st.markdown('<div class="section-header"><h3>🌍 Geographic & Material Impact Analysis</h3></div>', unsafe_allow_html=True)
@@ -859,11 +920,11 @@ def main():
             display_chart(plot_eco_friendly_counts(eco_counts), "Eco-friendly Manufacturing Distribution")
 
     # ====================================================
-    # Tab 3: Trends Over Time
+    # Tab 3: Trends Over Time - Balanced layout
     # ====================================================
     with tab3:
         st.markdown('<div class="section-header"><h3>📈 Sustainability Trends & Market Analysis</h3></div>', unsafe_allow_html=True)
-        colF, colG = st.columns([1.5, 1])
+        colF, colG = st.columns(2)
 
         with colF:
             display_chart(plot_time_improvement(df_avg_time), "Sustainability Rating Trend Over Years")
@@ -872,14 +933,14 @@ def main():
             display_chart(plot_market_trend(trend_avg), "Market Trend Impact Analysis")
 
     # ====================================================
-    # Tab 4: Environmental Metrics
+    # Tab 4: Environmental Metrics - Full width
     # ====================================================
     with tab4:
         st.markdown('<div class="section-header"><h3>🌱 Core Environmental Metrics Analysis</h3></div>', unsafe_allow_html=True)
         display_chart(plot_environmental_metrics(df_melted), "Environmental Impact by Product Line")
         
     # ====================================================
-    # Tab 5: Price & Audience
+    # Tab 5: Price & Audience - Balanced layout
     # ====================================================
     with tab5:
         st.markdown('<div class="section-header"><h3>💰 Market & Customer Analysis</h3></div>', unsafe_allow_html=True)
@@ -892,7 +953,7 @@ def main():
             display_chart(plot_audience_sustainability(audience_sustainability), "Target Audience Preferences")
     
     # ====================================================
-    # Tab 6: Certifications 
+    # Tab 6: Certifications - Sequential layout
     # ====================================================
     with tab6:
         st.markdown('<div class="section-header"><h3>🏅 Certification Impact Analysis</h3></div>', unsafe_allow_html=True)
