@@ -275,8 +275,8 @@ def apply_custom_css():
     }
     
     .logo {
-        max-height: 40px;
-        max-width: 80px;
+        max-height: 20px;
+        max-width: 30px;
         object-fit: contain;
     }
     
@@ -290,16 +290,16 @@ def apply_custom_css():
     
     /* Consistent logo sizing */
     .logo-image {
-        max-height: 40px;
-        max-width: 80px;
+        max-height: 20px;
+        max-width: 30px;
         object-fit: contain;
         border-radius: 6px;
     }
     
     /* Logo placeholder styling */
     .logo-placeholder {
-        width: 80px;
-        height: 40px;
+        width: 30px;
+        height: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -668,7 +668,7 @@ def plot_market_trend(df_trend_avg):
 # 2. LOGO HANDLING FUNCTIONS
 # ====================================================================
 
-def load_logo(image_path, default_width=60):
+def load_logo(image_path, default_width=30):
     """Load logo with consistent sizing and error handling"""
     try:
         if os.path.exists(image_path):
@@ -1098,8 +1098,8 @@ def main():
                 <p style="margin: 5px 0 0 0; color: #E8F5E8; font-size: 0.9rem;">Driving Sustainable Business Decisions</p>
             </div>
             <div style="text-align: right;">
-                <p style="margin: 0; color: #E8F5E8; font-size: 0.9rem;">📅 Last Updated: 2024</p>
-                <p style="margin: 5px 0 0 0; color: #E8F5E8; font-size: 0.9rem;">📊 Powered by Streamlit</p>
+                <p style="margin: 0; color: #E8F5E8; font-size: 0.9rem;">📅 Developed in : 2025</p>
+                <p style="margin: 5px 0 0 0; color: #E8F5E8; font-size: 0.9rem;">📊 Designed by Dina Ali</p>
             </div>
         </div>
     </div>
@@ -1108,3 +1108,4 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
+
