@@ -1074,8 +1074,8 @@ def main():
                 <p style="margin: 5px 0 0 0; color: #E8F5E8; font-size: 0.9rem;">Driving Sustainable Business Decisions</p>
             </div>
             <div style="text-align: right;">
-                <p style="margin: 0; color: #E8F5E8; font-size: 0.9rem;">📅 Last Updated: 2024</p>
-                <p style="margin: 5px 0 0 0; color: #E8F5E8; font-size: 0.9rem;">📊 Powered by Streamlit</p>
+                <p style="margin: 0; color: #E8F5E8; font-size: 0.9rem;">📅 Developed in: 2025</p>
+                <p style="margin: 5px 0 0 0; color: #E8F5E8; font-size: 0.9rem;">📊 Designed by Dina Ali</p>
             </div>
         </div>
     </div>
@@ -1084,3 +1084,4 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
+
