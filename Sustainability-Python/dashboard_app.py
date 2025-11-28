@@ -1,4 +1,4 @@
-Dina Ali, [28/11/2025 09:41]
+
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -70,7 +70,6 @@ def safe_kpi_calc(series, func, rounding=2):
 
 # Helper function to create a small figure (for better dashboard fit)
 
-Dina Ali, [28/11/2025 09:41]
 def create_figure(df, title, func, figsize=(6, 3.5)): 
     if df.empty: 
         return None
@@ -142,7 +141,7 @@ def plot_top_countries(df_countries):
         )
     )
 
-Dina Ali, [28/11/2025 09:41]
+
 # 4. Number of Certifications per Product line
 def plot_certifications_per_product(df_cert_counts): 
     return create_figure(df_cert_counts, "Certifications per Product Line", figsize=(5, 3.5), # 
@@ -505,3 +504,4 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
+
