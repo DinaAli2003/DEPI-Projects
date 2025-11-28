@@ -304,9 +304,23 @@ def plot_market_trend(df_trend_avg):
 def main():
     # 1. Load Raw Data
     df = load_raw_data()
-
     if df.empty:
         return
+
+    # --- Streamlit Styling ---
+    st.markdown(
+        """
+        <style>
+        .stApp { background-color: #E6F4EA; }  /* Light green background */
+        .css-1d391kg .css-1d391kg { background-color: #DFF2E3; padding: 10px; border-radius: 10px; }
+        div[data-baseweb="select"] > div { background-color: #ffffff !important; color: #1B5E20; border-radius: 5px; }
+        .css-10trblm.e1fqkh3o4 { color: #2E7D32; font-weight: bold; } /* Tab titles */
+        .stMetricValue { color: #1B5E20 !important; font-weight: bold; }
+        .element-container { padding-bottom: 20px; }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
     # --- Header with Logos ---
     col_logo1, col_title, col_logo2 = st.columns([1, 4, 1])
@@ -319,61 +333,36 @@ def main():
     st.markdown("---")
 
     # ----------------------------------------------------
-    # 2. Filtering (Creates df_filtered)
+    # Sidebar Filters
     # ----------------------------------------------------
     st.sidebar.title("Filter")  
-
-    # Initialize df_filtered with a copy of the original df
     df_filtered = df.copy()
 
-    # Helper to get unique options and set default
     def get_filter_options(column_name):
         if column_name in df.columns:
             options = sorted(df[column_name].unique().tolist())
-            return options, options  # Default to all options
-        return [], []  # Return empty lists if column not found
+            return options, options
+        return [], []
 
-    # 1. Countries Filter
-    country_options, default_countries = get_filter_options('country_name')
-    selected_countries = st.sidebar.multiselect(
-        "Select Country:", options=country_options, default=default_countries
-    )
+    # Filters
+    selected_countries = st.sidebar.multiselect("Select Country:", *get_filter_options('country_name'))
+    selected_years = st.sidebar.multiselect("Select Year:", *get_filter_options('year'))
+    selected_certifications = st.sidebar.multiselect("Select Certification:", *get_filter_options('certification'))
+    selected_product_lines = st.sidebar.multiselect("Select Product Line:", *get_filter_options('product_line'))
+    selected_brands = st.sidebar.multiselect("Select Sustainable Brand:", *get_filter_options('brand_name'))
+
+    # Apply filters
     if selected_countries:
         df_filtered = df_filtered[df_filtered['country_name'].isin(selected_countries)]
-
-    # 2. Years Filter
-    year_options, default_years = get_filter_options('year')
-    selected_years = st.sidebar.multiselect(
-        "Select Year:", options=year_options, default=default_years
-    )
     if selected_years:
         df_filtered = df_filtered[df_filtered['year'].isin(selected_years)]
-
-    # 3. Certifications Filter
-    certification_options, default_certifications = get_filter_options('certification')
-    selected_certifications = st.sidebar.multiselect(
-        "Select Certification:", options=certification_options, default=default_certifications
-    )
     if selected_certifications:
         df_filtered = df_filtered[df_filtered['certification'].isin(selected_certifications)]
-
-    # 4. Product Lines Filter
-    product_line_options, default_product_lines = get_filter_options('product_line')
-    selected_product_lines = st.sidebar.multiselect(
-        "Select Product Line:", options=product_line_options, default=default_product_lines
-    )
     if selected_product_lines:
         df_filtered = df_filtered[df_filtered['product_line'].isin(selected_product_lines)]
-
-    # 5. Brands Filter
-    brand_options, default_brands = get_filter_options('brand_name')
-    selected_brands = st.sidebar.multiselect(
-        "Select Sustainable Brand:", options=brand_options, default=default_brands
-    )
     if selected_brands:
         df_filtered = df_filtered[df_filtered['brand_name'].isin(selected_brands)]
 
-    # Fallback if no data matches filters
     if df_filtered.empty:
         st.warning("⚠️ No data matches the current filters. Displaying full data as fallback.")
         df_to_use_for_insights = df.copy()
@@ -381,93 +370,7 @@ def main():
         df_to_use_for_insights = df_filtered.copy()
 
     # ----------------------------------------------------
-    # 3. Calculate all 12 Insights based on df_to_use_for_insights
-    # ----------------------------------------------------
-    available_cols_for_insights = df_to_use_for_insights.columns.tolist()
-
-    # 1. Top 10 Sustainable Brands 
-    df_top_brands = pd.DataFrame()
-    if 'brand_name' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
-        df_top_brands = (
-            df_to_use_for_insights.groupby("brand_name")["sustainability_rating"].mean().round(2).reset_index()
-            .sort_values(by="sustainability_rating", ascending=False).head(10)
-        )
-
-    # 2. Top 5 Product lines
-    df_top_categories = pd.DataFrame()
-    if 'product_line' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
-        df_top_categories = (
-            df_to_use_for_insights.groupby("product_line")["sustainability_rating"].mean().round(2).reset_index()
-            .sort_values(by="sustainability_rating", ascending=False).head(5)
-        )
-
-    # 3. Top 5 Countries
-    df_top_countries = pd.DataFrame()
-    if 'country_name' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
-        df_top_countries = (
-            df_to_use_for_insights.groupby("country_name")["sustainability_rating"].mean().round(2).reset_index()
-            .sort_values(by="sustainability_rating", ascending=False).head(5)
-        )
-
-    # 4. Certifications per Product line
-    df_category_cert = pd.DataFrame()
-    if 'product_line' in available_cols_for_insights and 'certification' in available_cols_for_insights and not df_to_use_for_insights.empty:
-        df_category_cert = (
-            df_to_use_for_insights.groupby("product_line")["certification"].count().reset_index()
-            .rename(columns={"certification": "num_certification"})
-            .sort_values(by="num_certification", ascending=False)
-        )
-
-    # 5. Environmental Metrics
-    df_melted = pd.DataFrame()
-    env_cols = ['waste_production', 'water_usage', 'carbon_footprint']
-    if all(col in available_cols_for_insights for col in env_cols) and 'product_line' in available_cols_for_insights and not df_to_use_for_insights.empty:
-        df_avg = df_to_use_for_insights.groupby('product_line')[env_cols].mean().reset_index()
-        df_melted = df_avg.melt(id_vars='product_line', value_vars=env_cols, var_name='Metric', value_name='Average Value')
-
-    # 6. Time Improvement
-    df_avg_time = pd.DataFrame()
-    if 'year' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
-        df_avg_time = df_to_use_for_insights.groupby('year')['sustainability_rating'].mean().reset_index(name='avg_rating')
-
-    # 7. Audience Sustainability
-    audience_sustainability = pd.DataFrame()
-    if 'target_audience' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
-        audience_sustainability = df_to_use_for_insights.groupby('target_audience')['sustainability_rating'].mean().round(3).reset_index().sort_values(by='sustainability_rating', ascending=False)
-
-    # 8. Material Status
-    material_sustainability = pd.DataFrame(columns=['material_status', 'sustainability_rating', 'label'])
-    if 'material_status' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
-        material_sustainability = df_to_use_for_insights.groupby('material_status')['sustainability_rating'].mean().round(3).reset_index().sort_values(by='sustainability_rating', ascending=False)
-        if not material_sustainability.empty:
-            material_sustainability['label'] = (material_sustainability['material_status'] + ' (' + material_sustainability['sustainability_rating'].astype(str) + ')')
-
-    # 9. Eco-Friendly Counts
-    eco_counts = pd.Series()
-    if 'eco_friendly_manufacturing' in available_cols_for_insights and not df_to_use_for_insights.empty:
-        eco_counts = df_to_use_for_insights['eco_friendly_manufacturing'].value_counts()
-
-    # 10. Price vs Sustainability
-    df_price_vs_sus = pd.DataFrame()
-    if all(col in available_cols_for_insights for col in ['average_price', 'sustainability_rating', 'brand_category']) and not df_to_use_for_insights.empty:
-        df_price_vs_sus = df_to_use_for_insights.copy()
-
-    # 11. Certification Impact
-    certification_avg = pd.DataFrame()
-    if 'certification' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
-        certification_avg = df_to_use_for_insights.groupby("certification", as_index=False).agg(avg_rating=("sustainability_rating", "mean")).round(3).sort_values("avg_rating", ascending=False)
-
-    # 12. Market Trend 
-    trend_avg = pd.DataFrame()
-    if 'market_trend' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
-        trend_avg = (
-            df_to_use_for_insights.groupby("market_trend", as_index=False)["sustainability_rating"]
-            .mean()
-            .sort_values("sustainability_rating", ascending=False)
-        )
-
-    # ----------------------------------------------------
-    # 4. Key Performance Indicators (KPIs) - Now based on df_filtered
+    # KPIs
     # ----------------------------------------------------
     avg_price = safe_kpi_calc(df_to_use_for_insights.get('average_price', pd.Series()), np.mean)
     avg_carbon = safe_kpi_calc(df_to_use_for_insights.get('carbon_footprint', pd.Series()), np.mean)
@@ -477,16 +380,18 @@ def main():
     max_sus_rating = safe_kpi_calc(df_to_use_for_insights.get('sustainability_rating', pd.Series()), np.max)
 
     kpi_cols = st.columns(6)
-    kpi_cols[0].metric("💰 **AVG PRICE**", f"{avg_price:,.2f}" if isinstance(avg_price, (int, float)) else avg_price)
-    kpi_cols[1].metric("🏭 **AVG CARBON**", f"{avg_carbon:.2f}" if isinstance(avg_carbon, (int, float)) else avg_carbon)
-    kpi_cols[2].metric("💧 **AVG WATER**", f"{avg_water:,.0f}" if isinstance(avg_water, (int, float)) else avg_water)
-    kpi_cols[3].metric("🗑️ **AVG WASTE**", f"{avg_waste:.2f}" if isinstance(avg_waste, (int, float)) else avg_waste)
-    kpi_cols[4].metric("⭐️ **MIN SUS RATING**", f"{min_sus_rating}")
-    kpi_cols[5].metric("🌟 **MAX SUS RATING**", f"{max_sus_rating}")
+    kpi_cols[0].metric("💰 AVG PRICE", f"{avg_price:,.2f}" if isinstance(avg_price, (int, float)) else avg_price)
+    kpi_cols[1].metric("🏭 AVG CARBON", f"{avg_carbon:.2f}" if isinstance(avg_carbon, (int, float)) else avg_carbon)
+    kpi_cols[2].metric("💧 AVG WATER", f"{avg_water:,.0f}" if isinstance(avg_water, (int, float)) else avg_water)
+    kpi_cols[3].metric("🗑️ AVG WASTE", f"{avg_waste:.2f}" if isinstance(avg_waste, (int, float)) else avg_waste)
+    kpi_cols[4].metric("⭐ MIN SUS RATING", f"{min_sus_rating}")
+    kpi_cols[5].metric("🌟 MAX SUS RATING", f"{max_sus_rating}")
 
     st.markdown("---")
 
-    # --- Tabs for Organization (6 Tabs) ---
+    # ----------------------------------------------------
+    # Tabs with Charts
+    # ----------------------------------------------------
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
         "Top Performance", 
         "Geographic & Material Impact", 
@@ -496,12 +401,66 @@ def main():
         "Certifications"
     ])
 
-    # Tab contents would follow here...
-    # (Keep your plotting code as-is)
-    
+    # --- Tab 1: Top Performance ---
+    with tab1:
+        st.subheader("Top 10 Brands")
+        df_top_brands = df_to_use_for_insights.groupby("brand_name")["sustainability_rating"].mean().reset_index().sort_values("sustainability_rating", ascending=False).head(10)
+        st.pyplot(plot_top_brands(df_top_brands))
+
+        st.subheader("Top 5 Product Lines")
+        df_top_categories = df_to_use_for_insights.groupby("product_line")["sustainability_rating"].mean().reset_index().sort_values("sustainability_rating", ascending=False).head(5)
+        st.pyplot(plot_top_product_lines(df_top_categories))
+
+    # --- Tab 2: Geographic & Material Impact ---
+    with tab2:
+        st.subheader("Top 5 Countries")
+        df_top_countries = df_to_use_for_insights.groupby("country_name")["sustainability_rating"].mean().reset_index().sort_values("sustainability_rating", ascending=False).head(5)
+        st.pyplot(plot_top_countries(df_top_countries))
+
+        st.subheader("Material Status")
+        material_sus = df_to_use_for_insights.groupby('material_status')['sustainability_rating'].mean().reset_index()
+        st.pyplot(plot_material_status(material_sus))
+
+    # --- Tab 3: Trends Over Time ---
+    with tab3:
+        st.subheader("Sustainability Rating Over Years")
+        df_time_avg = df_to_use_for_insights.groupby('year')['sustainability_rating'].mean().reset_index(name='avg_rating')
+        st.pyplot(plot_time_improvement(df_time_avg))
+
+        st.subheader("Market Trend")
+        trend_avg = df_to_use_for_insights.groupby('market_trend')['sustainability_rating'].mean().reset_index()
+        st.pyplot(plot_market_trend(trend_avg))
+
+    # --- Tab 4: Environmental Metrics ---
+    with tab4:
+        st.subheader("Environmental Metrics per Product Line")
+        env_cols = ['waste_production', 'water_usage', 'carbon_footprint']
+        df_melted = df_to_use_for_insights.groupby('product_line')[env_cols].mean().reset_index().melt(id_vars='product_line', var_name='Metric', value_name='Average Value')
+        st.pyplot(plot_environmental_metrics(df_melted))
+
+    # --- Tab 5: Price & Audience ---
+    with tab5:
+        st.subheader("Price vs Sustainability Rating")
+        st.pyplot(plot_price_vs_sustainability(df_to_use_for_insights))
+
+        st.subheader("Audience Sustainability")
+        audience_sus = df_to_use_for_insights.groupby('target_audience')['sustainability_rating'].mean().reset_index()
+        st.pyplot(plot_audience_sustainability(audience_sus))
+
+    # --- Tab 6: Certifications ---
+    with tab6:
+        st.subheader("Certifications per Product Line")
+        cert_count = df_to_use_for_insights.groupby('product_line')['certification'].count().reset_index().rename(columns={'certification':'num_certification'})
+        st.pyplot(plot_certifications_per_product(cert_count))
+
+        st.subheader("Certification Impact")
+        cert_avg = df_to_use_for_insights.groupby('certification')['sustainability_rating'].mean().reset_index().rename(columns={'sustainability_rating':'avg_rating'})
+        st.pyplot(plot_certification_impact(cert_avg))
+
+        st.subheader("Eco-Friendly vs Non Eco-Friendly")
+        eco_counts = df_to_use_for_insights['eco_friendly_manufacturing'].value_counts()
+        st.pyplot(plot_eco_friendly_counts(eco_counts))
 
 # Run the main function
 if __name__ == "__main__":
     main()
-
-
