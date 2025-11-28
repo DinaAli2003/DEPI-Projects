@@ -52,7 +52,7 @@ We believe in transparency and tracking our progress\! You can view the live dat
 
 Click the link below to access the interactive dashboard:
 
-  * **[Go to the Live Sustainability Dashboard]()**
+  * **[Go to the Live Sustainability Dashboard](https://depi-projects-lgckzjzfhinqxcepnkrgse.streamlit.app/)**
 
 Enjoy exploring the data\! If you have any questions or suggestions, please feel free to reach out. Happy analyzing\! 💡
 
