@@ -19,7 +19,7 @@ st.set_page_config(
 ) 
 
 # ====================================================================
-# SIMPLIFIED CSS STYLING - REMOVED CONTAINERS, FOCUSED ON CHART SIZING
+# CLEAN CSS STYLING - NO CONTAINERS, JUST THEME AND SPACING
 # ====================================================================
 def apply_custom_css():
     st.markdown("""
@@ -166,34 +166,6 @@ def apply_custom_css():
         padding: 0;
     }
     
-    /* SIMPLIFIED CHART CONTAINMENT - REMOVED COMPLEX CONTAINERS */
-    .chart-wrapper {
-        background: linear-gradient(135deg, #FFFFFF 0%, #F8FDF8 100%);
-        padding: 15px;
-        border-radius: 12px;
-        box-shadow: 0 4px 12px rgba(27, 94, 32, 0.15);
-        border: 1px solid #C8E6C9;
-        margin-bottom: 20px;
-        height: 420px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    /* FIXED: Ensure charts properly fill their containers */
-    .stPyplot, .stPlotlyChart {
-        width: 100% !important;
-        height: 100% !important;
-    }
-    
-    /* FIXED: Proper matplotlib figure containment */
-    .stPyplot figure {
-        width: 100% !important;
-        height: 100% !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
     /* Custom green button style */
     .stButton button {
         background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%) !important;
@@ -284,6 +256,14 @@ def apply_custom_css():
         min-height: 450px;
     }
     
+    /* Remove any chart container backgrounds */
+    .chart-container-wrapper, .chart-wrapper {
+        background: transparent !important;
+        padding: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+    }
+    
     </style>
     """, unsafe_allow_html=True)
 
@@ -328,7 +308,7 @@ def safe_kpi_calc(series, func, rounding=2):
         return "N/A"
 
 # ====================================================================
-# 1. PROFESSIONAL VISUALIZATION FUNCTIONS (Perfect Containment)
+# 1. PROFESSIONAL VISUALIZATION FUNCTIONS (Clean and Simple)
 # ====================================================================
 
 # Set global green color palette
@@ -340,7 +320,7 @@ def create_professional_figure(df, title, func, figsize=(6, 4)):
     if df.empty: 
         return None
     try:
-        # CONSISTENT FIGURE SIZE with tight layout for perfect containment
+        # CONSISTENT FIGURE SIZE with tight layout
         fig, ax = plt.subplots(figsize=figsize)
         
         # Set transparent background to match dashboard
@@ -368,14 +348,14 @@ def create_professional_figure(df, title, func, figsize=(6, 4)):
         # Professional grid
         ax.grid(True, alpha=0.2, color='#C8E6C9')
         
-        # EXTREMELY TIGHT LAYOUT for perfect container fit
+        # TIGHT LAYOUT for perfect fit
         plt.tight_layout(pad=1.0)
         return fig
     except Exception as e:
         st.error(f"Chart error: {e}")
         return None
 
-# All plotting functions with PERFECT CONTAINMENT
+# All plotting functions - CLEAN AND SIMPLE
 def plot_top_brands(df_brands): 
     def plot_func(fig, ax, df):
         sns.set_theme(style="whitegrid")
@@ -633,7 +613,7 @@ def plot_market_trend(df_trend_avg):
     return fig
 
 # ====================================================================
-# 2. PROFESSIONAL STREAMLIT APP WITH PERFECT CONTAINMENT
+# 2. CLEAN STREAMLIT APP - NO CONTAINERS, JUST CHARTS
 # ====================================================================
 
 def main():
@@ -883,7 +863,7 @@ def main():
     
     st.markdown("---")
 
-    # --- PROFESSIONAL TABS WITH PERFECT CONTAINMENT ---
+    # --- PROFESSIONAL TABS - NO CONTAINERS ---
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
         "🏆 Top Performance", 
         "🌍 Geographic & Material", 
@@ -893,24 +873,18 @@ def main():
         "🏅 Certifications"
     ])
     
-    # SIMPLIFIED: Professional helper function to display charts with perfect containment
+    # SIMPLIFIED: Direct chart display - NO CONTAINERS
     def display_chart(fig, col=None):
-        """Display chart with perfect container alignment and consistent sizing"""
+        """Display chart directly without containers"""
         if fig is not None:
             if col:
                 with col:
-                    # SIMPLIFIED: Clean chart container
-                    st.markdown('<div class="chart-wrapper">', unsafe_allow_html=True)
                     st.pyplot(fig, use_container_width=True)
-                    st.markdown('</div>', unsafe_allow_html=True)
             else:
-                # SIMPLIFIED: Clean chart container
-                st.markdown('<div class="chart-wrapper">', unsafe_allow_html=True)
                 st.pyplot(fig, use_container_width=True)
-                st.markdown('</div>', unsafe_allow_html=True)
 
     # ====================================================
-    # Tab 1: Top Performance - PERFECTLY CONTAINED
+    # Tab 1: Top Performance - NO CONTAINERS
     # ====================================================
     with tab1:
         st.markdown('<div class="section-header"><h3>🏆 Top Sustainable Performers Analysis</h3></div>', unsafe_allow_html=True)
@@ -928,7 +902,7 @@ def main():
             display_chart(top_categories_chart, col2)
 
     # ====================================================
-    # Tab 2: Geographic & Material - PERFECTLY CONTAINED
+    # Tab 2: Geographic & Material - NO CONTAINERS
     # ====================================================
     with tab2:
         st.markdown('<div class="section-header"><h3>🌍 Geographic & Material Impact Analysis</h3></div>', unsafe_allow_html=True)
@@ -957,7 +931,7 @@ def main():
             display_chart(available_charts[0])
 
     # ====================================================
-    # Tab 3: Trends Over Time - PERFECTLY CONTAINED
+    # Tab 3: Trends Over Time - NO CONTAINERS
     # ====================================================
     with tab3:
         st.markdown('<div class="section-header"><h3>📈 Sustainability Trends & Market Analysis</h3></div>', unsafe_allow_html=True)
@@ -974,7 +948,7 @@ def main():
             display_chart(trend_chart, col2)
 
     # ====================================================
-    # Tab 4: Environmental Metrics - PERFECTLY CONTAINED
+    # Tab 4: Environmental Metrics - NO CONTAINERS
     # ====================================================
     with tab4:
         st.markdown('<div class="section-header"><h3>🌱 Core Environmental Metrics Analysis</h3></div>', unsafe_allow_html=True)
@@ -984,7 +958,7 @@ def main():
             display_chart(env_chart)
         
     # ====================================================
-    # Tab 5: Price & Audience - PERFECTLY CONTAINED
+    # Tab 5: Price & Audience - NO CONTAINERS
     # ====================================================
     with tab5:
         st.markdown('<div class="section-header"><h3>💰 Market & Customer Analysis</h3></div>', unsafe_allow_html=True)
@@ -1001,7 +975,7 @@ def main():
             display_chart(audience_chart, col2)
     
     # ====================================================
-    # Tab 6: Certifications - PERFECTLY CONTAINED
+    # Tab 6: Certifications - NO CONTAINERS
     # ====================================================
     with tab6:
         st.markdown('<div class="section-header"><h3>🏅 Certification Impact Analysis</h3></div>', unsafe_allow_html=True)
