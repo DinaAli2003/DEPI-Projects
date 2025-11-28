@@ -271,12 +271,12 @@ def apply_custom_css():
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 1rem;
+        margin-bottom: 0.5rem;
     }
     
     .logo {
-        max-height: 60px;
-        max-width: 120px;
+        max-height: 40px;
+        max-width: 80px;
         object-fit: contain;
     }
     
@@ -290,23 +290,30 @@ def apply_custom_css():
     
     /* Consistent logo sizing */
     .logo-image {
-        max-height: 60px;
-        max-width: 120px;
+        max-height: 40px;
+        max-width: 80px;
         object-fit: contain;
-        border-radius: 8px;
+        border-radius: 6px;
     }
     
     /* Logo placeholder styling */
     .logo-placeholder {
-        width: 120px;
-        height: 60px;
+        width: 80px;
+        height: 40px;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 8px;
+        border-radius: 6px;
         color: white;
         font-weight: bold;
-        font-size: 0.8rem;
+        font-size: 0.7rem;
+        text-align: center;
+        line-height: 1.1;
+    }
+    
+    /* Adjust header spacing for smaller logos */
+    .logo-header-row {
+        margin-bottom: 0.5rem !important;
     }
     
     </style>
@@ -661,7 +668,7 @@ def plot_market_trend(df_trend_avg):
 # 2. LOGO HANDLING FUNCTIONS
 # ====================================================================
 
-def load_logo(image_path, default_width=100):
+def load_logo(image_path, default_width=60):
     """Load logo with consistent sizing and error handling"""
     try:
         if os.path.exists(image_path):
@@ -674,7 +681,7 @@ def load_logo(image_path, default_width=100):
         st.warning(f"Error loading logo {image_path}: {e}")
         return None
 
-def display_logo_column(logo, position, width=100):
+def display_logo_column(logo, position, width=60):
     """Display logo in a column with consistent sizing"""
     if logo:
         st.image(logo, width=width, use_column_width=False)
@@ -698,22 +705,22 @@ def main():
     if df.empty:
         return
 
-    # --- SMALLER LOGOS AT THE TOP WITH CONSISTENT SIZING ---
+    # --- VERY SMALL LOGOS AT THE TOP WITH CONSISTENT SIZING ---
     col1, col2, col3 = st.columns([1, 2, 1])
     
-    # Load logos with smaller size
+    # Load logos with very small size
     left_logo = load_logo('Sustainability-Python/logo_ministry.png')
     right_logo = load_logo('Sustainability-Python/logo_project.png')
     
     with col1:
-        display_logo_column(left_logo, "left", width=100)
+        display_logo_column(left_logo, "left", width=60)
     
     with col2:
         # Center content - main title will go here
         pass
     
     with col3:
-        display_logo_column(right_logo, "right", width=100)
+        display_logo_column(right_logo, "right", width=60)
 
     # --- Enhanced Header with Consistent Background ---
     st.markdown("""
