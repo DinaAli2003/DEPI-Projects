@@ -24,6 +24,23 @@ st.set_page_config(
 def apply_custom_css():
     st.markdown("""
     <style>
+
+    .chart-container {
+    overflow: hidden;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+}
+
+.chart-container .stPyplot {
+    width: 100% !important;
+    height: 100% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+
     /* Complete background - consistent green theme */
     .stApp {
         background: linear-gradient(135deg, #F0F9F0 0%, #E8F5E8 50%, #F0F9F0 100%) !important;
@@ -1072,3 +1089,4 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
+
