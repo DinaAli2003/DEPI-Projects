@@ -275,8 +275,8 @@ def apply_custom_css():
     }
     
     .logo {
-        max-height: 80px;
-        max-width: 200px;
+        max-height: 60px;
+        max-width: 120px;
         object-fit: contain;
     }
     
@@ -290,10 +290,23 @@ def apply_custom_css():
     
     /* Consistent logo sizing */
     .logo-image {
-        max-height: 80px;
-        max-width: 180px;
+        max-height: 60px;
+        max-width: 120px;
         object-fit: contain;
         border-radius: 8px;
+    }
+    
+    /* Logo placeholder styling */
+    .logo-placeholder {
+        width: 120px;
+        height: 60px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        color: white;
+        font-weight: bold;
+        font-size: 0.8rem;
     }
     
     </style>
@@ -648,7 +661,7 @@ def plot_market_trend(df_trend_avg):
 # 2. LOGO HANDLING FUNCTIONS
 # ====================================================================
 
-def load_logo(image_path, default_width=160):
+def load_logo(image_path, default_width=100):
     """Load logo with consistent sizing and error handling"""
     try:
         if os.path.exists(image_path):
@@ -661,7 +674,7 @@ def load_logo(image_path, default_width=160):
         st.warning(f"Error loading logo {image_path}: {e}")
         return None
 
-def display_logo_column(logo, position, width=160):
+def display_logo_column(logo, position, width=100):
     """Display logo in a column with consistent sizing"""
     if logo:
         st.image(logo, width=width, use_column_width=False)
@@ -669,10 +682,8 @@ def display_logo_column(logo, position, width=160):
         # Fallback placeholder with consistent sizing
         placeholder_color = "#1B5E20" if position == "left" else "#2E7D32"
         st.markdown(f"""
-        <div style="width: {width}px; height: 80px; background: {placeholder_color}; 
-                    display: flex; align-items: center; justify-content: center; 
-                    border-radius: 8px; color: white; font-weight: bold;">
-            {position.upper()} LOGO
+        <div class="logo-placeholder" style="background: {placeholder_color};">
+            {position.upper()}<br>LOGO
         </div>
         """, unsafe_allow_html=True)
 
@@ -687,22 +698,22 @@ def main():
     if df.empty:
         return
 
-    # --- LOGOS AT THE TOP WITH CONSISTENT SIZING ---
+    # --- SMALLER LOGOS AT THE TOP WITH CONSISTENT SIZING ---
     col1, col2, col3 = st.columns([1, 2, 1])
     
-    # Load logos
+    # Load logos with smaller size
     left_logo = load_logo('Sustainability-Python/logo_ministry.png')
     right_logo = load_logo('Sustainability-Python/logo_project.png')
     
     with col1:
-        display_logo_column(left_logo, "left", width=160)
+        display_logo_column(left_logo, "left", width=100)
     
     with col2:
         # Center content - main title will go here
         pass
     
     with col3:
-        display_logo_column(right_logo, "right", width=160)
+        display_logo_column(right_logo, "right", width=100)
 
     # --- Enhanced Header with Consistent Background ---
     st.markdown("""
