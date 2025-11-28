@@ -299,7 +299,7 @@ def plot_market_trend(df_trend_avg):
     plt.tight_layout()
     return fig
 # ====================================================================
-# 2. Main Streamlit App
+# 2. Main Streamlit App - Expertly Styled
 # ====================================================================
 def main():
     # 1. Load Raw Data
@@ -348,7 +348,7 @@ def main():
     # ----------------------------------------------------
     # Sidebar Filters
     # ----------------------------------------------------
-    st.sidebar.title("Filter")  
+    st.sidebar.title("Filters")  
     df_filtered = df.copy()
 
     def get_filter_options(column_name):
@@ -357,12 +357,11 @@ def main():
             return options, options
         return [], []
 
-    # Filters
-    selected_countries = st.sidebar.multiselect("Select Country:", *get_filter_options('country_name'))
-    selected_years = st.sidebar.multiselect("Select Year:", *get_filter_options('year'))
-    selected_certifications = st.sidebar.multiselect("Select Certification:", *get_filter_options('certification'))
-    selected_product_lines = st.sidebar.multiselect("Select Product Line:", *get_filter_options('product_line'))
-    selected_brands = st.sidebar.multiselect("Select Sustainable Brand:", *get_filter_options('brand_name'))
+    selected_countries = st.sidebar.multiselect("Country:", *get_filter_options('country_name'))
+    selected_years = st.sidebar.multiselect("Year:", *get_filter_options('year'))
+    selected_certifications = st.sidebar.multiselect("Certification:", *get_filter_options('certification'))
+    selected_product_lines = st.sidebar.multiselect("Product Line:", *get_filter_options('product_line'))
+    selected_brands = st.sidebar.multiselect("Brand:", *get_filter_options('brand_name'))
 
     # Apply filters safely
     if selected_countries and 'country_name' in df_filtered.columns:
@@ -383,7 +382,7 @@ def main():
         df_to_use_for_insights = df_filtered.copy()
 
     # ----------------------------------------------------
-    # KPIs
+    # KPIs (Compact & Friendly)
     # ----------------------------------------------------
     avg_price = safe_kpi_calc(df_to_use_for_insights.get('average_price', pd.Series()), np.mean)
     avg_carbon = safe_kpi_calc(df_to_use_for_insights.get('carbon_footprint', pd.Series()), np.mean)
@@ -392,7 +391,7 @@ def main():
     min_sus_rating = safe_kpi_calc(df_to_use_for_insights.get('sustainability_rating', pd.Series()), np.min)
     max_sus_rating = safe_kpi_calc(df_to_use_for_insights.get('sustainability_rating', pd.Series()), np.max)
 
-    kpi_cols = st.columns(6)
+    kpi_cols = st.columns(6, gap="small")
     kpi_cols[0].metric("💰 AVG PRICE", f"{avg_price:,.2f}" if isinstance(avg_price, (int, float)) else avg_price)
     kpi_cols[1].metric("🏭 AVG CARBON", f"{avg_carbon:.2f}" if isinstance(avg_carbon, (int, float)) else avg_carbon)
     kpi_cols[2].metric("💧 AVG WATER", f"{avg_water:,.0f}" if isinstance(avg_water, (int, float)) else avg_water)
@@ -403,11 +402,11 @@ def main():
     st.markdown("---")
 
     # ----------------------------------------------------
-    # Tabs with Charts
+    # Tabs (Black font, bold, clean layout)
     # ----------------------------------------------------
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
         "Top Performance", 
-        "Geographic & Material Impact", 
+        "Geographic & Material", 
         "Trends Over Time", 
         "Environmental Metrics", 
         "Price & Audience", 
@@ -471,6 +470,3 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
-
-
-
