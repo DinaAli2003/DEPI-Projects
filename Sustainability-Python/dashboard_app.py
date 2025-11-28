@@ -373,27 +373,22 @@ st.markdown(
 
 
 
+ # ----------------------------------------------------
+# 2. Filtering (Creates df_filtered)
+# ----------------------------------------------------
 
+st.sidebar.title("Filter")  # <- no extra indentation
 
+# Initialize df_filtered with a copy of the original df
+df_filtered = df.copy()
 
+# Helper to get unique options and set default
+def get_filter_options(column_name):
+    if column_name in df.columns:
+        options = sorted(df[column_name].unique().tolist())
+        return options, options  # Default to all options
+    return [], []  # Return empty lists if column not found
 
-
-    
-    # ----------------------------------------------------
-    # 2. Filtering (Creates df_filtered)
-    # ----------------------------------------------------
-    
-    st.sidebar.title("Filter") 
-    
-    # Initialize df_filtered with a copy of the original df
-    df_filtered = df.copy() 
-    
-    # Helper to get unique options and set default
-    def get_filter_options(column_name):
-        if column_name in df.columns:
-            options = sorted(df[column_name].unique().tolist())
-            return options, options # Default to all options
-        return [], [] # Return empty lists if column not found
 
     # 1. Countries Filter
     country_options, default_countries = get_filter_options('country_name')
@@ -689,6 +684,7 @@ st.markdown(
 if __name__ == "__main__":
 
     main()
+
 
 
 
