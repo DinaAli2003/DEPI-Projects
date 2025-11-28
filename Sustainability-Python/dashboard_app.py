@@ -307,22 +307,36 @@ def main():
     if df.empty:
         return
 
-    # --- Streamlit Styling ---
+    # --- Streamlit Styling (Expert Layout & Colors) ---
     st.markdown(
         """
         <style>
-        .stApp { background-color: #E8F5E9; }  /* Light green background */
-        div[data-testid="stSidebar"] { background-color: #C8E6C9; }  /* Green sidebar */
-        .css-10trblm.e1fqkh3o4 { color: black; font-weight: bold; } /* Tab titles in black */
+        /* Overall background */
+        .stApp { background-color: #E6F2E6; font-family: 'Arial', sans-serif; }
+
+        /* Sidebar background and filters */
+        div[data-testid="stSidebar"] { background-color: #DFF0D8; padding: 10px; }
+        div[data-baseweb="select"] > div { background-color: #E6F2E6 !important; color: black; border-radius: 6px; padding: 5px; }
+
+        /* Sidebar title */
+        .css-1d391kg { color: black; font-weight: bold; }
+
+        /* Tabs styling */
+        .css-1lcbmhc.e1fqkh3o4 { color: black; font-weight: bold; font-size: 16px; }
+        .stTabs [role="tab"] { padding: 6px 10px; }
+
+        /* KPI metric values */
         .stMetricValue { color: #1B5E20 !important; font-weight: bold; }
-        div[data-baseweb="select"] > div { background-color: #E8F5E9 !important; color: #1B5E20; border-radius: 5px; }
+
+        /* Compact layout adjustments */
+        .css-1d391kg, .stTextInput>div>input { font-size: 14px; }
         </style>
         """,
         unsafe_allow_html=True
     )
 
     # --- Header with Logos ---
-    col_logo1, col_title, col_logo2 = st.columns([1, 4, 1])
+    col_logo1, col_title, col_logo2 = st.columns([1, 5, 1])
     with col_logo1:
         st.image("Sustainability-Python/logo_ministry.png", width=100)
     with col_title:
@@ -457,4 +471,5 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
+
 
