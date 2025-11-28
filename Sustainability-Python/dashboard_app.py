@@ -16,10 +16,20 @@ st.set_page_config(page_title="Sustainability Dashboard", layout="wide")
 # ====================================================================
 # 0. Helper Functions and Data Loading (Initial Data Prep)
 # ====================================================================
+import os
+
 @st.cache_data
 def load_raw_data():
     try:
-        df = pd.read_csv('Sustainability_Raw_Data.csv')
+        # Get the directory where dashboard_app.py is located
+        script_dir = os.path.dirname(os.path.abspath(__file__))
+
+        # Create correct absolute path to the CSV file
+        file_path = os.path.join(script_dir, "Sustainability_Raw_Data.csv")
+
+        # Load CSV
+        df = pd.read_csv(file_path)
+        
         # Standardize column names for safe processing
         df.columns = df.columns.str.lower().str.replace(' ', '_').str.replace('[^a-z0-9_]', '', regex=True)
         # Ensure 'year' is numeric and handle potential errors
@@ -614,4 +624,5 @@ def main():
 
 # Run the main function
 if __name__ == "__main__":
+
     main()
