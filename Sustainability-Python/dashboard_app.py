@@ -428,7 +428,6 @@ def main():
             df_audience_sus = df_to_use_for_insights.groupby('target_audience')['sustainability_rating'].mean().reset_index()
             fig = plot_audience_sustainability(df_audience_sus)
             if fig: st.pyplot(fig)
-
     # --- Tab6: Certifications ---
     with tab6:
         st.header("Certifications and Eco-friendliness")
@@ -437,12 +436,16 @@ def main():
             st.subheader("Impact of Certification on Rating")
             df_cert_avg = df_to_use_for_insights.groupby('certification')['sustainability_rating'].mean().reset_index().rename(columns={'sustainability_rating':'avg_rating'})
             fig = plot_certification_impact(df_cert_avg)
-            if fig: st.pyplot(fig)
+            if fig:
+                st.pyplot(fig)
         with colB:
             st.subheader("Eco-friendly vs Non Eco-friendly Brands")
             eco_counts = df_to_use_for_insights['eco_friendly'].value_counts()
             fig = plot_eco_friendly_counts(eco_counts)
-            if fig: st.pyplot(fig)
-                
- if __name__ == "__main__":
-    main()      
+            if fig:
+                st.pyplot(fig)
+
+# Run the main function
+if __name__ == "__main__":
+    main()
+
