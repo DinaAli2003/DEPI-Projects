@@ -62,9 +62,8 @@ def create_figure(df, title, func, figsize=(6,3.5)):
 # You can keep your previous plot_* functions here
 # Make sure the figsize is slightly smaller (e.g., width=6-7, height=3-4)
 # Ensure colors use lighter greens (#DFF0D8, #E6F2E6, #1B5E20, etc.)
-
 # ====================================================================
-# 2. Main Streamlit App - Expertly Styled
+# 2. Main Streamlit App
 # ====================================================================
 def main():
     # 1. Load Raw Data
@@ -72,48 +71,34 @@ def main():
     if df.empty:
         return
 
-    # --- Streamlit Styling (Expert Layout & Colors) ---
+    # --- Streamlit Styling ---
     st.markdown(
         """
         <style>
-        /* Overall background */
-        .stApp { background-color: #E6F2E6; font-family: 'Arial', sans-serif; }
-
-        /* Sidebar background and filters */
-        div[data-testid="stSidebar"] { background-color: #DFF0D8; padding: 10px; }
-        div[data-baseweb="select"] > div { background-color: #E6F2E6 !important; color: black; border-radius: 6px; padding: 5px; }
-
-        /* Sidebar title */
-        .css-1d391kg { color: black; font-weight: bold; }
-
-        /* Tabs styling */
-        .css-1lcbmhc.e1fqkh3o4 { color: black; font-weight: bold; font-size: 16px; }
-        .stTabs [role="tab"] { padding: 6px 10px; }
-
-        /* KPI metric values */
+        .stApp { background-color: #E8F5E9; }  /* Light green background */
+        div[data-testid="stSidebar"] { background-color: #C8E6C9; }  /* Green sidebar */
+        .css-10trblm.e1fqkh3o4 { color: black; font-weight: bold; } /* Tab titles in black */
         .stMetricValue { color: #1B5E20 !important; font-weight: bold; }
-
-        /* Compact layout adjustments */
-        .css-1d391kg, .stTextInput>div>input { font-size: 14px; }
+        div[data-baseweb="select"] > div { background-color: #E8F5E9 !important; color: #1B5E20; border-radius: 5px; }
         </style>
         """,
         unsafe_allow_html=True
     )
 
     # --- Header with Logos ---
-    header_cols = st.columns([1, 5, 1])
-    with header_cols[0]:
-        st.image("Sustainability-Python/logo_ministry.png", width=90)
-    with header_cols[1]:
-        st.markdown("<h1 style='text-align:center; color:#1B5E20; font-weight:bold'>Sustainability Dashboard</h1>", unsafe_allow_html=True)
-    with header_cols[2]:
-        st.image("Sustainability-Python/logo_project.png", width=90)
+    col_logo1, col_title, col_logo2 = st.columns([1, 4, 1])
+    with col_logo1:
+        st.image("Sustainability-Python/logo_ministry.png", width=100)
+    with col_title:
+        st.title("Sustainability Dashboard")
+    with col_logo2:
+        st.image("Sustainability-Python/logo_project.png", width=100)
     st.markdown("---")
 
     # ----------------------------------------------------
     # Sidebar Filters
     # ----------------------------------------------------
-    st.sidebar.title("Filters")  
+    st.sidebar.title("Filter")  
     df_filtered = df.copy()
 
     def get_filter_options(column_name):
@@ -122,11 +107,12 @@ def main():
             return options, options
         return [], []
 
-    selected_countries = st.sidebar.multiselect("Country:", *get_filter_options('country_name'))
-    selected_years = st.sidebar.multiselect("Year:", *get_filter_options('year'))
-    selected_certifications = st.sidebar.multiselect("Certification:", *get_filter_options('certification'))
-    selected_product_lines = st.sidebar.multiselect("Product Line:", *get_filter_options('product_line'))
-    selected_brands = st.sidebar.multiselect("Brand:", *get_filter_options('brand_name'))
+    # Filters
+    selected_countries = st.sidebar.multiselect("Select Country:", *get_filter_options('country_name'))
+    selected_years = st.sidebar.multiselect("Select Year:", *get_filter_options('year'))
+    selected_certifications = st.sidebar.multiselect("Select Certification:", *get_filter_options('certification'))
+    selected_product_lines = st.sidebar.multiselect("Select Product Line:", *get_filter_options('product_line'))
+    selected_brands = st.sidebar.multiselect("Select Sustainable Brand:", *get_filter_options('brand_name'))
 
     # Apply filters safely
     if selected_countries and 'country_name' in df_filtered.columns:
@@ -147,7 +133,7 @@ def main():
         df_to_use_for_insights = df_filtered.copy()
 
     # ----------------------------------------------------
-    # KPIs (Compact & Friendly)
+    # KPIs
     # ----------------------------------------------------
     avg_price = safe_kpi_calc(df_to_use_for_insights.get('average_price', pd.Series()), np.mean)
     avg_carbon = safe_kpi_calc(df_to_use_for_insights.get('carbon_footprint', pd.Series()), np.mean)
@@ -156,7 +142,7 @@ def main():
     min_sus_rating = safe_kpi_calc(df_to_use_for_insights.get('sustainability_rating', pd.Series()), np.min)
     max_sus_rating = safe_kpi_calc(df_to_use_for_insights.get('sustainability_rating', pd.Series()), np.max)
 
-    kpi_cols = st.columns(6, gap="small")
+    kpi_cols = st.columns(6)
     kpi_cols[0].metric("💰 AVG PRICE", f"{avg_price:,.2f}" if isinstance(avg_price, (int, float)) else avg_price)
     kpi_cols[1].metric("🏭 AVG CARBON", f"{avg_carbon:.2f}" if isinstance(avg_carbon, (int, float)) else avg_carbon)
     kpi_cols[2].metric("💧 AVG WATER", f"{avg_water:,.0f}" if isinstance(avg_water, (int, float)) else avg_water)
@@ -167,11 +153,11 @@ def main():
     st.markdown("---")
 
     # ----------------------------------------------------
-    # Tabs (Black font, bold, clean layout)
+    # Tabs with Charts
     # ----------------------------------------------------
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
         "Top Performance", 
-        "Geographic & Material", 
+        "Geographic & Material Impact", 
         "Trends Over Time", 
         "Environmental Metrics", 
         "Price & Audience", 
