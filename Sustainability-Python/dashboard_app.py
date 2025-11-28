@@ -222,7 +222,6 @@ def plot_material_status(df_material_sus):
     plt.tight_layout()
     return fig
 
-Dina Ali, [28/11/2025 09:41]
 # 9. Eco-friendly vs Non Eco-friendly Brands #(Pie Chart)
 def plot_eco_friendly_counts(eco_counts_series): 
     if eco_counts_series.empty or len(eco_counts_series) < 2: return None
@@ -504,4 +503,5 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
+
 
