@@ -268,21 +268,21 @@ def apply_custom_css():
     
     /* Extremely small logo styling */
     .logo {
-        max-height: 20px;
-        max-width: 30px;
+        max-height: 10px;
+        max-width: 15px;
         object-fit: contain;
     }
     
     .logo-image {
-        max-height: 20px;
-        max-width: 30px;
+        max-height: 10px;
+        max-width: 15px;
         object-fit: contain;
         border-radius: 3px;
     }
     
     .logo-placeholder {
-        width: 30px;
-        height: 20px;
+        width: 15px;
+        height: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -644,7 +644,7 @@ def plot_market_trend(df_trend_avg):
 # 2. LOGO HANDLING FUNCTIONS
 # ====================================================================
 
-def load_logo(image_path, default_width=30):
+def load_logo(image_path, default_width=15):
     """Load logo with consistent sizing and error handling"""
     try:
         if os.path.exists(image_path):
@@ -655,7 +655,7 @@ def load_logo(image_path, default_width=30):
     except Exception:
         return None
 
-def display_logo_column(logo, position, width=30):
+def display_logo_column(logo, position, width=15):
     """Display logo in a column with consistent sizing"""
     if logo:
         st.image(logo, width=width, use_column_width=False)
@@ -689,14 +689,14 @@ def main():
     right_logo = load_logo('Sustainability-Python/logo_project.png')
     
     with col1:
-        display_logo_column(left_logo, "left", width=30)
+        display_logo_column(left_logo, "left", width=15)
     
     with col2:
         # Center content - main title will go here
         pass
     
     with col3:
-        display_logo_column(right_logo, "right", width=30)
+        display_logo_column(right_logo, "right", width=15)
 
     # --- Enhanced Header with Consistent Background ---
     st.markdown("""
@@ -1084,4 +1084,5 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
+
 
