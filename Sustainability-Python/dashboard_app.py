@@ -367,11 +367,6 @@ st.markdown(
 
 
 
-
-
-
-
-
  # ----------------------------------------------------
 # 2. Filtering (Creates df_filtered)
 # ----------------------------------------------------
@@ -379,7 +374,7 @@ st.markdown(
 st.sidebar.title("Filter")  # <- no extra indentation
 
 # Initialize df_filtered with a copy of the original df
-# df_filtered = df.copy()
+ df_filtered = df.copy()
 
 # Helper to get unique options and set default
 def get_filter_options(column_name):
@@ -683,6 +678,7 @@ def get_filter_options(column_name):
 if __name__ == "__main__":
 
     main()
+
 
 
 
