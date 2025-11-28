@@ -11,7 +11,114 @@ warnings.filterwarnings("ignore")
 # ====================================================================
 # ⚠️ STREAMLIT PAGE CONFIGURATION (MUST BE FIRST STREAMLIT COMMAND)
 # ====================================================================
-st.set_page_config(page_title="Sustainability Dashboard", layout="wide") 
+st.set_page_config(
+    page_title="Sustainability Dashboard", 
+    layout="wide",
+    page_icon="🌱"
+) 
+
+# ====================================================================
+# CUSTOM CSS STYLING FOR GREEN THEME
+# ====================================================================
+def apply_custom_css():
+    st.markdown("""
+    <style>
+    /* Main background */
+    .stApp {
+        background-color: #F8FDF8;
+    }
+    
+    /* Sidebar styling */
+    .css-1d391kg, .css-1lcbmhc {
+        background-color: #1B5E20 !important;
+    }
+    
+    /* Sidebar text */
+    .css-1d391kg h1, .css-1d391kg h2, .css-1d391kg h3,
+    .css-1d391kg .stMultiSelect label, .css-1d391kg .stMultiSelect span,
+    .css-1d391kg .stMarkdown {
+        color: #FFFFFF !important;
+    }
+    
+    /* Sidebar widgets */
+    .stMultiSelect > div > div > div {
+        background-color: #E8F5E8;
+        border-color: #2E7D32;
+    }
+    
+    /* Main header styling */
+    .main-header {
+        background: linear-gradient(135deg, #1B5E20 0%, #388E3C 100%);
+        padding: 2rem;
+        border-radius: 10px;
+        color: white;
+        margin-bottom: 1rem;
+    }
+    
+    /* KPI metrics styling */
+    [data-testid="stMetricValue"] {
+        color: #1B5E20;
+        font-weight: bold;
+    }
+    
+    [data-testid="stMetricLabel"] {
+        color: #2E7D32;
+        font-weight: 600;
+    }
+    
+    .stMetric {
+        background-color: #E8F5E8;
+        padding: 10px;
+        border-radius: 10px;
+        border-left: 4px solid #4CAF50;
+    }
+    
+    /* Tab styling */
+    .stTabs [data-baseweb="tab-list"] {
+        gap: 2px;
+    }
+    
+    .stTabs [data-baseweb="tab"] {
+        background-color: #E8F5E8;
+        border-radius: 8px 8px 0px 0px;
+        padding: 10px 16px;
+        font-weight: 600;
+    }
+    
+    .stTabs [aria-selected="true"] {
+        background-color: #4CAF50 !important;
+        color: white !important;
+    }
+    
+    /* Cards for charts */
+    .chart-container {
+        background-color: white;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(76, 175, 80, 0.1);
+        border: 1px solid #C8E6C9;
+        margin-bottom: 20px;
+    }
+    
+    /* Custom green button style */
+    .stButton button {
+        background-color: #4CAF50 !important;
+        color: white !important;
+        border: none !important;
+        border-radius: 8px !important;
+        padding: 8px 16px !important;
+        font-weight: 600 !important;
+    }
+    
+    .stButton button:hover {
+        background-color: #388E3C !important;
+    }
+    
+    </style>
+    """, unsafe_allow_html=True)
+
+# Apply the custom CSS
+apply_custom_css()
 
 # ====================================================================
 # 0. Helper Functions and Data Loading (Initial Data Prep)
@@ -26,7 +133,6 @@ def load_raw_data():
         if 'year' in df.columns:
             df['year'] = pd.to_numeric(df['year'], errors='coerce').fillna(0).astype(int)
             
-        
         if 'certification' in df.columns:
             df['certification'] = df['certification'].fillna('None').astype(str)
 
@@ -55,7 +161,9 @@ def safe_kpi_calc(series, func, rounding=2):
 # 1. Visualization Functions (Returning fig instead of plt.show())
 # ====================================================================
 
-# Helper function to create a small figure (for better dashboard fit)
+# Set global green color palette
+GREEN_PALETTE = ['#1B5E20', '#2E7D32', '#388E3C', '#4CAF50', '#66BB6A', '#81C784', '#A5D6A7']
+sns.set_palette(GREEN_PALETTE)
 
 def create_figure(df, title, func, figsize=(6, 3.5)): 
     if df.empty: 
@@ -63,35 +171,48 @@ def create_figure(df, title, func, figsize=(6, 3.5)):
     try:
         fig, ax = plt.subplots(figsize=figsize)
         
+        # Set transparent background
+        fig.patch.set_alpha(0.0)
+        ax.patch.set_alpha(0.0)
         
-        fig.patch.set_alpha(0.0) 
-        
-         
-        ax.patch.set_alpha(0.0) 
-        
+        # Apply function
         func(fig, ax, df) 
-        ax.set_title(title, fontsize=12, color='darkgreen', fontweight='bold', pad=10) 
+        
+        # Style the title with green theme
+        ax.set_title(title, fontsize=12, color='#1B5E20', fontweight='bold', pad=10)
+        
+        # Style axis labels
+        ax.set_xlabel(ax.get_xlabel(), fontsize=10, color='#2E7D32', fontweight='normal')
+        ax.set_ylabel(ax.get_ylabel(), fontsize=10, color='#2E7D32', fontweight='normal')
+        
+        # Style ticks
+        ax.tick_params(colors='#388E3C', labelsize=9)
+        
+        # Style spines
+        for spine in ax.spines.values():
+            spine.set_color('#C8E6C9')
+            spine.set_linewidth(1)
+            
         plt.tight_layout()
-        plt.subplots_adjust(bottom=0.25)
         return fig
     except Exception as e:
-        # st.error(f"Error in creating figure: {e}") 
         return None
+
 # 1. Top 10 Sustainable Brands
 def plot_top_brands(df_brands): 
-    
     return create_figure(df_brands, "Top 10 Sustainable Brands", figsize=(7, 4), 
         func=lambda fig, ax, df: (
             sns.set_theme(style="whitegrid"),
             norm := plt.Normalize(df["sustainability_rating"].min(), df["sustainability_rating"].max()),
             colors := plt.cm.Greens_r(norm(df["sustainability_rating"])),
             bars := ax.bar(df["brand_name"], df["sustainability_rating"], color=colors, edgecolor="#2E8B57", linewidth=1.0),
-            [ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.05, f'{bar.get_height():.2f}', ha='center', va='bottom', fontsize=8, fontweight='bold', color='darkgreen') for bar in bars], # تصغير حجم نص القيم
+            [ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.05, f'{bar.get_height():.2f}', 
+                    ha='center', va='bottom', fontsize=8, fontweight='bold', color='#1B5E20') for bar in bars],
             ax.set_xlabel("Brand Name", fontsize=10),
             ax.set_ylabel("Avg. Rating", fontsize=10),
             rotation_angle := 45 if max([len(str(label)) for label in df["brand_name"]]) > 8 else 30,
             ax.set_xticklabels(df["brand_name"], rotation=rotation_angle, ha='right', fontsize=8),
-            sns.despine(ax=ax)
+            sns.despine(ax=ax, left=True, bottom=True)
         )
     )
 
@@ -100,40 +221,41 @@ def plot_top_product_lines(df_categories):
     return create_figure(df_categories, "Top 5 Product Lines", 
         func=lambda fig, ax, df: (
             sns.set_theme(style="whitegrid"),
-            norm := plt.Normalize(df["sustainability_rating"].min(), df["sustainability_rating"].max()),
-            colors := plt.cm.Greens_r(norm(df["sustainability_rating"])),
-            bars := ax.bar(df["product_line"], df["sustainability_rating"], color=colors, edgecolor="#2E8B57", linewidth=1.0),
-            [ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.05, f'{bar.get_height():.2f}', ha='center', va='bottom', fontsize=10, fontweight='bold', color='darkgreen') for bar in bars],
+            bars := ax.bar(df["product_line"], df["sustainability_rating"], 
+                          color=GREEN_PALETTE[:len(df)], edgecolor="#2E8B57", linewidth=1.0),
+            [ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.05, f'{bar.get_height():.2f}', 
+                    ha='center', va='bottom', fontsize=10, fontweight='bold', color='#1B5E20') for bar in bars],
             ax.set_xlabel("Product Line", fontsize=12),
             ax.set_ylabel("Avg. Rating", fontsize=12),
             rotation_angle := 45 if max([len(str(label)) for label in df["product_line"]]) > 10 else 30,
             ax.set_xticklabels(df["product_line"], rotation=rotation_angle, ha='right', fontsize=10),
-            sns.despine(ax=ax)
+            sns.despine(ax=ax, left=True, bottom=True)
         )
     )
 
 # 3. Top 5 Countries
 def plot_top_countries(df_countries):
-    return create_figure(df_countries, "Top 5 Countries by Avg. Rating",figsize=(7, 5), 
+    return create_figure(df_countries, "Top 5 Countries by Avg. Rating", figsize=(7, 5), 
         func=lambda fig, ax, df: (
             sns.set_theme(style="whitegrid"),
-            norm := plt.Normalize(df["sustainability_rating"].min(), df["sustainability_rating"].max()),
-            colors := plt.cm.Greens_r(norm(df["sustainability_rating"])),
-            bars := ax.bar(df["country_name"], df["sustainability_rating"], color=colors, edgecolor="#2E8B57", linewidth=1.0),
-            [ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.05, f"{bar.get_height():.2f}", ha='center', va='bottom', fontsize=10, fontweight='bold', color='darkgreen') for bar in bars],
+            bars := ax.bar(df["country_name"], df["sustainability_rating"], 
+                          color=GREEN_PALETTE[:len(df)], edgecolor="#2E8B57", linewidth=1.0),
+            [ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.05, f"{bar.get_height():.2f}", 
+                    ha='center', va='bottom', fontsize=10, fontweight='bold', color='#1B5E20') for bar in bars],
             ax.set_xlabel("Country", fontsize=12),
             ax.set_ylabel("Avg. Rating", fontsize=12),
             ax.set_xticklabels(df["country_name"], rotation=25, ha='right', fontsize=10),
-            sns.despine(ax=ax)
+            sns.despine(ax=ax, left=True, bottom=True)
         )
     )
 
 # 4. Number of Certifications per Product line
 def plot_certifications_per_product(df_cert_counts): 
-    return create_figure(df_cert_counts, "Certifications per Product Line", figsize=(5, 3.5), # 
+    return create_figure(df_cert_counts, "Certifications per Product Line", figsize=(5, 3.5),
         func=lambda fig, ax, df: (
             sns.barplot(data=df, x='product_line', y='num_certification', palette='Greens_r', ax=ax),
-            [ax.text(index, value + 0.5, str(value), ha='center', va='bottom', fontsize=8, color='#1B5E20', fontweight='bold') for index, value in enumerate(df['num_certification'])],
+            [ax.text(index, value + 0.05, str(value), ha='center', va='bottom', fontsize=8, 
+                    color='#1B5E20', fontweight='bold') for index, value in enumerate(df['num_certification'])],
             ax.set_xlabel('Product Line', fontsize=10),
             ax.set_ylabel('Number of Certifications', fontsize=10),
             ax.tick_params(axis='x', rotation=30, labelsize=8)
@@ -144,12 +266,15 @@ def plot_certifications_per_product(df_cert_counts):
 def plot_environmental_metrics(df_melted):
     return create_figure(df_melted, "Environmental Metrics by Product Line", figsize=(7, 4), 
         func=lambda fig, ax, df: (
-            sns.barplot(data=df, x='product_line', y='Average Value', hue='Metric', palette=['#1B5E20', '#388E3C', '#66BB6A'], ax=ax),
-            [ax.bar_label(container, fmt='%.1f', label_type='edge', fontsize=7, color='#1B5E20', padding=2) for container in ax.containers],
+            sns.barplot(data=df, x='product_line', y='Average Value', hue='Metric', 
+                       palette=['#1B5E20', '#388E3C', '#66BB6A'], ax=ax),
+            [ax.bar_label(container, fmt='%.1f', label_type='edge', fontsize=7, 
+                         color='#1B5E20', padding=2) for container in ax.containers],
             ax.set_xlabel('Product Line', fontsize=10),
             ax.set_ylabel('Average Value', fontsize=10),
             ax.tick_params(axis='x', rotation=30, labelsize=8),
-            ax.legend(title='Metric', title_fontsize=9, fontsize=8, loc='upper right', bbox_to_anchor=(1.35, 1))
+            ax.legend(title='Metric', title_fontsize=9, fontsize=8, loc='upper right', 
+                     bbox_to_anchor=(1.35, 1), frameon=True, facecolor='#E8F5E8')
         )
     )
 
@@ -157,12 +282,16 @@ def plot_environmental_metrics(df_melted):
 def plot_time_improvement(df_time_avg): 
     return create_figure(df_time_avg, "Sustainability Rating Over Time", 
         func=lambda fig, ax, df: (
-            sns.lineplot(data=df, x='year', y='avg_rating', marker='o', color='#2E7D32', linewidth=2.0, ax=ax),
-            [ax.text(x, y + 0.002, f"{y:.2f}", ha='center', fontsize=8, fontweight='bold', color='#1B5E20') for x, y in zip(df['year'], df['avg_rating'])],
+            sns.lineplot(data=df, x='year', y='avg_rating', marker='o', color='#2E7D32', 
+                        linewidth=2.5, markersize=8, ax=ax),
+            [ax.text(x, y + 0.002, f"{y:.2f}", ha='center', fontsize=8, fontweight='bold', 
+                    color='#1B5E20', bbox=dict(boxstyle="round,pad=0.3", facecolor='#E8F5E8', alpha=0.8)) 
+             for x, y in zip(df['year'], df['avg_rating'])],
             ax.set_xlabel("Year", fontsize=10),
             ax.set_ylabel("Avg. Rating", fontsize=10),
             ax.set_xticks(df['year']),
-            ax.tick_params(axis='x', rotation=30, labelsize=8)
+            ax.tick_params(axis='x', rotation=30, labelsize=8),
+            ax.grid(True, alpha=0.3)
         )
     )
 
@@ -170,8 +299,10 @@ def plot_time_improvement(df_time_avg):
 def plot_audience_sustainability(df_audience_sus): 
     return create_figure(df_audience_sus, "Avg. Rating by Target Audience", 
         func=lambda fig, ax, df: (
-            sns.barplot(data=df, x='target_audience', y='sustainability_rating', palette=['#1B5E20', '#2E7D32', '#66BB6A', '#A5D6A7'], ax=ax),
-            [ax.text(index, row['sustainability_rating'] + 0.01, f"{row['sustainability_rating']:.3f}", ha='center', fontsize=10, fontweight='bold', color='#1B5E20') for index, row in df.iterrows()],
+            sns.barplot(data=df, x='target_audience', y='sustainability_rating', 
+                       palette=GREEN_PALETTE[:len(df)], ax=ax),
+            [ax.text(index, row['sustainability_rating'] + 0.01, f"{row['sustainability_rating']:.3f}", 
+                    ha='center', fontsize=10, fontweight='bold', color='#1B5E20') for index, row in df.iterrows()],
             ax.set_xlabel('Target Audience', fontsize=12),
             ax.set_ylabel('Avg. Rating', fontsize=12),
             ax.tick_params(axis='x', rotation=15, labelsize=8)
@@ -183,44 +314,38 @@ def plot_material_status(df_material_sus):
     if df_material_sus.empty or len(df_material_sus) < 2 or 'sustainability_rating' not in df_material_sus.columns:
         return None
         
-    fig, ax = plt.subplots(figsize=(4, 4)) # Pie/Donut Chart
-
+    fig, ax = plt.subplots(figsize=(4, 4))
     fig.patch.set_alpha(0.0)
+    ax.patch.set_alpha(0.0)
     
+    colors = GREEN_PALETTE[:len(df_material_sus)]
     
-    ax.patch.set_alpha(0.0) 
-    
-    colors = ['#1B5E20', '#4CAF50', '#A5D6A7']
-    colors_to_use = colors[:len(df_material_sus)]
-    
-
     wedges, texts = ax.pie(df_material_sus['sustainability_rating'], 
                            labels=df_material_sus['label'], 
-                           startangle=90, colors=colors_to_use, 
-                           textprops={'color': '#1B5E20', 'fontsize': 9, 'fontweight': 'bold'}) 
+                           startangle=90, colors=colors, 
+                           textprops={'color': '#1B5E20', 'fontsize': 9, 'fontweight': 'bold'})
 
-    centre_circle = plt.Circle((0, 0), 0.70, fc='none') 
+    centre_circle = plt.Circle((0, 0), 0.70, fc='#F8FDF8')
     fig.gca().add_artist(centre_circle)
-    
-    ax.axis('off') 
-
+    ax.axis('equal')
     ax.set_title('Avg. Rating by Material Status', fontsize=12, color='#1B5E20', fontweight='bold', pad=10)
     plt.tight_layout()
     return fig
 
-# 9. Eco-friendly vs Non Eco-friendly Brands #(Pie Chart)
+# 9. Eco-friendly vs Non Eco-friendly Brands (Pie Chart)
 def plot_eco_friendly_counts(eco_counts_series): 
-    if eco_counts_series.empty or len(eco_counts_series) < 2: return None
+    if eco_counts_series.empty or len(eco_counts_series) < 2: 
+        return None
 
-    fig, ax = plt.subplots(figsize=(4, 4)) # Pie/Donut Chart
+    fig, ax = plt.subplots(figsize=(4, 4))
     fig.patch.set_alpha(0.0)
     ax.pie(eco_counts_series.values, 
            labels=['Non Eco-friendly', 'Eco-friendly'][:len(eco_counts_series)], 
            autopct='%1.1f%%', 
            colors=['#A5D6A7', '#1B5E20'][:len(eco_counts_series)], 
            startangle=90,
-           textprops={'fontsize': 11}) 
-    ax.set_title("Eco-friendly vs Non Eco-friendly Mfg", fontsize=12, color='darkgreen', fontweight='bold', pad=10)
+           textprops={'fontsize': 11, 'color': '#1B5E20', 'fontweight': 'bold'})
+    ax.set_title("Eco-friendly vs Non Eco-friendly Mfg", fontsize=12, color='#1B5E20', fontweight='bold', pad=10)
     plt.tight_layout()
     return fig
 
@@ -228,10 +353,13 @@ def plot_eco_friendly_counts(eco_counts_series):
 def plot_price_vs_sustainability(df_price_sus): 
     return create_figure(df_price_sus, "Price vs. Sustainability Rating", figsize=(7, 4),
         func=lambda fig, ax, df: (
-            sns.scatterplot(data=df, x="average_price", y="sustainability_rating", hue="brand_category", palette="Greens_r", alpha=0.7, s=50, edgecolor="black", ax=ax),
+            sns.scatterplot(data=df, x="average_price", y="sustainability_rating", 
+                           hue="brand_category", palette="Greens_r", alpha=0.8, s=60, 
+                           edgecolor="white", linewidth=0.5, ax=ax),
             ax.set_xlabel("Average Price", fontsize=12),
             ax.set_ylabel("Sustainability Rating", fontsize=12),
-            ax.legend(title="Brand Category", title_fontsize=8, fontsize=7, bbox_to_anchor=(1.05, 1), loc="upper left")
+            ax.legend(title="Brand Category", title_fontsize=8, fontsize=7, 
+                     bbox_to_anchor=(1.05, 1), loc="upper left", frameon=True, facecolor='#E8F5E8')
         )
     )
 
@@ -239,9 +367,11 @@ def plot_price_vs_sustainability(df_price_sus):
 def plot_certification_impact(df_certification_avg): 
     return create_figure(df_certification_avg, "Impact of Certification on Rating", figsize=(7, 4), 
         func=lambda fig, ax, df: (
-            green_palette := sns.color_palette("Greens", n_colors=len(df)),
-            barplot := sns.barplot(data=df, x="certification", y="avg_rating", palette=green_palette, ax=ax),
-            [barplot.annotate(f"{p.get_height():.3f}", (p.get_x() + p.get_width() / 2., p.get_height()), ha='center', va='bottom', fontsize=8, fontweight='medium', color='black', xytext=(0, 3), textcoords='offset points') for p in barplot.patches],
+            barplot := sns.barplot(data=df, x="certification", y="avg_rating", 
+                                  palette=GREEN_PALETTE[:len(df)], ax=ax),
+            [barplot.annotate(f"{p.get_height():.3f}", (p.get_x() + p.get_width() / 2., p.get_height()), 
+                            ha='center', va='bottom', fontsize=8, fontweight='medium', 
+                            color='#1B5E20', xytext=(0, 3), textcoords='offset points') for p in barplot.patches],
             ax.set_xlabel("Certification", fontsize=10),
             ax.set_ylabel("Avg. Rating", fontsize=10),
             ax.tick_params(axis='x', rotation=45, labelsize=8)
@@ -253,37 +383,28 @@ def plot_market_trend(df_trend_avg):
     if df_trend_avg.empty or len(df_trend_avg) < 2 or 'sustainability_rating' not in df_trend_avg.columns:
         return None
         
-    fig, ax = plt.subplots(figsize=(4, 4)) # Pie/Donut Chart
-    
-    
+    fig, ax = plt.subplots(figsize=(4, 4))
     fig.patch.set_alpha(0.0)
     
-    
-    # ax.patch.set_alpha(0.0) 
-    # ax.set_facecolor('none')  
-
     colors = sns.color_palette("Greens", n_colors=len(df_trend_avg))
     
     wedges, texts, autotexts = ax.pie(
         df_trend_avg["sustainability_rating"],
         labels=df_trend_avg["market_trend"],
-        autopct=lambda p: f'{p:.1f} ({p*sum(df_trend_avg["sustainability_rating"])/100:.2f})', 
+        autopct=lambda p: f'{p:.1f}%', 
         startangle=140,
         colors=colors,
-        pctdistance=0.85, 
-        textprops={"fontsize": 9, "color": "black"}
+        pctdistance=0.85,
+        textprops={"fontsize": 9, "color": "#1B5E20", "fontweight": "bold"}
     )
     
-   
-    centre_circle = plt.Circle((0, 0), 0.70, fc="#F3F9E8") 
+    centre_circle = plt.Circle((0, 0), 0.70, fc="#F8FDF8")
     fig.gca().add_artist(centre_circle)
-    
-   
-    ax.axis('off')
-
-    ax.set_title("Market Trend vs Sustainability Rating", fontsize=12, color="green", fontweight="bold", pad=10)
+    ax.axis('equal')
+    ax.set_title("Market Trend vs Sustainability", fontsize=12, color="#1B5E20", fontweight="bold", pad=10)
     plt.tight_layout()
     return fig
+
 # ====================================================================
 # 2. Main Streamlit App
 # ====================================================================
@@ -295,22 +416,31 @@ def main():
     if df.empty:
         return
 
-    # --- Header with Logos ---
+    # --- Custom Header with Enhanced Styling ---
+    st.markdown("""
+    <div class="main-header">
+        <div style="display: flex; align-items: center; justify-content: center; gap: 20px;">
+            <div>
+                <h1 style="margin: 0; font-size: 2.5rem; color: white;">🌱 Sustainability Dashboard</h1>
+                <p style="margin: 0; font-size: 1.2rem; opacity: 0.9;">Tracking Environmental Impact & Sustainable Performance</p>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
-    col_logo1, col_title, col_logo2 = st.columns([1, 4, 1])
-    with col_logo1:
-        st.image("Sustainability-Python/logo_ministry.png", width=100) #  "logo_ministry.png" 
-    with col_title:
-        st.title("Sustainability Dashboard")
-    with col_logo2:
-        st.image("Sustainability-Python/logo_project.png", width=100) #  "logo_project.png" 
     st.markdown("---")
     
     # ----------------------------------------------------
     # 2. Filtering (Creates df_filtered)
     # ----------------------------------------------------
     
-    st.sidebar.title("Filter") 
+    # Style the sidebar header
+    st.sidebar.markdown("""
+    <div style="background: linear-gradient(135deg, #1B5E20 0%, #388E3C 100%); 
+                padding: 1rem; border-radius: 10px; margin-bottom: 1rem;">
+        <h2 style="color: white; margin: 0; text-align: center;">📊 Filters</h2>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Initialize df_filtered with a copy of the original df
     df_filtered = df.copy() 
@@ -319,67 +449,66 @@ def main():
     def get_filter_options(column_name):
         if column_name in df.columns:
             options = sorted(df[column_name].unique().tolist())
-            return options, options # Default to all options
-        return [], [] # Return empty lists if column not found
+            return options, options
+        return [], []
 
     # 1. Countries Filter
     country_options, default_countries = get_filter_options('country_name')
-   
     selected_countries = st.sidebar.multiselect(
-        "Select Country:", options=country_options, default=default_countries
+        "🌍 Select Country:", options=country_options, default=default_countries
     )
     if selected_countries:
         df_filtered = df_filtered[df_filtered['country_name'].isin(selected_countries)]
     
     # 2. Years Filter
     year_options, default_years = get_filter_options('year')
- 
     selected_years = st.sidebar.multiselect(
-        "Select Year:", options=year_options, default=default_years
+        "📅 Select Year:", options=year_options, default=default_years
     )
     if selected_years:
         df_filtered = df_filtered[df_filtered['year'].isin(selected_years)]
 
     # 3. Certifications Filter
     certification_options, default_certifications = get_filter_options('certification')
-   
     selected_certifications = st.sidebar.multiselect(
-        "Select Certification:", options=certification_options, default=default_certifications
+        "🏆 Select Certification:", options=certification_options, default=default_certifications
     )
     if selected_certifications:
         df_filtered = df_filtered[df_filtered['certification'].isin(selected_certifications)]
     
     # 4. Product Lines Filter
     product_line_options, default_product_lines = get_filter_options('product_line')
-   
     selected_product_lines = st.sidebar.multiselect(
-        "Select Product Line:", options=product_line_options, default=default_product_lines
+        "📦 Select Product Line:", options=product_line_options, default=default_product_lines
     )
     if selected_product_lines:
         df_filtered = df_filtered[df_filtered['product_line'].isin(selected_product_lines)]
 
     # 5. Brands Filter
     brand_options, default_brands = get_filter_options('brand_name')
-   
     selected_brands = st.sidebar.multiselect(
-        "Select Sustainable Brand:", options=brand_options, default=default_brands
+        "🏢 Select Sustainable Brand:", options=brand_options, default=default_brands
     )
     if selected_brands:
         df_filtered = df_filtered[df_filtered['brand_name'].isin(selected_brands)]
 
-    # Fallback if no data matches filters (for KPIs and charts)
+    # Reset filters button
+    if st.sidebar.button("🔄 Reset All Filters", use_container_width=True):
+        st.rerun()
+
+    # Fallback if no data matches filters
     if df_filtered.empty:
         st.warning("⚠️ No data matches the current filters. Please adjust your selections. Displaying global KPIs and charts with full data as fallback.")
-        df_to_use_for_insights = df.copy() # Use full data for insights if filter results in empty
+        df_to_use_for_insights = df.copy()
     else:
-        df_to_use_for_insights = df_filtered.copy() # Use filtered data for insights
-
+        df_to_use_for_insights = df_filtered.copy()
 
     # ----------------------------------------------------
     # 3. Calculate all 12 Insights based on df_to_use_for_insights
     # ----------------------------------------------------
     available_cols_for_insights = df_to_use_for_insights.columns.tolist()
 
+    # [All your data processing calculations remain the same...]
     # 1. Top 10 Sustainable Brands 
     df_top_brands = pd.DataFrame()
     if 'brand_name' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
@@ -419,7 +548,6 @@ def main():
     # 6. Time Improvement
     df_avg_time = pd.DataFrame()
     if 'year' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
-        # 'year' is already processed to int in load_raw_data()
         df_avg_time = df_to_use_for_insights.groupby('year')['sustainability_rating'].mean().reset_index(name='avg_rating')
     
     # 7. Audience Sustainability
@@ -457,14 +585,12 @@ def main():
             .mean()
             .sort_values("sustainability_rating", ascending=False)
         )
-    # ----------------------------------------------------
-
 
     # ----------------------------------------------------
-    # 4. Key Performance Indicators (KPIs) - Now based on df_filtered
+    # 4. Key Performance Indicators (KPIs) - Enhanced Styling
     # ----------------------------------------------------
     
-    # Calculate KPIs based on df_to_use_for_insights
+    # Calculate KPIs
     avg_price = safe_kpi_calc(df_to_use_for_insights.get('average_price', pd.Series()), np.mean)
     avg_carbon = safe_kpi_calc(df_to_use_for_insights.get('carbon_footprint', pd.Series()), np.mean)
     avg_water = safe_kpi_calc(df_to_use_for_insights.get('water_usage', pd.Series()), np.mean, rounding=0)
@@ -472,147 +598,145 @@ def main():
     min_sus_rating = safe_kpi_calc(df_to_use_for_insights.get('sustainability_rating', pd.Series()), np.min)
     max_sus_rating = safe_kpi_calc(df_to_use_for_insights.get('sustainability_rating', pd.Series()), np.max)
 
-
-    # Display KPIs in a single row using st.columns
+    # Display KPIs in a styled row
     kpi_cols = st.columns(6)
 
-    kpi_cols[0].metric(
-        label="💰 **AVG PRICE** ",
-        value=f"{avg_price:,.2f}" if isinstance(avg_price, (int, float)) else avg_price
-    )
-    kpi_cols[1].metric(
-        label="🏭 **AVG CARBON** ",
-        value=f"{avg_carbon:.2f}" if isinstance(avg_carbon, (int, float)) else avg_carbon
-    ) 
-    kpi_cols[2].metric(
-        label="💧 **AVG WATER** ",
-        value=f"{avg_water:,.0f}" if isinstance(avg_water, (int, float)) else avg_water
-    ) 
-    kpi_cols[3].metric(
-        label="🗑️ **AVG WASTE** ",
-        value=f"{avg_waste:.2f}" if isinstance(avg_waste, (int, float)) else avg_waste
-    ) 
-    kpi_cols[4].metric(
-        label="⭐️ **MIN SUS RATING**",
-        value=f"{min_sus_rating}"
-    )
-    kpi_cols[5].metric(
-        label="🌟 **MAX SUS RATING**",
-        value=f"{max_sus_rating}"
-    )
+    with kpi_cols[0]:
+        st.metric(
+            label="💰 **AVG PRICE**",
+            value=f"{avg_price:,.2f}" if isinstance(avg_price, (int, float)) else avg_price
+        )
+    with kpi_cols[1]:
+        st.metric(
+            label="🏭 **AVG CARBON**",
+            value=f"{avg_carbon:.2f}" if isinstance(avg_carbon, (int, float)) else avg_carbon
+        ) 
+    with kpi_cols[2]:
+        st.metric(
+            label="💧 **AVG WATER**",
+            value=f"{avg_water:,.0f}" if isinstance(avg_water, (int, float)) else avg_water
+        ) 
+    with kpi_cols[3]:
+        st.metric(
+            label="🗑️ **AVG WASTE**",
+            value=f"{avg_waste:.2f}" if isinstance(avg_waste, (int, float)) else avg_waste
+        ) 
+    with kpi_cols[4]:
+        st.metric(
+            label="⭐️ **MIN SUS RATING**",
+            value=f"{min_sus_rating}"
+        )
+    with kpi_cols[5]:
+        st.metric(
+            label="🌟 **MAX SUS RATING**",
+            value=f"{max_sus_rating}"
+        )
     
     st.markdown("---")
 
-    # --- Tabs for Organization (6 Tabs) ---
-    tab1, tab2, tab3, tab4, tab5 , tab6 = st.tabs([
-        " Top Performance", 
-        "Geographic & Material Impact", 
-        " Trends Over Time", 
-        " Environmental Metrics", 
-        " Price & Audience", 
-        "Certifications "
+    # --- Tabs for Organization with Enhanced Styling ---
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
+        "🏆 Top Performance", 
+        "🌍 Geographic & Material Impact", 
+        "📈 Trends Over Time", 
+        "🌱 Environmental Metrics", 
+        "💰 Price & Audience", 
+        "🏅 Certifications"
     ])
     
+    # Helper function to display charts with consistent styling
+    def display_chart(fig, title=""):
+        if fig:
+            st.markdown(f'<div class="chart-container">{title}</div>', unsafe_allow_html=True)
+            st.pyplot(fig)
+        else:
+            st.info("No data available for this chart with current filters.")
+
     # ====================================================
-    # Tab 1: Top Performance (Brands, Product Lines, Certifications)
+    # Tab 1: Top Performance
     # ====================================================
     with tab1:
-        st.header(" Top Sustainable Performers")
+        st.header("🏆 Top Sustainable Performers")
         colA, colB = st.columns([1.5, 1])
         
         with colA:
-            st.subheader(" Top 10 Sustainable Brands")
-            fig = plot_top_brands(df_top_brands) # Pass the dynamically calculated df_top_brands
-            if fig: st.pyplot(fig)
+            display_chart(plot_top_brands(df_top_brands), "Top 10 Sustainable Brands")
         
         with colB:
-            st.subheader(" Top 5 Product Lines")
-            fig = plot_top_product_lines(df_top_categories) # Pass the dynamically calculated df_top_categories
-            if fig: st.pyplot(fig)
+            display_chart(plot_top_product_lines(df_top_categories), "Top 5 Product Lines")
             
-        
     # ====================================================
     # Tab 2: Geographic & Material Impact
     # ====================================================
     with tab2:
-        st.header(" Geographic & Material Impact Analysis")
+        st.header("🌍 Geographic & Material Impact Analysis")
         
-        colC,  colE = st.columns([2, 1])
+        colC, colD, colE = st.columns([2, 1, 1])
         
         with colC:
-            st.subheader("Top 5 Countries by Avg. Rating")
-            fig = plot_top_countries(df_top_countries) # Pass the dynamically calculated df_top_countries
-            if fig: st.pyplot(fig)
+            display_chart(plot_top_countries(df_top_countries), "Top 5 Countries by Avg. Rating")
+        
+        with colD:
+            display_chart(plot_material_status(material_sustainability), "Avg. Rating by Material Status")
 
         with colE:
-            st.subheader("Eco-friendly vs. Non Eco-friendly")
-            fig = plot_eco_friendly_counts(eco_counts) # Pass the dynamically calculated eco_counts
-            if fig: st.pyplot(fig)
+            display_chart(plot_eco_friendly_counts(eco_counts), "Eco-friendly vs. Non Eco-friendly")
 
     # ====================================================
     # Tab 3: Trends Over Time
     # ====================================================
     with tab3:
-        st.header("Sustainability Trends")
-        colF, colG = st.columns([1.5, 1]) 
+        st.header("📈 Sustainability Trends")
+        colF, colG = st.columns([1.5, 1])
 
         with colF:
-            st.subheader("Avg. Rating Improvement Over Time")
-            fig = plot_time_improvement(df_avg_time) # Pass the dynamically calculated df_avg_time
-            if fig: st.pyplot(fig)
+            display_chart(plot_time_improvement(df_avg_time), "Avg. Rating Improvement Over Time")
             
         with colG:
-            st.subheader("Market Trend vs. Avg. Rating")
-            fig = plot_market_trend(trend_avg) # Pass the dynamically calculated trend_avg
-            if fig: st.pyplot(fig)
+            display_chart(plot_market_trend(trend_avg), "Market Trend vs. Avg. Rating")
 
     # ====================================================
     # Tab 4: Environmental Metrics
     # ====================================================
     with tab4:
-        st.header(" Core Environmental Metrics")
-        st.subheader("Average Waste, Water, and Carbon Footprint per Product Line")
-        fig = plot_environmental_metrics(df_melted) # Pass the dynamically calculated df_melted
-        if fig: st.pyplot(fig)
-        
-       
+        st.header("🌱 Core Environmental Metrics")
+        display_chart(plot_environmental_metrics(df_melted), "Average Waste, Water, and Carbon Footprint per Product Line")
         
     # ====================================================
     # Tab 5: Price & Audience
     # ====================================================
     with tab5:
-        st.header(" Market and Customer Analysis")
+        st.header("💰 Market and Customer Analysis")
         colI, colJ = st.columns(2)
         
         with colI:
-            st.subheader("Price vs. Sustainability Rating")
-            fig = plot_price_vs_sustainability(df_price_vs_sus) # Pass the dynamically calculated df_price_vs_sus
-            if fig: st.pyplot(fig)
+            display_chart(plot_price_vs_sustainability(df_price_vs_sus), "Price vs. Sustainability Rating")
             
         with colJ:
-            st.subheader("Avg. Rating by Target Audience")
-            fig = plot_audience_sustainability(audience_sustainability) # Pass the dynamically calculated audience_sustainability
-            if fig: st.pyplot(fig)
+            display_chart(plot_audience_sustainability(audience_sustainability), "Avg. Rating by Target Audience")
+    
     # ====================================================
     # Tab 6: Certifications 
     # ====================================================
     with tab6:
-        st.header(" Certification Analysis")
+        st.header("🏅 Certification Analysis")
         
-        
-        st.subheader("Impact of Certification on Rating")
-        fig = plot_certification_impact(certification_avg) # Pass the dynamically calculated certification_avg
-        if fig: st.pyplot(fig)
+        display_chart(plot_certification_impact(certification_avg), "Impact of Certification on Rating")
         
         st.markdown("---")
-        
        
-        st.subheader("Number of Certifications per Product Line")
-        fig = plot_certifications_per_product(df_category_cert) # Pass the dynamically calculated df_category_cert
-        if fig: st.pyplot(fig)
+        display_chart(plot_certifications_per_product(df_category_cert), "Number of Certifications per Product Line")
 
+    # Footer
+    st.markdown("---")
+    st.markdown(
+        "<div style='text-align: center; color: #666; font-size: 0.9rem;'>"
+        "🌍 Sustainable Analytics Dashboard • Built with Streamlit • "
+        "Data last updated: 2024"
+        "</div>", 
+        unsafe_allow_html=True
+    )
 
 # Run the main function
 if __name__ == "__main__":
-
     main()
