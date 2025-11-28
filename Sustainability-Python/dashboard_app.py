@@ -266,54 +266,30 @@ def apply_custom_css():
         box-shadow: none !important;
     }
     
-    /* Logo container styling */
-    .logo-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.5rem;
-    }
-    
+    /* Extremely small logo styling */
     .logo {
         max-height: 20px;
         max-width: 30px;
         object-fit: contain;
     }
     
-    .logo-left {
-        margin-right: auto;
-    }
-    
-    .logo-right {
-        margin-left: auto;
-    }
-    
-    /* Consistent logo sizing */
     .logo-image {
         max-height: 20px;
         max-width: 30px;
         object-fit: contain;
-        border-radius: 6px;
+        border-radius: 3px;
     }
     
-    /* Logo placeholder styling */
     .logo-placeholder {
         width: 30px;
         height: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 6px;
+        border-radius: 3px;
         color: white;
         font-weight: bold;
-        font-size: 0.7rem;
-        text-align: center;
-        line-height: 1.1;
-    }
-    
-    /* Adjust header spacing for smaller logos */
-    .logo-header-row {
-        margin-bottom: 0.5rem !important;
+        font-size: 0.6rem;
     }
     
     </style>
@@ -675,10 +651,8 @@ def load_logo(image_path, default_width=30):
             logo = Image.open(image_path)
             return logo
         else:
-            st.warning(f"Logo not found: {image_path}")
             return None
-    except Exception as e:
-        st.warning(f"Error loading logo {image_path}: {e}")
+    except Exception:
         return None
 
 def display_logo_column(logo, position, width=30):
@@ -689,8 +663,10 @@ def display_logo_column(logo, position, width=30):
         # Fallback placeholder with consistent sizing
         placeholder_color = "#1B5E20" if position == "left" else "#2E7D32"
         st.markdown(f"""
-        <div class="logo-placeholder" style="background: {placeholder_color};">
-            {position.upper()}<br>LOGO
+        <div style="width: 30px; height: 20px; background: {placeholder_color}; 
+                    display: flex; align-items: center; justify-content: center; 
+                    border-radius: 4px; color: white; font-weight: bold; font-size: 0.6rem;">
+            {position[0]}
         </div>
         """, unsafe_allow_html=True)
 
@@ -705,10 +681,10 @@ def main():
     if df.empty:
         return
 
-    # --- VERY SMALL LOGOS AT THE TOP WITH CONSISTENT SIZING ---
+    # --- EXTREMELY SMALL LOGOS AT THE TOP ---
     col1, col2, col3 = st.columns([1, 2, 1])
     
-    # Load logos with very small size
+    # Load logos with extremely small size
     left_logo = load_logo('Sustainability-Python/logo_ministry.png')
     right_logo = load_logo('Sustainability-Python/logo_project.png')
     
@@ -1098,8 +1074,8 @@ def main():
                 <p style="margin: 5px 0 0 0; color: #E8F5E8; font-size: 0.9rem;">Driving Sustainable Business Decisions</p>
             </div>
             <div style="text-align: right;">
-                <p style="margin: 0; color: #E8F5E8; font-size: 0.9rem;">📅 Developed in : 2025</p>
-                <p style="margin: 5px 0 0 0; color: #E8F5E8; font-size: 0.9rem;">📊 Designed by Dina Ali</p>
+                <p style="margin: 0; color: #E8F5E8; font-size: 0.9rem;">📅 Last Updated: 2024</p>
+                <p style="margin: 5px 0 0 0; color: #E8F5E8; font-size: 0.9rem;">📊 Powered by Streamlit</p>
             </div>
         </div>
     </div>
@@ -1108,5 +1084,3 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
-
-
