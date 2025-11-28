@@ -166,7 +166,7 @@ def apply_custom_css():
         padding: 0;
     }
     
-    /* Cards for charts - consistent green theme and sizing */
+    /* Professional chart containers - CONSISTENT sizing */
     .chart-container {
         background: linear-gradient(135deg, #FFFFFF 0%, #F8FDF8 100%);
         padding: 20px;
@@ -175,9 +175,10 @@ def apply_custom_css():
         border: 1px solid #C8E6C9;
         margin-bottom: 20px;
         transition: transform 0.2s ease;
-        height: 450px;
+        height: 420px; /* CONSISTENT HEIGHT */
         display: flex;
         flex-direction: column;
+        justify-content: center;
     }
     
     .chart-container:hover {
@@ -263,25 +264,20 @@ def apply_custom_css():
         background: transparent !important;
     }
     
-    /* Empty state styling */
+    /* Empty state styling - HIDDEN when empty */
     .empty-state {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 300px;
-        color: #78909C;
-        text-align: center;
-        padding: 40px 20px;
-        background: linear-gradient(135deg, #FFFFFF 0%, #F8FDF8 100%);
-        border-radius: 12px;
-        border: 2px dashed #C8E6C9;
+        display: none !important;
     }
     
-    .empty-state .icon {
-        font-size: 3rem;
-        margin-bottom: 1rem;
-        opacity: 0.5;
+    /* Hide empty containers */
+    .element-container:empty {
+        display: none !important;
+    }
+    
+    /* Ensure consistent chart proportions */
+    .chart-container figure {
+        width: 100% !important;
+        height: 320px !important;
     }
     
     </style>
@@ -328,7 +324,7 @@ def safe_kpi_calc(series, func, rounding=2):
         return "N/A"
 
 # ====================================================================
-# 1. Visualization Functions (Enhanced with Consistent Sizing)
+# 1. PROFESSIONAL VISUALIZATION FUNCTIONS (Consistent Sizing)
 # ====================================================================
 
 # Set global green color palette
@@ -336,9 +332,11 @@ GREEN_PALETTE = ['#1B5E20', '#2E7D32', '#388E3C', '#4CAF50', '#66BB6A', '#81C784
 sns.set_palette(GREEN_PALETTE)
 
 def create_figure(df, title, func, figsize=(6, 4)):
+    """Enhanced figure creation with consistent sizing and professional styling"""
     if df.empty: 
         return None
     try:
+        # CONSISTENT FIGURE SIZE for all charts
         fig, ax = plt.subplots(figsize=figsize)
         
         # Set transparent background to match dashboard
@@ -348,22 +346,22 @@ def create_figure(df, title, func, figsize=(6, 4)):
         # Apply function
         func(fig, ax, df) 
         
-        # Style the title with green theme - optimized font size
+        # Professional title styling
         ax.set_title(title, fontsize=14, color='#1B5E20', fontweight='bold', pad=12)
         
-        # Style axis labels
+        # Professional axis labels
         ax.set_xlabel(ax.get_xlabel(), fontsize=11, color='#2E7D32', fontweight='600')
         ax.set_ylabel(ax.get_ylabel(), fontsize=11, color='#2E7D32', fontweight='600')
         
-        # Style ticks
+        # Professional ticks
         ax.tick_params(colors='#388E3C', labelsize=10)
         
-        # Style spines with green color
+        # Professional spines
         for spine in ax.spines.values():
             spine.set_color('#4CAF50')
             spine.set_linewidth(1.5)
             
-        # Add subtle grid
+        # Professional grid
         ax.grid(True, alpha=0.2, color='#C8E6C9')
         
         plt.tight_layout()
@@ -371,7 +369,7 @@ def create_figure(df, title, func, figsize=(6, 4)):
     except Exception as e:
         return None
 
-# All plotting functions with optimized titles
+# All plotting functions with CONSISTENT sizing
 def plot_top_brands(df_brands): 
     def plot_func(fig, ax, df):
         sns.set_theme(style="whitegrid")
@@ -390,7 +388,7 @@ def plot_top_brands(df_brands):
         ax.set_xticklabels(df["brand_name"], rotation=rotation_angle, ha='right', fontsize=9)
         ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
     
-    return create_figure(df_brands, "Top 10 Sustainable Brands", plot_func, figsize=(7, 4.5))
+    return create_figure(df_brands, "Top 10 Sustainable Brands", plot_func, figsize=(7, 4))
 
 def plot_top_product_lines(df_categories): 
     def plot_func(fig, ax, df):
@@ -464,7 +462,7 @@ def plot_environmental_metrics(df_melted):
                  loc='upper right', bbox_to_anchor=(1.25, 1), 
                  frameon=True, facecolor='#E8F5E8', edgecolor='#C8E6C9')
     
-    return create_figure(df_melted, "Environmental Metrics by Product Line", plot_func, figsize=(8, 4.5))
+    return create_figure(df_melted, "Environmental Metrics by Product Line", plot_func, figsize=(8, 4))
 
 def plot_time_improvement(df_time_avg): 
     def plot_func(fig, ax, df):
@@ -629,7 +627,7 @@ def plot_market_trend(df_trend_avg):
     return fig
 
 # ====================================================================
-# 2. Enhanced Main Streamlit App with Professional Layout
+# 2. PROFESSIONAL STREAMLIT APP WITH CONSISTENT LAYOUT
 # ====================================================================
 
 def main():
@@ -879,7 +877,7 @@ def main():
     
     st.markdown("---")
 
-    # --- Enhanced Tabs with Professional Layout ---
+    # --- PROFESSIONAL TABS WITH CONSISTENT LAYOUT ---
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
         "🏆 Top Performance", 
         "🌍 Geographic & Material", 
@@ -889,8 +887,9 @@ def main():
         "🏅 Certifications"
     ])
     
-    # Professional helper function to display charts without title boxes
-    def display_chart(fig, col=None):
+    # PROFESSIONAL helper function to display charts with consistent sizing
+    def display_chart(fig, col=None, title=None):
+        """Display chart with consistent container sizing and professional layout"""
         if fig is not None:
             if col:
                 with col:
@@ -903,83 +902,117 @@ def main():
                 st.markdown('</div>', unsafe_allow_html=True)
 
     # ====================================================
-    # Tab 1: Top Performance - Always show both charts
+    # Tab 1: Top Performance - BALANCED LAYOUT
     # ====================================================
     with tab1:
         st.markdown('<div class="section-header"><h3>🏆 Top Sustainable Performers Analysis</h3></div>', unsafe_allow_html=True)
         
         col1, col2 = st.columns(2)
         
-        with col1:
-            display_chart(plot_top_brands(df_top_brands))
+        # Only display charts that have data
+        top_brands_chart = plot_top_brands(df_top_brands)
+        top_categories_chart = plot_top_product_lines(df_top_categories)
         
-        with col2:
-            display_chart(plot_top_product_lines(df_top_categories))
+        if top_brands_chart is not None:
+            with col1:
+                display_chart(top_brands_chart)
+        
+        if top_categories_chart is not None:
+            with col2:
+                display_chart(top_categories_chart)
 
     # ====================================================
-    # Tab 2: Geographic & Material - Balanced layout
+    # Tab 2: Geographic & Material - BALANCED LAYOUT
     # ====================================================
     with tab2:
         st.markdown('<div class="section-header"><h3>🌍 Geographic & Material Impact Analysis</h3></div>', unsafe_allow_html=True)
         
-        col1, col2, col3 = st.columns([2, 1, 1])
+        # Create charts first
+        countries_chart = plot_top_countries(df_top_countries)
+        material_chart = plot_material_status(material_sustainability)
+        eco_chart = plot_eco_friendly_counts(eco_counts)
         
-        with col1:
-            display_chart(plot_top_countries(df_top_countries))
+        # Count available charts
+        available_charts = [chart for chart in [countries_chart, material_chart, eco_chart] if chart is not None]
         
-        with col2:
-            display_chart(plot_material_status(material_sustainability))
-
-        with col3:
-            display_chart(plot_eco_friendly_counts(eco_counts))
+        if len(available_charts) == 3:
+            # All charts available - use 3-column layout
+            col1, col2, col3 = st.columns(3)
+            display_chart(countries_chart, col1)
+            display_chart(material_chart, col2)
+            display_chart(eco_chart, col3)
+        elif len(available_charts) == 2:
+            # Two charts available - use 2-column layout
+            col1, col2 = st.columns(2)
+            display_chart(available_charts[0], col1)
+            display_chart(available_charts[1], col2)
+        elif len(available_charts) == 1:
+            # One chart available - use full width
+            display_chart(available_charts[0])
 
     # ====================================================
-    # Tab 3: Trends Over Time - Balanced layout
+    # Tab 3: Trends Over Time - BALANCED LAYOUT
     # ====================================================
     with tab3:
         st.markdown('<div class="section-header"><h3>📈 Sustainability Trends & Market Analysis</h3></div>', unsafe_allow_html=True)
         
         col1, col2 = st.columns(2)
 
-        with col1:
-            display_chart(plot_time_improvement(df_avg_time))
-            
-        with col2:
-            display_chart(plot_market_trend(trend_avg))
+        time_chart = plot_time_improvement(df_avg_time)
+        trend_chart = plot_market_trend(trend_avg)
+        
+        if time_chart is not None:
+            with col1:
+                display_chart(time_chart)
+                
+        if trend_chart is not None:
+            with col2:
+                display_chart(trend_chart)
 
     # ====================================================
-    # Tab 4: Environmental Metrics - Full width
+    # Tab 4: Environmental Metrics - FULL WIDTH
     # ====================================================
     with tab4:
         st.markdown('<div class="section-header"><h3>🌱 Core Environmental Metrics Analysis</h3></div>', unsafe_allow_html=True)
         
-        display_chart(plot_environmental_metrics(df_melted))
+        env_chart = plot_environmental_metrics(df_melted)
+        if env_chart is not None:
+            display_chart(env_chart)
         
     # ====================================================
-    # Tab 5: Price & Audience - Balanced layout
+    # Tab 5: Price & Audience - BALANCED LAYOUT
     # ====================================================
     with tab5:
         st.markdown('<div class="section-header"><h3>💰 Market & Customer Analysis</h3></div>', unsafe_allow_html=True)
         
         col1, col2 = st.columns(2)
         
-        with col1:
-            display_chart(plot_price_vs_sustainability(df_price_vs_sus))
-            
-        with col2:
-            display_chart(plot_audience_sustainability(audience_sustainability))
+        price_chart = plot_price_vs_sustainability(df_price_vs_sus)
+        audience_chart = plot_audience_sustainability(audience_sustainability)
+        
+        if price_chart is not None:
+            with col1:
+                display_chart(price_chart)
+                
+        if audience_chart is not None:
+            with col2:
+                display_chart(audience_chart)
     
     # ====================================================
-    # Tab 6: Certifications - Sequential layout
+    # Tab 6: Certifications - SEQUENTIAL LAYOUT
     # ====================================================
     with tab6:
         st.markdown('<div class="section-header"><h3>🏅 Certification Impact Analysis</h3></div>', unsafe_allow_html=True)
         
-        display_chart(plot_certification_impact(certification_avg))
+        cert_impact_chart = plot_certification_impact(certification_avg)
+        cert_count_chart = plot_certifications_per_product(df_category_cert)
         
-        st.markdown("---")
-       
-        display_chart(plot_certifications_per_product(df_category_cert))
+        if cert_impact_chart is not None:
+            display_chart(cert_impact_chart)
+            
+        if cert_count_chart is not None:
+            st.markdown("---")
+            display_chart(cert_count_chart)
 
     # Enhanced Footer
     st.markdown("""
