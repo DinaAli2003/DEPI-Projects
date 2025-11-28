@@ -377,6 +377,7 @@ st.markdown(
 
 
 
+
     
     # ----------------------------------------------------
     # 2. Filtering (Creates df_filtered)
@@ -688,5 +689,6 @@ st.markdown(
 if __name__ == "__main__":
 
     main()
+
 
 
