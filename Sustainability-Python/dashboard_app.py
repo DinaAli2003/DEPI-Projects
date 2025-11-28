@@ -242,7 +242,7 @@ def safe_kpi_calc(series, func, rounding=2):
         return "N/A"
 
 # ====================================================================
-# 1. Visualization Functions (Enhanced with Consistent Green Theme)
+# 1. Visualization Functions (Fixed Version)
 # ====================================================================
 
 # Set global green color palette
@@ -285,132 +285,143 @@ def create_figure(df, title, func, figsize=(6, 3.5)):
     except Exception as e:
         return None
 
-# 1. Top 10 Sustainable Brands
+# 1. Top 10 Sustainable Brands - FIXED
 def plot_top_brands(df_brands): 
-    return create_figure(df_brands, "Top 10 Sustainable Brands", figsize=(8, 4.5), 
-        func=lambda fig, ax, df: (
-            sns.set_theme(style="whitegrid"),
-            norm := plt.Normalize(df["sustainability_rating"].min(), df["sustainability_rating"].max()),
-            colors := [GREEN_PALETTE[i % len(GREEN_PALETTE)] for i in range(len(df))],
-            bars := ax.bar(df["brand_name"], df["sustainability_rating"], color=colors, 
-                          edgecolor="#1B5E20", linewidth=1.2, alpha=0.9),
-            [ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.02, f'{bar.get_height():.2f}', 
+    def plot_func(fig, ax, df):
+        sns.set_theme(style="whitegrid")
+        colors = [GREEN_PALETTE[i % len(GREEN_PALETTE)] for i in range(len(df))]
+        bars = ax.bar(df["brand_name"], df["sustainability_rating"], color=colors, 
+                      edgecolor="#1B5E20", linewidth=1.2, alpha=0.9)
+        
+        for bar in bars:
+            ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.02, f'{bar.get_height():.2f}', 
                     ha='center', va='bottom', fontsize=9, fontweight='bold', color='#1B5E20',
-                    bbox=dict(boxstyle="round,pad=0.2", facecolor='#E8F5E8', alpha=0.8)) for bar in bars],
-            ax.set_xlabel("Brand Name", fontsize=11, fontweight='600'),
-            ax.set_ylabel("Sustainability Rating", fontsize=11, fontweight='600'),
-            rotation_angle := 45 if max([len(str(label)) for label in df["brand_name"]]) > 8 else 30,
-            ax.set_xticklabels(df["brand_name"], rotation=rotation_angle, ha='right', fontsize=9),
-            ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
-        )
-    )
+                    bbox=dict(boxstyle="round,pad=0.2", facecolor='#E8F5E8', alpha=0.8))
+        
+        ax.set_xlabel("Brand Name", fontsize=11, fontweight='600')
+        ax.set_ylabel("Sustainability Rating", fontsize=11, fontweight='600')
+        rotation_angle = 45 if max([len(str(label)) for label in df["brand_name"]]) > 8 else 30
+        ax.set_xticklabels(df["brand_name"], rotation=rotation_angle, ha='right', fontsize=9)
+        ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
+    
+    return create_figure(df_brands, "Top 10 Sustainable Brands", plot_func, figsize=(8, 4.5))
 
-# 2. Top 5 Product lines
+# 2. Top 5 Product lines - FIXED
 def plot_top_product_lines(df_categories): 
-    return create_figure(df_categories, "Top 5 Sustainable Product Lines", figsize=(6, 4), 
-        func=lambda fig, ax, df: (
-            sns.set_theme(style="whitegrid"),
-            colors = [GREEN_PALETTE[i % len(GREEN_PALETTE)] for i in range(len(df))],
-            bars := ax.bar(df["product_line"], df["sustainability_rating"], 
-                          color=colors, edgecolor="#1B5E20", linewidth=1.2, alpha=0.9),
-            [ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.02, f'{bar.get_height():.2f}', 
+    def plot_func(fig, ax, df):
+        sns.set_theme(style="whitegrid")
+        colors = [GREEN_PALETTE[i % len(GREEN_PALETTE)] for i in range(len(df))]
+        bars = ax.bar(df["product_line"], df["sustainability_rating"], 
+                      color=colors, edgecolor="#1B5E20", linewidth=1.2, alpha=0.9)
+        
+        for bar in bars:
+            ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.02, f'{bar.get_height():.2f}', 
                     ha='center', va='bottom', fontsize=10, fontweight='bold', color='#1B5E20',
-                    bbox=dict(boxstyle="round,pad=0.3", facecolor='#E8F5E8', alpha=0.8)) for bar in bars],
-            ax.set_xlabel("Product Line", fontsize=11, fontweight='600'),
-            ax.set_ylabel("Sustainability Rating", fontsize=11, fontweight='600'),
-            rotation_angle := 45 if max([len(str(label)) for label in df["product_line"]]) > 10 else 30,
-            ax.set_xticklabels(df["product_line"], rotation=rotation_angle, ha='right', fontsize=10),
-            ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
-        )
-    )
+                    bbox=dict(boxstyle="round,pad=0.3", facecolor='#E8F5E8', alpha=0.8))
+        
+        ax.set_xlabel("Product Line", fontsize=11, fontweight='600')
+        ax.set_ylabel("Sustainability Rating", fontsize=11, fontweight='600')
+        rotation_angle = 45 if max([len(str(label)) for label in df["product_line"]]) > 10 else 30
+        ax.set_xticklabels(df["product_line"], rotation=rotation_angle, ha='right', fontsize=10)
+        ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
+    
+    return create_figure(df_categories, "Top 5 Sustainable Product Lines", plot_func, figsize=(6, 4))
 
-# 3. Top 5 Countries
+# 3. Top 5 Countries - FIXED
 def plot_top_countries(df_countries):
-    return create_figure(df_countries, "Top 5 Countries by Sustainability Rating", figsize=(7, 5), 
-        func=lambda fig, ax, df: (
-            sns.set_theme(style="whitegrid"),
-            colors = [GREEN_PALETTE[i % len(GREEN_PALETTE)] for i in range(len(df))],
-            bars := ax.bar(df["country_name"], df["sustainability_rating"], 
-                          color=colors, edgecolor="#1B5E20", linewidth=1.2, alpha=0.9),
-            [ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.02, f"{bar.get_height():.2f}", 
+    def plot_func(fig, ax, df):
+        sns.set_theme(style="whitegrid")
+        colors = [GREEN_PALETTE[i % len(GREEN_PALETTE)] for i in range(len(df))]
+        bars = ax.bar(df["country_name"], df["sustainability_rating"], 
+                      color=colors, edgecolor="#1B5E20", linewidth=1.2, alpha=0.9)
+        
+        for bar in bars:
+            ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.02, f"{bar.get_height():.2f}", 
                     ha='center', va='bottom', fontsize=10, fontweight='bold', color='#1B5E20',
-                    bbox=dict(boxstyle="round,pad=0.3", facecolor='#E8F5E8', alpha=0.8)) for bar in bars],
-            ax.set_xlabel("Country", fontsize=11, fontweight='600'),
-            ax.set_ylabel("Sustainability Rating", fontsize=11, fontweight='600'),
-            ax.set_xticklabels(df["country_name"], rotation=25, ha='right', fontsize=10),
-            ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
-        )
-    )
+                    bbox=dict(boxstyle="round,pad=0.3", facecolor='#E8F5E8', alpha=0.8))
+        
+        ax.set_xlabel("Country", fontsize=11, fontweight='600')
+        ax.set_ylabel("Sustainability Rating", fontsize=11, fontweight='600')
+        ax.set_xticklabels(df["country_name"], rotation=25, ha='right', fontsize=10)
+        ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
+    
+    return create_figure(df_countries, "Top 5 Countries by Sustainability Rating", plot_func, figsize=(7, 5))
 
-# 4. Number of Certifications per Product line
+# 4. Number of Certifications per Product line - FIXED
 def plot_certifications_per_product(df_cert_counts): 
-    return create_figure(df_cert_counts, "Certifications per Product Line", figsize=(6, 4),
-        func=lambda fig, ax, df: (
-            colors = [GREEN_PALETTE[i % len(GREEN_PALETTE)] for i in range(len(df))],
-            bars := ax.bar(df['product_line'], df['num_certification'], color=colors, 
-                          edgecolor="#1B5E20", linewidth=1.2, alpha=0.9),
-            [ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.1, str(int(bar.get_height())), 
+    def plot_func(fig, ax, df):
+        colors = [GREEN_PALETTE[i % len(GREEN_PALETTE)] for i in range(len(df))]
+        bars = ax.bar(df['product_line'], df['num_certification'], color=colors, 
+                      edgecolor="#1B5E20", linewidth=1.2, alpha=0.9)
+        
+        for bar in bars:
+            ax.text(bar.get_x() + bar.get_width()/2, bar.get_height() + 0.1, str(int(bar.get_height())), 
                     ha='center', va='bottom', fontsize=9, color='#1B5E20', fontweight='bold',
-                    bbox=dict(boxstyle="round,pad=0.2", facecolor='#E8F5E8', alpha=0.8)) for bar in bars],
-            ax.set_xlabel('Product Line', fontsize=11, fontweight='600'),
-            ax.set_ylabel('Number of Certifications', fontsize=11, fontweight='600'),
-            ax.tick_params(axis='x', rotation=30, labelsize=9)
-        )
-    )
+                    bbox=dict(boxstyle="round,pad=0.2", facecolor='#E8F5E8', alpha=0.8))
+        
+        ax.set_xlabel('Product Line', fontsize=11, fontweight='600')
+        ax.set_ylabel('Number of Certifications', fontsize=11, fontweight='600')
+        ax.tick_params(axis='x', rotation=30, labelsize=9)
+    
+    return create_figure(df_cert_counts, "Certifications per Product Line", plot_func, figsize=(6, 4))
 
-# 5. Average Environmental Metrics per Product Line
+# 5. Average Environmental Metrics per Product Line - FIXED
 def plot_environmental_metrics(df_melted):
-    return create_figure(df_melted, "Environmental Metrics by Product Line", figsize=(8, 5), 
-        func=lambda fig, ax, df: (
-            sns.barplot(data=df, x='product_line', y='Average Value', hue='Metric', 
-                       palette=['#1B5E20', '#388E3C', '#4CAF50'], ax=ax, alpha=0.9),
-            [ax.bar_label(container, fmt='%.1f', label_type='edge', fontsize=8, 
-                         color='#1B5E20', fontweight='bold', padding=3) for container in ax.containers],
-            ax.set_xlabel('Product Line', fontsize=11, fontweight='600'),
-            ax.set_ylabel('Average Value', fontsize=11, fontweight='600'),
-            ax.tick_params(axis='x', rotation=30, labelsize=9),
-            ax.legend(title='Environmental Metric', title_fontsize=10, fontsize=9, 
-                     loc='upper right', bbox_to_anchor=(1.25, 1), 
-                     frameon=True, facecolor='#E8F5E8', edgecolor='#C8E6C9')
-        )
-    )
+    def plot_func(fig, ax, df):
+        sns.barplot(data=df, x='product_line', y='Average Value', hue='Metric', 
+                   palette=['#1B5E20', '#388E3C', '#4CAF50'], ax=ax, alpha=0.9)
+        
+        for container in ax.containers:
+            ax.bar_label(container, fmt='%.1f', label_type='edge', fontsize=8, 
+                         color='#1B5E20', fontweight='bold', padding=3)
+        
+        ax.set_xlabel('Product Line', fontsize=11, fontweight='600')
+        ax.set_ylabel('Average Value', fontsize=11, fontweight='600')
+        ax.tick_params(axis='x', rotation=30, labelsize=9)
+        ax.legend(title='Environmental Metric', title_fontsize=10, fontsize=9, 
+                 loc='upper right', bbox_to_anchor=(1.25, 1), 
+                 frameon=True, facecolor='#E8F5E8', edgecolor='#C8E6C9')
+    
+    return create_figure(df_melted, "Environmental Metrics by Product Line", plot_func, figsize=(8, 5))
 
-# 6. Sustainability Improvements Over Time
+# 6. Sustainability Improvements Over Time - FIXED
 def plot_time_improvement(df_time_avg): 
-    return create_figure(df_time_avg, "Sustainability Rating Trend Over Years", figsize=(7, 4.5), 
-        func=lambda fig, ax, df: (
-            sns.lineplot(data=df, x='year', y='avg_rating', marker='o', color='#2E7D32', 
-                        linewidth=3, markersize=8, ax=ax, markerfacecolor='#1B5E20'),
-            [ax.text(x, y + 0.005, f"{y:.2f}", ha='center', fontsize=9, fontweight='bold', 
-                    color='#1B5E20', bbox=dict(boxstyle="round,pad=0.3", facecolor='#E8F5E8', alpha=0.9)) 
-             for x, y in zip(df['year'], df['avg_rating'])],
-            ax.set_xlabel("Year", fontsize=11, fontweight='600'),
-            ax.set_ylabel("Average Sustainability Rating", fontsize=11, fontweight='600'),
-            ax.set_xticks(df['year']),
-            ax.tick_params(axis='x', rotation=0, labelsize=10),
-            ax.grid(True, alpha=0.3, color='#C8E6C9'),
-            ax.set_ylim(df['avg_rating'].min() * 0.95, df['avg_rating'].max() * 1.05)
-        )
-    )
+    def plot_func(fig, ax, df):
+        sns.lineplot(data=df, x='year', y='avg_rating', marker='o', color='#2E7D32', 
+                    linewidth=3, markersize=8, ax=ax, markerfacecolor='#1B5E20')
+        
+        for x, y in zip(df['year'], df['avg_rating']):
+            ax.text(x, y + 0.005, f"{y:.2f}", ha='center', fontsize=9, fontweight='bold', 
+                    color='#1B5E20', bbox=dict(boxstyle="round,pad=0.3", facecolor='#E8F5E8', alpha=0.9))
+        
+        ax.set_xlabel("Year", fontsize=11, fontweight='600')
+        ax.set_ylabel("Average Sustainability Rating", fontsize=11, fontweight='600')
+        ax.set_xticks(df['year'])
+        ax.tick_params(axis='x', rotation=0, labelsize=10)
+        ax.grid(True, alpha=0.3, color='#C8E6C9')
+        ax.set_ylim(df['avg_rating'].min() * 0.95, df['avg_rating'].max() * 1.05)
+    
+    return create_figure(df_time_avg, "Sustainability Rating Trend Over Years", plot_func, figsize=(7, 4.5))
 
-# 7. Average Sustainability Rating by Target Audience
+# 7. Average Sustainability Rating by Target Audience - FIXED
 def plot_audience_sustainability(df_audience_sus): 
-    return create_figure(df_audience_sus, "Sustainability Rating by Target Audience", figsize=(6, 4.5), 
-        func=lambda fig, ax, df: (
-            colors = [GREEN_PALETTE[i % len(GREEN_PALETTE)] for i in range(len(df))],
-            bars := sns.barplot(data=df, x='target_audience', y='sustainability_rating', 
-                               palette=colors, ax=ax, alpha=0.9),
-            [ax.text(index, row['sustainability_rating'] + 0.008, f"{row['sustainability_rating']:.3f}", 
+    def plot_func(fig, ax, df):
+        colors = [GREEN_PALETTE[i % len(GREEN_PALETTE)] for i in range(len(df))]
+        bars = sns.barplot(data=df, x='target_audience', y='sustainability_rating', 
+                           palette=colors, ax=ax, alpha=0.9)
+        
+        for index, row in df.iterrows():
+            ax.text(index, row['sustainability_rating'] + 0.008, f"{row['sustainability_rating']:.3f}", 
                     ha='center', fontsize=9, fontweight='bold', color='#1B5E20',
-                    bbox=dict(boxstyle="round,pad=0.2", facecolor='#E8F5E8', alpha=0.8)) 
-             for index, row in df.iterrows()],
-            ax.set_xlabel('Target Audience', fontsize=11, fontweight='600'),
-            ax.set_ylabel('Sustainability Rating', fontsize=11, fontweight='600'),
-            ax.tick_params(axis='x', rotation=15, labelsize=9)
-        )
-    )
+                    bbox=dict(boxstyle="round,pad=0.2", facecolor='#E8F5E8', alpha=0.8))
+        
+        ax.set_xlabel('Target Audience', fontsize=11, fontweight='600')
+        ax.set_ylabel('Sustainability Rating', fontsize=11, fontweight='600')
+        ax.tick_params(axis='x', rotation=15, labelsize=9)
+    
+    return create_figure(df_audience_sus, "Sustainability Rating by Target Audience", plot_func, figsize=(6, 4.5))
 
-# 8. Average Sustainability Rating by Material Status (Donut Chart)
+# 8. Average Sustainability Rating by Material Status (Donut Chart) - FIXED
 def plot_material_status(df_material_sus): 
     if df_material_sus.empty or len(df_material_sus) < 2 or 'sustainability_rating' not in df_material_sus.columns:
         return None
@@ -440,7 +451,7 @@ def plot_material_status(df_material_sus):
     plt.tight_layout()
     return fig
 
-# 9. Eco-friendly vs Non Eco-friendly Brands (Pie Chart)
+# 9. Eco-friendly vs Non Eco-friendly Brands (Pie Chart) - FIXED
 def plot_eco_friendly_counts(eco_counts_series): 
     if eco_counts_series.empty or len(eco_counts_series) < 2: 
         return None
@@ -469,40 +480,40 @@ def plot_eco_friendly_counts(eco_counts_series):
     plt.tight_layout()
     return fig
 
-# 10. Relationship Between Price and Sustainability Rating (Scatter Plot)
+# 10. Relationship Between Price and Sustainability Rating (Scatter Plot) - FIXED
 def plot_price_vs_sustainability(df_price_sus): 
-    return create_figure(df_price_sus, "Price vs. Sustainability Rating", figsize=(8, 5),
-        func=lambda fig, ax, df: (
-            sns.scatterplot(data=df, x="average_price", y="sustainability_rating", 
-                           hue="brand_category", palette=GREEN_PALETTE, alpha=0.8, s=80, 
-                           edgecolor="white", linewidth=1, ax=ax),
-            ax.set_xlabel("Average Price ($)", fontsize=11, fontweight='600'),
-            ax.set_ylabel("Sustainability Rating", fontsize=11, fontweight='600'),
-            ax.legend(title="Brand Category", title_fontsize=10, fontsize=9, 
-                     bbox_to_anchor=(1.05, 1), loc="upper left", 
-                     frameon=True, facecolor='#E8F5E8', edgecolor='#C8E6C9')
-        )
-    )
+    def plot_func(fig, ax, df):
+        sns.scatterplot(data=df, x="average_price", y="sustainability_rating", 
+                       hue="brand_category", palette=GREEN_PALETTE, alpha=0.8, s=80, 
+                       edgecolor="white", linewidth=1, ax=ax)
+        ax.set_xlabel("Average Price ($)", fontsize=11, fontweight='600')
+        ax.set_ylabel("Sustainability Rating", fontsize=11, fontweight='600')
+        ax.legend(title="Brand Category", title_fontsize=10, fontsize=9, 
+                 bbox_to_anchor=(1.05, 1), loc="upper left", 
+                 frameon=True, facecolor='#E8F5E8', edgecolor='#C8E6C9')
+    
+    return create_figure(df_price_sus, "Price vs. Sustainability Rating", plot_func, figsize=(8, 5))
 
-# 11. Impact of Certification on Sustainability Rating
+# 11. Impact of Certification on Sustainability Rating - FIXED
 def plot_certification_impact(df_certification_avg): 
-    return create_figure(df_certification_avg, "Impact of Certification on Sustainability Rating", figsize=(8, 5), 
-        func=lambda fig, ax, df: (
-            colors = [GREEN_PALETTE[i % len(GREEN_PALETTE)] for i in range(len(df))],
-            barplot := sns.barplot(data=df, x="certification", y="avg_rating", 
-                                  palette=colors, ax=ax, alpha=0.9),
-            [barplot.annotate(f"{p.get_height():.3f}", (p.get_x() + p.get_width() / 2., p.get_height()), 
+    def plot_func(fig, ax, df):
+        colors = [GREEN_PALETTE[i % len(GREEN_PALETTE)] for i in range(len(df))]
+        barplot = sns.barplot(data=df, x="certification", y="avg_rating", 
+                              palette=colors, ax=ax, alpha=0.9)
+        
+        for p in barplot.patches:
+            barplot.annotate(f"{p.get_height():.3f}", (p.get_x() + p.get_width() / 2., p.get_height()), 
                             ha='center', va='bottom', fontsize=9, fontweight='bold', 
                             color='#1B5E20', xytext=(0, 5), textcoords='offset points',
-                            bbox=dict(boxstyle="round,pad=0.2", facecolor='#E8F5E8', alpha=0.8)) 
-             for p in barplot.patches],
-            ax.set_xlabel("Certification Type", fontsize=11, fontweight='600'),
-            ax.set_ylabel("Average Sustainability Rating", fontsize=11, fontweight='600'),
-            ax.tick_params(axis='x', rotation=45, labelsize=9)
-        )
-    )
+                            bbox=dict(boxstyle="round,pad=0.2", facecolor='#E8F5E8', alpha=0.8))
+        
+        ax.set_xlabel("Certification Type", fontsize=11, fontweight='600')
+        ax.set_ylabel("Average Sustainability Rating", fontsize=11, fontweight='600')
+        ax.tick_params(axis='x', rotation=45, labelsize=9)
+    
+    return create_figure(df_certification_avg, "Impact of Certification on Sustainability Rating", plot_func, figsize=(8, 5))
 
-# 12. Market Trend vs Sustainability Rating (Donut Chart)
+# 12. Market Trend vs Sustainability Rating (Donut Chart) - FIXED
 def plot_market_trend(df_trend_avg): 
     if df_trend_avg.empty or len(df_trend_avg) < 2 or 'sustainability_rating' not in df_trend_avg.columns:
         return None
@@ -543,7 +554,7 @@ def plot_market_trend(df_trend_avg):
     return fig
 
 # ====================================================================
-# 2. Main Streamlit App
+# 2. Main Streamlit App (Rest of the code remains the same)
 # ====================================================================
 
 def main():
@@ -656,9 +667,8 @@ def main():
         df_to_use_for_insights = df_filtered.copy()
 
     # ----------------------------------------------------
-    # 3. Calculate all Insights (same as before)
+    # 3. Calculate all Insights
     # ----------------------------------------------------
-    # [All your data processing calculations remain exactly the same...]
     available_cols_for_insights = df_to_use_for_insights.columns.tolist()
 
     # 1. Top 10 Sustainable Brands 
