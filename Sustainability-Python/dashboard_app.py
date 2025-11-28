@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st
 import warnings
+from PIL import Image
+import os
 
 # Ignore Matplotlib and Seaborn warnings related to styles
 warnings.filterwarnings("ignore")
@@ -284,6 +286,14 @@ def apply_custom_css():
     
     .logo-right {
         margin-left: auto;
+    }
+    
+    /* Consistent logo sizing */
+    .logo-image {
+        max-height: 80px;
+        max-width: 180px;
+        object-fit: contain;
+        border-radius: 8px;
     }
     
     </style>
@@ -635,7 +645,39 @@ def plot_market_trend(df_trend_avg):
     return fig
 
 # ====================================================================
-# 2. CLEAN STREAMLIT APP - WITH LOGOS
+# 2. LOGO HANDLING FUNCTIONS
+# ====================================================================
+
+def load_logo(image_path, default_width=160):
+    """Load logo with consistent sizing and error handling"""
+    try:
+        if os.path.exists(image_path):
+            logo = Image.open(image_path)
+            return logo
+        else:
+            st.warning(f"Logo not found: {image_path}")
+            return None
+    except Exception as e:
+        st.warning(f"Error loading logo {image_path}: {e}")
+        return None
+
+def display_logo_column(logo, position, width=160):
+    """Display logo in a column with consistent sizing"""
+    if logo:
+        st.image(logo, width=width, use_column_width=False)
+    else:
+        # Fallback placeholder with consistent sizing
+        placeholder_color = "#1B5E20" if position == "left" else "#2E7D32"
+        st.markdown(f"""
+        <div style="width: {width}px; height: 80px; background: {placeholder_color}; 
+                    display: flex; align-items: center; justify-content: center; 
+                    border-radius: 8px; color: white; font-weight: bold;">
+            {position.upper()} LOGO
+        </div>
+        """, unsafe_allow_html=True)
+
+# ====================================================================
+# 3. CLEAN STREAMLIT APP - WITH PROPER LOGO HANDLING
 # ====================================================================
 
 def main():
@@ -645,30 +687,22 @@ def main():
     if df.empty:
         return
 
-    # --- LOGOS AT THE TOP ---
+    # --- LOGOS AT THE TOP WITH CONSISTENT SIZING ---
     col1, col2, col3 = st.columns([1, 2, 1])
     
+    # Load logos
+    left_logo = load_logo('Sustainability-Python/logo_ministry.png')
+    right_logo = load_logo('Sustainability-Python/logo_project.png')
+    
     with col1:
-        # Left Logo - Replace with your actual logo path or URL
-        st.markdown("""
-        <div style="display: flex; justify-content: flex-start; align-items: center; height: 80px;">
-            <img src="Sustainability-Python/logo_ministry.png" 
-                 class="logo" alt="Left Logo" style="max-height: 80px; max-width: 200px;">
-        </div>
-        """, unsafe_allow_html=True)
+        display_logo_column(left_logo, "left", width=160)
     
     with col2:
         # Center content - main title will go here
         pass
     
     with col3:
-        # Right Logo - Replace with your actual logo path or URL
-        st.markdown("""
-        <div style="display: flex; justify-content: flex-end; align-items: center; height: 80px;">
-            <img src="Sustainability-Python/logo_project.png" 
-                 class="logo" alt="Right Logo" style="max-height: 80px; max-width: 200px;">
-        </div>
-        """, unsafe_allow_html=True)
+        display_logo_column(right_logo, "right", width=160)
 
     # --- Enhanced Header with Consistent Background ---
     st.markdown("""
@@ -1056,10 +1090,3 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
