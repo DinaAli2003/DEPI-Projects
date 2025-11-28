@@ -264,6 +264,28 @@ def apply_custom_css():
         box-shadow: none !important;
     }
     
+    /* Logo container styling */
+    .logo-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    
+    .logo {
+        max-height: 80px;
+        max-width: 200px;
+        object-fit: contain;
+    }
+    
+    .logo-left {
+        margin-right: auto;
+    }
+    
+    .logo-right {
+        margin-left: auto;
+    }
+    
     </style>
     """, unsafe_allow_html=True)
 
@@ -613,7 +635,7 @@ def plot_market_trend(df_trend_avg):
     return fig
 
 # ====================================================================
-# 2. CLEAN STREAMLIT APP - NO CONTAINERS, JUST CHARTS
+# 2. CLEAN STREAMLIT APP - WITH LOGOS
 # ====================================================================
 
 def main():
@@ -622,6 +644,31 @@ def main():
 
     if df.empty:
         return
+
+    # --- LOGOS AT THE TOP ---
+    col1, col2, col3 = st.columns([1, 2, 1])
+    
+    with col1:
+        # Left Logo - Replace with your actual logo path or URL
+        st.markdown("""
+        <div style="display: flex; justify-content: flex-start; align-items: center; height: 80px;">
+            <img src="Sustainability-Python/logo_ministry.png" 
+                 class="logo" alt="Left Logo" style="max-height: 80px; max-width: 200px;">
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        # Center content - main title will go here
+        pass
+    
+    with col3:
+        # Right Logo - Replace with your actual logo path or URL
+        st.markdown("""
+        <div style="display: flex; justify-content: flex-end; align-items: center; height: 80px;">
+            <img src="Sustainability-Python/logo_project.png" 
+                 class="logo" alt="Right Logo" style="max-height: 80px; max-width: 200px;">
+        </div>
+        """, unsafe_allow_html=True)
 
     # --- Enhanced Header with Consistent Background ---
     st.markdown("""
