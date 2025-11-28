@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st
 import warnings
-
+import os
 # Ignore Matplotlib and Seaborn warnings related to styles
 warnings.filterwarnings("ignore")
 
@@ -16,7 +16,7 @@ st.set_page_config(page_title="Sustainability Dashboard", layout="wide")
 # ====================================================================
 # 0. Helper Functions and Data Loading (Initial Data Prep)
 # ====================================================================
-import os
+
 
 @st.cache_data
 def load_raw_data():
@@ -315,6 +315,68 @@ def main():
     with col_logo2:
         st.image("Sustainability-Python/logo_project.png", width=100) #  "logo_project.png" 
     st.markdown("---")
+
+st.markdown(
+    """
+    <style>
+    /* تغيير خلفية الموقع بالكامل */
+    .stApp {
+        background-color: #e6f4ea !important;  /* أخضر فاتح هادئ */
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
+st.markdown(
+    """
+    <style>
+    /* تغيير لون الخلفية داخل السايدبار بالكامل */
+    [data-testid="stSidebar"] {
+        background-color: #c8e6c9 !important; /* أخضر فاتح */
+    }
+
+    /* تغيير لون النص داخل الفلاتر */
+    [data-testid="stSidebar"] .stMarkdown, 
+    [data-testid="stSidebar"] p, 
+    [data-testid="stSidebar"] label {
+        color: #1b5e20 !important; /* أخضر غامق */
+        font-weight: 600;
+    }
+
+    /* تغيير لون العناصر المختارة */
+    .stMultiSelect div[data-baseweb="tag"] {
+        background-color: #1b5e20 !important; /* أخضر غامق */
+        color: white !important;
+    }
+
+    /* تغيير لون القائمة المنسدلة */
+    .stMultiSelect div[role="listbox"] {
+        background-color: #e8f5e9 !important;
+    }
+
+    /* تغيير لون الشريط الجانبي بالكامل */
+    [data-testid="stSidebar"] .css-1d391kg {
+        background-color: #c8e6c9 !important;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
+
+
+
+
+
+
+
+
+
+
+
+
     
     # ----------------------------------------------------
     # 2. Filtering (Creates df_filtered)
@@ -532,12 +594,12 @@ def main():
         
         with colA:
             st.subheader(" Top 10 Sustainable Brands")
-            fig = plot_top_brands(df_top_brands) # Pass the dynamically calculated df_top_brands
+            fig = plot_top_brands(df_top_brands) 
             if fig: st.pyplot(fig)
         
         with colB:
             st.subheader(" Top 5 Product Lines")
-            fig = plot_top_product_lines(df_top_categories) # Pass the dynamically calculated df_top_categories
+            fig = plot_top_product_lines(df_top_categories) 
             if fig: st.pyplot(fig)
             
         
@@ -551,12 +613,12 @@ def main():
         
         with colC:
             st.subheader("Top 5 Countries by Avg. Rating")
-            fig = plot_top_countries(df_top_countries) # Pass the dynamically calculated df_top_countries
+            fig = plot_top_countries(df_top_countries)
             if fig: st.pyplot(fig)
 
         with colE:
             st.subheader("Eco-friendly vs. Non Eco-friendly")
-            fig = plot_eco_friendly_counts(eco_counts) # Pass the dynamically calculated eco_counts
+            fig = plot_eco_friendly_counts(eco_counts) 
             if fig: st.pyplot(fig)
 
     # ====================================================
@@ -568,12 +630,12 @@ def main():
 
         with colF:
             st.subheader("Avg. Rating Improvement Over Time")
-            fig = plot_time_improvement(df_avg_time) # Pass the dynamically calculated df_avg_time
+            fig = plot_time_improvement(df_avg_time)
             if fig: st.pyplot(fig)
             
         with colG:
             st.subheader("Market Trend vs. Avg. Rating")
-            fig = plot_market_trend(trend_avg) # Pass the dynamically calculated trend_avg
+            fig = plot_market_trend(trend_avg)
             if fig: st.pyplot(fig)
 
     # ====================================================
@@ -582,7 +644,7 @@ def main():
     with tab4:
         st.header(" Core Environmental Metrics")
         st.subheader("Average Waste, Water, and Carbon Footprint per Product Line")
-        fig = plot_environmental_metrics(df_melted) # Pass the dynamically calculated df_melted
+        fig = plot_environmental_metrics(df_melted) 
         if fig: st.pyplot(fig)
         
        
@@ -596,12 +658,12 @@ def main():
         
         with colI:
             st.subheader("Price vs. Sustainability Rating")
-            fig = plot_price_vs_sustainability(df_price_vs_sus) # Pass the dynamically calculated df_price_vs_sus
+            fig = plot_price_vs_sustainability(df_price_vs_sus)
             if fig: st.pyplot(fig)
             
         with colJ:
             st.subheader("Avg. Rating by Target Audience")
-            fig = plot_audience_sustainability(audience_sustainability) # Pass the dynamically calculated audience_sustainability
+            fig = plot_audience_sustainability(audience_sustainability) 
             if fig: st.pyplot(fig)
     # ====================================================
     # Tab 6: Certifications 
@@ -611,14 +673,14 @@ def main():
         
         
         st.subheader("Impact of Certification on Rating")
-        fig = plot_certification_impact(certification_avg) # Pass the dynamically calculated certification_avg
+        fig = plot_certification_impact(certification_avg) 
         if fig: st.pyplot(fig)
         
         st.markdown("---")
         
        
         st.subheader("Number of Certifications per Product Line")
-        fig = plot_certifications_per_product(df_category_cert) # Pass the dynamically calculated df_category_cert
+        fig = plot_certifications_per_product(df_category_cert) 
         if fig: st.pyplot(fig)
 
 
@@ -626,4 +688,5 @@ def main():
 if __name__ == "__main__":
 
     main()
+
 
