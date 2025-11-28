@@ -36,9 +36,10 @@ def apply_custom_css():
         background: transparent !important;
     }
     
-    /* Header area - consistent with dashboard */
+    /* Header area - consistent with dashboard background */
     header[data-testid="stHeader"] {
-        background: linear-gradient(135deg, #1B5E20 0%, #388E3C 100%) !important;
+        background: linear-gradient(135deg, #F0F9F0 0%, #E8F5E8 50%, #F0F9F0 100%) !important;
+        border-bottom: 1px solid #C8E6C9;
     }
     
     /* Fix header toolbar area */
@@ -51,16 +52,27 @@ def apply_custom_css():
         background: transparent !important;
     }
     
+    /* Style the header buttons area */
+    [data-testid="baseButton-header"] {
+        background: transparent !important;
+    }
+    
     /* Sidebar - complete green theme */
     section[data-testid="stSidebar"] {
         background: linear-gradient(180deg, #1B5E20 0%, #2E7D32 100%) !important;
     }
     
-    /* Sidebar text - all white */
-    .css-1d391kg h1, .css-1d391kg h2, .css-1d391kg h3,
-    .css-1d391kg .stMultiSelect label, .css-1d391kg .stMultiSelect span,
-    .css-1d391kg .stMarkdown, .css-1d391kg p, .css-1d391kg div {
+    /* Sidebar text - all white including filter labels */
+    .stSidebar label, .stSidebar p, .stSidebar div, .stSidebar span {
         color: #FFFFFF !important;
+    }
+    
+    /* Specific styling for filter labels */
+    .stMultiSelect label, .stSelectbox label, .stSlider label {
+        color: #FFFFFF !important;
+        font-weight: 600 !important;
+        font-size: 1rem !important;
+        margin-bottom: 8px !important;
     }
     
     /* Sidebar select boxes - green theme */
@@ -178,6 +190,8 @@ def apply_custom_css():
         display: flex;
         align-items: center;
         justify-content: center;
+        line-height: 1.3;
+        padding: 0 10px;
     }
     
     .chart-container:hover {
@@ -263,6 +277,24 @@ def apply_custom_css():
         background: transparent !important;
     }
     
+    /* Empty state styling */
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        color: #78909C;
+        text-align: center;
+        padding: 40px 20px;
+    }
+    
+    .empty-state .icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        opacity: 0.5;
+    }
+    
     </style>
     """, unsafe_allow_html=True)
 
@@ -327,8 +359,8 @@ def create_figure(df, title, func, figsize=(6, 4)):  # Consistent default size
         # Apply function
         func(fig, ax, df) 
         
-        # Style the title with green theme
-        ax.set_title(title, fontsize=13, color='#1B5E20', fontweight='bold', pad=12)
+        # Style the title with green theme - optimized font size
+        ax.set_title(title, fontsize=14, color='#1B5E20', fontweight='bold', pad=12)
         
         # Style axis labels
         ax.set_xlabel(ax.get_xlabel(), fontsize=11, color='#2E7D32', fontweight='600')
@@ -350,7 +382,7 @@ def create_figure(df, title, func, figsize=(6, 4)):  # Consistent default size
     except Exception as e:
         return None
 
-# All your existing plotting functions remain the same but with consistent figsize
+# All plotting functions with optimized titles
 def plot_top_brands(df_brands): 
     def plot_func(fig, ax, df):
         sns.set_theme(style="whitegrid")
@@ -369,7 +401,7 @@ def plot_top_brands(df_brands):
         ax.set_xticklabels(df["brand_name"], rotation=rotation_angle, ha='right', fontsize=9)
         ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
     
-    return create_figure(df_brands, "Top 10 Sustainable Brands", plot_func, figsize=(7, 4.5))
+    return create_figure(df_brands, "Top Sustainable Brands", plot_func, figsize=(7, 4.5))
 
 def plot_top_product_lines(df_categories): 
     def plot_func(fig, ax, df):
@@ -389,7 +421,7 @@ def plot_top_product_lines(df_categories):
         ax.set_xticklabels(df["product_line"], rotation=rotation_angle, ha='right', fontsize=10)
         ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
     
-    return create_figure(df_categories, "Top 5 Sustainable Product Lines", plot_func, figsize=(6, 4))
+    return create_figure(df_categories, "Top Product Lines", plot_func, figsize=(6, 4))
 
 def plot_top_countries(df_countries):
     def plot_func(fig, ax, df):
@@ -408,7 +440,7 @@ def plot_top_countries(df_countries):
         ax.set_xticklabels(df["country_name"], rotation=25, ha='right', fontsize=10)
         ax.set_ylim(0, df["sustainability_rating"].max() * 1.15)
     
-    return create_figure(df_countries, "Top 5 Countries by Sustainability Rating", plot_func, figsize=(6, 4))
+    return create_figure(df_countries, "Top Countries", plot_func, figsize=(6, 4))
 
 def plot_certifications_per_product(df_cert_counts): 
     def plot_func(fig, ax, df):
@@ -425,7 +457,7 @@ def plot_certifications_per_product(df_cert_counts):
         ax.set_ylabel('Number of Certifications', fontsize=11, fontweight='600')
         ax.tick_params(axis='x', rotation=30, labelsize=9)
     
-    return create_figure(df_cert_counts, "Certifications per Product Line", plot_func, figsize=(6, 4))
+    return create_figure(df_cert_counts, "Certifications by Product", plot_func, figsize=(6, 4))
 
 def plot_environmental_metrics(df_melted):
     def plot_func(fig, ax, df):
@@ -443,7 +475,7 @@ def plot_environmental_metrics(df_melted):
                  loc='upper right', bbox_to_anchor=(1.25, 1), 
                  frameon=True, facecolor='#E8F5E8', edgecolor='#C8E6C9')
     
-    return create_figure(df_melted, "Environmental Metrics by Product Line", plot_func, figsize=(8, 4.5))
+    return create_figure(df_melted, "Environmental Metrics", plot_func, figsize=(8, 4.5))
 
 def plot_time_improvement(df_time_avg): 
     def plot_func(fig, ax, df):
@@ -461,7 +493,7 @@ def plot_time_improvement(df_time_avg):
         ax.grid(True, alpha=0.3, color='#C8E6C9')
         ax.set_ylim(df['avg_rating'].min() * 0.95, df['avg_rating'].max() * 1.05)
     
-    return create_figure(df_time_avg, "Sustainability Rating Trend Over Years", plot_func, figsize=(7, 4))
+    return create_figure(df_time_avg, "Rating Trend", plot_func, figsize=(7, 4))
 
 def plot_audience_sustainability(df_audience_sus): 
     def plot_func(fig, ax, df):
@@ -478,7 +510,7 @@ def plot_audience_sustainability(df_audience_sus):
         ax.set_ylabel('Sustainability Rating', fontsize=11, fontweight='600')
         ax.tick_params(axis='x', rotation=15, labelsize=9)
     
-    return create_figure(df_audience_sus, "Sustainability Rating by Target Audience", plot_func, figsize=(6, 4))
+    return create_figure(df_audience_sus, "Audience Rating", plot_func, figsize=(6, 4))
 
 def plot_material_status(df_material_sus): 
     if df_material_sus.empty or len(df_material_sus) < 2 or 'sustainability_rating' not in df_material_sus.columns:
@@ -505,7 +537,7 @@ def plot_material_status(df_material_sus):
             ha='center', va='center', fontsize=12, fontweight='bold', color='#1B5E20')
     
     ax.axis('equal')
-    ax.set_title('Sustainability Rating by Material Status', fontsize=13, color='#1B5E20', fontweight='bold', pad=20)
+    ax.set_title('Material Status', fontsize=13, color='#1B5E20', fontweight='bold', pad=20)
     plt.tight_layout()
     return fig
 
@@ -533,7 +565,7 @@ def plot_eco_friendly_counts(eco_counts_series):
         autotext.set_color('white')
         autotext.set_fontweight('bold')
     
-    ax.set_title("Eco-friendly vs Non Eco-friendly Manufacturing", fontsize=13, color='#1B5E20', fontweight='bold', pad=20)
+    ax.set_title("Eco-friendly Manufacturing", fontsize=13, color='#1B5E20', fontweight='bold', pad=20)
     plt.tight_layout()
     return fig
 
@@ -548,7 +580,7 @@ def plot_price_vs_sustainability(df_price_sus):
                  bbox_to_anchor=(1.05, 1), loc="upper left", 
                  frameon=True, facecolor='#E8F5E8', edgecolor='#C8E6C9')
     
-    return create_figure(df_price_sus, "Price vs. Sustainability Rating", plot_func, figsize=(7, 4))
+    return create_figure(df_price_sus, "Price vs Rating", plot_func, figsize=(7, 4))
 
 def plot_certification_impact(df_certification_avg): 
     def plot_func(fig, ax, df):
@@ -566,7 +598,7 @@ def plot_certification_impact(df_certification_avg):
         ax.set_ylabel("Average Sustainability Rating", fontsize=11, fontweight='600')
         ax.tick_params(axis='x', rotation=45, labelsize=9)
     
-    return create_figure(df_certification_avg, "Impact of Certification on Sustainability Rating", plot_func, figsize=(7, 4))
+    return create_figure(df_certification_avg, "Certification Impact", plot_func, figsize=(7, 4))
 
 def plot_market_trend(df_trend_avg): 
     if df_trend_avg.empty or len(df_trend_avg) < 2 or 'sustainability_rating' not in df_trend_avg.columns:
@@ -603,12 +635,12 @@ def plot_market_trend(df_trend_avg):
             ha='center', va='center', fontsize=12, fontweight='bold', color='#1B5E20')
     
     ax.axis('equal')
-    ax.set_title("Market Trend Analysis", fontsize=13, color="#1B5E20", fontweight="bold", pad=20)
+    ax.set_title("Market Trend", fontsize=13, color="#1B5E20", fontweight="bold", pad=20)
     plt.tight_layout()
     return fig
 
 # ====================================================================
-# 2. Enhanced Main Streamlit App with Consistent Layout
+# 2. Enhanced Main Streamlit App with Professional Layout
 # ====================================================================
 
 def main():
@@ -631,7 +663,7 @@ def main():
     """, unsafe_allow_html=True)
     
     # ----------------------------------------------------
-    # 2. Enhanced Filtering Section with Consistent Green Theme
+    # 2. Enhanced Filtering Section with White Text Labels
     # ----------------------------------------------------
     
     # Style the sidebar header with enhanced design
@@ -653,13 +685,15 @@ def main():
     def get_filter_options(column_name):
         if column_name in df.columns:
             options = sorted(df[column_name].unique().tolist())
-            return options, options
+            return options, options[:min(5, len(options))]  # Limit default selections
         return [], []
 
     # 1. Countries Filter
     country_options, default_countries = get_filter_options('country_name')
     selected_countries = st.sidebar.multiselect(
-        "🌍 Select Countries:", options=country_options, default=default_countries
+        "🌍 Select Countries:", 
+        options=country_options, 
+        default=default_countries
     )
     if selected_countries:
         df_filtered = df_filtered[df_filtered['country_name'].isin(selected_countries)]
@@ -667,7 +701,9 @@ def main():
     # 2. Years Filter
     year_options, default_years = get_filter_options('year')
     selected_years = st.sidebar.multiselect(
-        "📅 Select Years:", options=year_options, default=default_years
+        "📅 Select Years:", 
+        options=year_options, 
+        default=default_years
     )
     if selected_years:
         df_filtered = df_filtered[df_filtered['year'].isin(selected_years)]
@@ -675,7 +711,9 @@ def main():
     # 3. Certifications Filter
     certification_options, default_certifications = get_filter_options('certification')
     selected_certifications = st.sidebar.multiselect(
-        "🏆 Select Certifications:", options=certification_options, default=default_certifications
+        "🏆 Select Certifications:", 
+        options=certification_options, 
+        default=default_certifications
     )
     if selected_certifications:
         df_filtered = df_filtered[df_filtered['certification'].isin(selected_certifications)]
@@ -683,7 +721,9 @@ def main():
     # 4. Product Lines Filter
     product_line_options, default_product_lines = get_filter_options('product_line')
     selected_product_lines = st.sidebar.multiselect(
-        "📦 Select Product Lines:", options=product_line_options, default=default_product_lines
+        "📦 Select Product Lines:", 
+        options=product_line_options, 
+        default=default_product_lines
     )
     if selected_product_lines:
         df_filtered = df_filtered[df_filtered['product_line'].isin(selected_product_lines)]
@@ -691,7 +731,9 @@ def main():
     # 5. Brands Filter
     brand_options, default_brands = get_filter_options('brand_name')
     selected_brands = st.sidebar.multiselect(
-        "🏢 Select Brands:", options=brand_options, default=default_brands
+        "🏢 Select Brands:", 
+        options=brand_options, 
+        default=default_brands
     )
     if selected_brands:
         df_filtered = df_filtered[df_filtered['brand_name'].isin(selected_brands)]
@@ -725,6 +767,9 @@ def main():
     # ----------------------------------------------------
     available_cols_for_insights = df_to_use_for_insights.columns.tolist()
 
+    # Calculate all insights (same as your original code)
+    # [All the insight calculations remain exactly the same...]
+    
     # 1. Top 10 Sustainable Brands 
     df_top_brands = pd.DataFrame()
     if 'brand_name' in available_cols_for_insights and 'sustainability_rating' in available_cols_for_insights and not df_to_use_for_insights.empty:
@@ -859,7 +904,7 @@ def main():
     
     st.markdown("---")
 
-    # --- Enhanced Tabs with Consistent Layout ---
+    # --- Enhanced Tabs with Professional Layout ---
     tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs([
         "🏆 Top Performance", 
         "🌍 Geographic & Material", 
@@ -869,100 +914,179 @@ def main():
         "🏅 Certifications"
     ])
     
-    # Enhanced helper function to display charts with consistent sizing
+    # Professional helper function to display charts - hides empty charts
     def display_chart(fig, title="", col=None):
-        if fig:
+        if fig is not None:
             if col:
                 with col:
                     st.markdown(f'<div class="chart-container"><h4>{title}</h4>', unsafe_allow_html=True)
                     st.pyplot(fig)
                     st.markdown('</div>', unsafe_allow_html=True)
-            else:
-                st.markdown(f'<div class="chart-container"><h4>{title}</h4>', unsafe_allow_html=True)
-                st.pyplot(fig)
-                st.markdown('</div>', unsafe_allow_html=True)
-        else:
-            placeholder_text = f"📊 No data available for {title} with current filters."
-            if col:
-                with col:
-                    st.markdown(f'<div class="chart-container"><h4>{title}</h4><p style="text-align: center; color: #666; padding: 50px;">{placeholder_text}</p></div>', unsafe_allow_html=True)
-            else:
-                st.markdown(f'<div class="chart-container"><h4>{title}</h4><p style="text-align: center; color: #666; padding: 50px;">{placeholder_text}</p></div>', unsafe_allow_html=True)
+        # If fig is None, don't display anything (professional approach)
 
     # ====================================================
-    # Tab 1: Top Performance - Consistent 2-column layout
+    # Tab 1: Top Performance - Only show if data exists
     # ====================================================
     with tab1:
         st.markdown('<div class="section-header"><h3>🏆 Top Sustainable Performers Analysis</h3></div>', unsafe_allow_html=True)
-        colA, colB = st.columns(2)
         
-        with colA:
-            display_chart(plot_top_brands(df_top_brands), "Top 10 Sustainable Brands by Rating")
+        col1, col2 = st.columns(2)
         
-        with colB:
-            display_chart(plot_top_product_lines(df_top_categories), "Top 5 Sustainable Product Lines")
+        # Only create columns if we have data to display
+        charts_to_display = []
+        if not df_top_brands.empty:
+            charts_to_display.append(("Top Sustainable Brands", plot_top_brands(df_top_brands)))
+        if not df_top_categories.empty:
+            charts_to_display.append(("Top Product Lines", plot_top_product_lines(df_top_categories)))
+        
+        if charts_to_display:
+            for i, (title, fig) in enumerate(charts_to_display):
+                if i % 2 == 0:
+                    with col1:
+                        display_chart(fig, title)
+                else:
+                    with col2:
+                        display_chart(fig, title)
+        else:
+            st.markdown("""
+            <div class="empty-state">
+                <div class="icon">📊</div>
+                <h3>No Data Available</h3>
+                <p>Adjust your filters to see performance data</p>
+            </div>
+            """, unsafe_allow_html=True)
             
     # ====================================================
-    # Tab 2: Geographic & Material Impact - Balanced layout
+    # Tab 2: Geographic & Material - Only show if data exists
     # ====================================================
     with tab2:
         st.markdown('<div class="section-header"><h3>🌍 Geographic & Material Impact Analysis</h3></div>', unsafe_allow_html=True)
         
-        colC, colD, colE = st.columns([2, 1, 1])
+        charts_to_display = []
+        if not df_top_countries.empty:
+            charts_to_display.append(("Top Countries", plot_top_countries(df_top_countries)))
+        if not material_sustainability.empty:
+            charts_to_display.append(("Material Status", plot_material_status(material_sustainability)))
+        if not eco_counts.empty:
+            charts_to_display.append(("Eco-friendly Manufacturing", plot_eco_friendly_counts(eco_counts)))
         
-        with colC:
-            display_chart(plot_top_countries(df_top_countries), "Top 5 Countries by Sustainability Rating")
-        
-        with colD:
-            display_chart(plot_material_status(material_sustainability), "Material Status Impact")
-
-        with colE:
-            display_chart(plot_eco_friendly_counts(eco_counts), "Eco-friendly Manufacturing Distribution")
+        if charts_to_display:
+            if len(charts_to_display) == 3:
+                col1, col2, col3 = st.columns([2, 1, 1])
+                display_chart(charts_to_display[0][1], charts_to_display[0][0], col1)
+                display_chart(charts_to_display[1][1], charts_to_display[1][0], col2)
+                display_chart(charts_to_display[2][1], charts_to_display[2][0], col3)
+            elif len(charts_to_display) == 2:
+                col1, col2 = st.columns(2)
+                display_chart(charts_to_display[0][1], charts_to_display[0][0], col1)
+                display_chart(charts_to_display[1][1], charts_to_display[1][0], col2)
+            else:
+                display_chart(charts_to_display[0][1], charts_to_display[0][0])
+        else:
+            st.markdown("""
+            <div class="empty-state">
+                <div class="icon">🌍</div>
+                <h3>No Geographic Data</h3>
+                <p>Adjust your filters to see geographic analysis</p>
+            </div>
+            """, unsafe_allow_html=True)
 
     # ====================================================
-    # Tab 3: Trends Over Time - Balanced layout
+    # Tab 3: Trends Over Time - Only show if data exists
     # ====================================================
     with tab3:
         st.markdown('<div class="section-header"><h3>📈 Sustainability Trends & Market Analysis</h3></div>', unsafe_allow_html=True)
-        colF, colG = st.columns(2)
-
-        with colF:
-            display_chart(plot_time_improvement(df_avg_time), "Sustainability Rating Trend Over Years")
-            
-        with colG:
-            display_chart(plot_market_trend(trend_avg), "Market Trend Impact Analysis")
+        
+        charts_to_display = []
+        if not df_avg_time.empty:
+            charts_to_display.append(("Rating Trend", plot_time_improvement(df_avg_time)))
+        if not trend_avg.empty:
+            charts_to_display.append(("Market Trend", plot_market_trend(trend_avg)))
+        
+        if charts_to_display:
+            if len(charts_to_display) == 2:
+                col1, col2 = st.columns(2)
+                display_chart(charts_to_display[0][1], charts_to_display[0][0], col1)
+                display_chart(charts_to_display[1][1], charts_to_display[1][0], col2)
+            else:
+                display_chart(charts_to_display[0][1], charts_to_display[0][0])
+        else:
+            st.markdown("""
+            <div class="empty-state">
+                <div class="icon">📈</div>
+                <h3>No Trend Data</h3>
+                <p>Adjust your filters to see trend analysis</p>
+            </div>
+            """, unsafe_allow_html=True)
 
     # ====================================================
-    # Tab 4: Environmental Metrics - Full width
+    # Tab 4: Environmental Metrics - Only show if data exists
     # ====================================================
     with tab4:
         st.markdown('<div class="section-header"><h3>🌱 Core Environmental Metrics Analysis</h3></div>', unsafe_allow_html=True)
-        display_chart(plot_environmental_metrics(df_melted), "Environmental Impact by Product Line")
+        
+        if not df_melted.empty:
+            display_chart(plot_environmental_metrics(df_melted), "Environmental Metrics")
+        else:
+            st.markdown("""
+            <div class="empty-state">
+                <div class="icon">🌱</div>
+                <h3>No Environmental Data</h3>
+                <p>Adjust your filters to see environmental metrics</p>
+            </div>
+            """, unsafe_allow_html=True)
         
     # ====================================================
-    # Tab 5: Price & Audience - Balanced layout
+    # Tab 5: Price & Audience - Only show if data exists
     # ====================================================
     with tab5:
         st.markdown('<div class="section-header"><h3>💰 Market & Customer Analysis</h3></div>', unsafe_allow_html=True)
-        colI, colJ = st.columns(2)
         
-        with colI:
-            display_chart(plot_price_vs_sustainability(df_price_vs_sus), "Price vs Sustainability Correlation")
-            
-        with colJ:
-            display_chart(plot_audience_sustainability(audience_sustainability), "Target Audience Preferences")
+        charts_to_display = []
+        if not df_price_vs_sus.empty:
+            charts_to_display.append(("Price vs Rating", plot_price_vs_sustainability(df_price_vs_sus)))
+        if not audience_sustainability.empty:
+            charts_to_display.append(("Audience Rating", plot_audience_sustainability(audience_sustainability)))
+        
+        if charts_to_display:
+            if len(charts_to_display) == 2:
+                col1, col2 = st.columns(2)
+                display_chart(charts_to_display[0][1], charts_to_display[0][0], col1)
+                display_chart(charts_to_display[1][1], charts_to_display[1][0], col2)
+            else:
+                display_chart(charts_to_display[0][1], charts_to_display[0][0])
+        else:
+            st.markdown("""
+            <div class="empty-state">
+                <div class="icon">💰</div>
+                <h3>No Market Data</h3>
+                <p>Adjust your filters to see market analysis</p>
+            </div>
+            """, unsafe_allow_html=True)
     
     # ====================================================
-    # Tab 6: Certifications - Sequential layout
+    # Tab 6: Certifications - Only show if data exists
     # ====================================================
     with tab6:
         st.markdown('<div class="section-header"><h3>🏅 Certification Impact Analysis</h3></div>', unsafe_allow_html=True)
         
-        display_chart(plot_certification_impact(certification_avg), "Certification Impact on Sustainability Ratings")
+        charts_to_display = []
+        if not certification_avg.empty:
+            charts_to_display.append(("Certification Impact", plot_certification_impact(certification_avg)))
+        if not df_category_cert.empty:
+            charts_to_display.append(("Certifications by Product", plot_certifications_per_product(df_category_cert)))
         
-        st.markdown("---")
-       
-        display_chart(plot_certifications_per_product(df_category_cert), "Certification Distribution by Product Line")
+        if charts_to_display:
+            for fig, title in charts_to_display:
+                display_chart(fig, title)
+        else:
+            st.markdown("""
+            <div class="empty-state">
+                <div class="icon">🏅</div>
+                <h3>No Certification Data</h3>
+                <p>Adjust your filters to see certification analysis</p>
+            </div>
+            """, unsafe_allow_html=True)
 
     # Enhanced Footer
     st.markdown("""
