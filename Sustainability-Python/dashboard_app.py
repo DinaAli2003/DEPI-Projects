@@ -29,7 +29,8 @@ def load_raw_data():
 
         # Load CSV
         df = pd.read_csv(file_path)
-        
+        df = pd.read_csv("Sustainability-Python/Sustainability_Raw_Data.csv") 
+
         # Standardize column names for safe processing
         df.columns = df.columns.str.lower().str.replace(' ', '_').str.replace('[^a-z0-9_]', '', regex=True)
         # Ensure 'year' is numeric and handle potential errors
@@ -332,31 +333,30 @@ st.markdown(
 st.markdown(
     """
     <style>
-    /* تغيير لون الخلفية داخل السايدبار بالكامل */
+  
     [data-testid="stSidebar"] {
-        background-color: #c8e6c9 !important; /* أخضر فاتح */
+        background-color: #c8e6c9 !important; 
     }
 
-    /* تغيير لون النص داخل الفلاتر */
+    
     [data-testid="stSidebar"] .stMarkdown, 
     [data-testid="stSidebar"] p, 
     [data-testid="stSidebar"] label {
-        color: #1b5e20 !important; /* أخضر غامق */
+        color: #1b5e20 !important; 
         font-weight: 600;
     }
 
-    /* تغيير لون العناصر المختارة */
+   
     .stMultiSelect div[data-baseweb="tag"] {
-        background-color: #1b5e20 !important; /* أخضر غامق */
+        background-color: #1b5e20 !important; 
         color: white !important;
     }
 
-    /* تغيير لون القائمة المنسدلة */
     .stMultiSelect div[role="listbox"] {
         background-color: #e8f5e9 !important;
     }
 
-    /* تغيير لون الشريط الجانبي بالكامل */
+ 
     [data-testid="stSidebar"] .css-1d391kg {
         background-color: #c8e6c9 !important;
     }
@@ -684,6 +684,7 @@ def get_filter_options(column_name):
 if __name__ == "__main__":
 
     main()
+
 
 
 
