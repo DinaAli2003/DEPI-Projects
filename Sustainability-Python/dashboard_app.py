@@ -336,13 +336,13 @@ def main():
     )
 
     # --- Header with Logos ---
-    col_logo1, col_title, col_logo2 = st.columns([1, 5, 1])
-    with col_logo1:
-        st.image("Sustainability-Python/logo_ministry.png", width=100)
-    with col_title:
-        st.title("Sustainability Dashboard")
-    with col_logo2:
-        st.image("Sustainability-Python/logo_project.png", width=100)
+    header_cols = st.columns([1, 5, 1])
+    with header_cols[0]:
+        st.image("Sustainability-Python/logo_ministry.png", width=90)
+    with header_cols[1]:
+        st.markdown("<h1 style='text-align:center; color:#1B5E20; font-weight:bold'>Sustainability Dashboard</h1>", unsafe_allow_html=True)
+    with header_cols[2]:
+        st.image("Sustainability-Python/logo_project.png", width=90)
     st.markdown("---")
 
     # ----------------------------------------------------
@@ -471,5 +471,6 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
+
 
 
