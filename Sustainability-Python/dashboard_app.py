@@ -29,7 +29,6 @@ def load_raw_data():
 
         # Load CSV
         df = pd.read_csv(file_path)
-        df = pd.read_csv("Sustainability-Python/Sustainability_Raw_Data.csv") 
 
         # Standardize column names for safe processing
         df.columns = df.columns.str.lower().str.replace(' ', '_').str.replace('[^a-z0-9_]', '', regex=True)
@@ -380,7 +379,7 @@ st.markdown(
 st.sidebar.title("Filter")  # <- no extra indentation
 
 # Initialize df_filtered with a copy of the original df
-df_filtered = df.copy()
+# df_filtered = df.copy()
 
 # Helper to get unique options and set default
 def get_filter_options(column_name):
@@ -684,6 +683,7 @@ def get_filter_options(column_name):
 if __name__ == "__main__":
 
     main()
+
 
 
 
