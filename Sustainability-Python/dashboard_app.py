@@ -268,21 +268,21 @@ def apply_custom_css():
     
     /* Extremely small logo styling */
     .logo {
-        max-height: 10px;
-        max-width: 15px;
+        max-height: 3px;
+        max-width: 5px;
         object-fit: contain;
     }
     
     .logo-image {
-        max-height: 10px;
-        max-width: 15px;
+        max-height: 3px;
+        max-width: 5px;
         object-fit: contain;
         border-radius: 3px;
     }
     
     .logo-placeholder {
-        width: 15px;
-        height: 10px;
+        width: 5px;
+        height: 3px;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -689,14 +689,14 @@ def main():
     right_logo = load_logo('Sustainability-Python/logo_project.png')
     
     with col1:
-        display_logo_column(left_logo, "left", width=15)
+        display_logo_column(left_logo, "left", width=5)
     
     with col2:
         # Center content - main title will go here
         pass
     
     with col3:
-        display_logo_column(right_logo, "right", width=15)
+        display_logo_column(right_logo, "right", width=5)
 
     # --- Enhanced Header with Consistent Background ---
     st.markdown("""
@@ -1084,5 +1084,6 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
+
 
 
