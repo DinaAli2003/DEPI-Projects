@@ -102,7 +102,7 @@ apply_perfect_css()
 @st.cache_data
 def load_data():
     try:
-        df = pd.read_csv("Sustainability_Raw_Data.csv")
+        df = pd.read_csv("Sustainability-Python/Sustainability_Raw_Data.csv")
         df.columns = df.columns.str.lower().str.replace(' ', '_').str.replace('[^a-z0-9_]', '', regex=True)
         if 'year' in df.columns:
             df['year'] = pd.to_numeric(df['year'], errors='coerce').fillna(0).astype(int)
@@ -265,3 +265,4 @@ st.markdown("""
     Driving real change through data-driven sustainability
 </div>
 """, unsafe_allow_html=True)
+
