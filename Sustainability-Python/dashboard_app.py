@@ -19,7 +19,7 @@ st.set_page_config(
 ) 
 
 # ====================================================================
-# FIXED CUSTOM CSS STYLING - PERFECT CHART CONTAINMENT
+# SIMPLIFIED CSS STYLING - REMOVED CONTAINERS, FOCUSED ON CHART SIZING
 # ====================================================================
 def apply_custom_css():
     st.markdown("""
@@ -166,52 +166,32 @@ def apply_custom_css():
         padding: 0;
     }
     
-    /* FIXED CHART CONTAINERS - PERFECT CONTAINMENT */
-    .chart-container-wrapper {
+    /* SIMPLIFIED CHART CONTAINMENT - REMOVED COMPLEX CONTAINERS */
+    .chart-wrapper {
         background: linear-gradient(135deg, #FFFFFF 0%, #F8FDF8 100%);
-        padding: 20px;
+        padding: 15px;
         border-radius: 12px;
         box-shadow: 0 4px 12px rgba(27, 94, 32, 0.15);
         border: 1px solid #C8E6C9;
         margin-bottom: 20px;
-        transition: transform 0.2s ease;
-        height: 450px; /* FIXED HEIGHT */
+        height: 420px;
         display: flex;
-        flex-direction: column;
-        position: relative;
-        overflow: hidden;
+        align-items: center;
+        justify-content: center;
     }
     
-    .chart-container-wrapper:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px rgba(27, 94, 32, 0.2);
-    }
-    
-    /* FIXED: Ensure chart fills the container properly */
-    .chart-container-wrapper .stPyplot {
+    /* FIXED: Ensure charts properly fill their containers */
+    .stPyplot, .stPlotlyChart {
         width: 100% !important;
         height: 100% !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-        flex: 1 !important;
     }
     
     /* FIXED: Proper matplotlib figure containment */
-    .chart-container-wrapper .stPyplot figure {
+    .stPyplot figure {
         width: 100% !important;
         height: 100% !important;
         margin: 0 !important;
         padding: 0 !important;
-        display: flex !important;
-        align-items: center !important;
-        justify-content: center !important;
-    }
-    
-    /* FIXED: Ensure the plot itself is properly sized */
-    .chart-container-wrapper .stPyplot figure .plot-container {
-        width: 100% !important;
-        height: 100% !important;
     }
     
     /* Custom green button style */
@@ -274,7 +254,6 @@ def apply_custom_css():
     /* Consistent chart sizing */
     .element-container {
         height: 100% !important;
-        width: 100% !important;
     }
     
     /* Fix for any remaining orange elements */
@@ -283,27 +262,6 @@ def apply_custom_css():
     [style*="background-color: rgb(255, 255, 255)"],
     [style*="background-color: white"] {
         background: transparent !important;
-    }
-    
-    /* Empty state styling - HIDDEN when empty */
-    .empty-state {
-        display: none !important;
-    }
-    
-    /* Hide empty containers */
-    .element-container:empty {
-        display: none !important;
-    }
-    
-    /* FIXED: Ensure Streamlit columns properly contain content */
-    [data-testid="column"] {
-        width: 100% !important;
-        min-height: 500px !important;
-    }
-    
-    [data-testid="column"] > div {
-        width: 100% !important;
-        height: 100% !important;
     }
     
     /* Professional grid alignment */
@@ -321,10 +279,9 @@ def apply_custom_css():
         grid-template-columns: 1fr 1fr 1fr;
     }
     
-    /* FIXED: Prevent chart overflow and ensure proper containment */
-    .stPlotlyChart, .stPyplot {
-        container: true !important;
-        overflow: hidden !important;
+    /* FIXED: Streamlit column containment */
+    [data-testid="column"] {
+        min-height: 450px;
     }
     
     </style>
@@ -412,7 +369,7 @@ def create_professional_figure(df, title, func, figsize=(6, 4)):
         ax.grid(True, alpha=0.2, color='#C8E6C9')
         
         # EXTREMELY TIGHT LAYOUT for perfect container fit
-        plt.tight_layout(pad=1.5)
+        plt.tight_layout(pad=1.0)
         return fig
     except Exception as e:
         st.error(f"Chart error: {e}")
@@ -936,19 +893,19 @@ def main():
         "🏅 Certifications"
     ])
     
-    # FIXED: PROFESSIONAL helper function to display charts with PERFECT CONTAINMENT
+    # SIMPLIFIED: Professional helper function to display charts with perfect containment
     def display_chart(fig, col=None):
         """Display chart with perfect container alignment and consistent sizing"""
         if fig is not None:
             if col:
                 with col:
-                    # FIXED: Perfectly contained chart container
-                    st.markdown('<div class="chart-container-wrapper">', unsafe_allow_html=True)
+                    # SIMPLIFIED: Clean chart container
+                    st.markdown('<div class="chart-wrapper">', unsafe_allow_html=True)
                     st.pyplot(fig, use_container_width=True)
                     st.markdown('</div>', unsafe_allow_html=True)
             else:
-                # FIXED: Perfectly contained chart container
-                st.markdown('<div class="chart-container-wrapper">', unsafe_allow_html=True)
+                # SIMPLIFIED: Clean chart container
+                st.markdown('<div class="chart-wrapper">', unsafe_allow_html=True)
                 st.pyplot(fig, use_container_width=True)
                 st.markdown('</div>', unsafe_allow_html=True)
 
