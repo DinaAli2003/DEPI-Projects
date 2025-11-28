@@ -4,6 +4,10 @@ import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st
 import warnings
+import base64
+from PIL import Image
+import io
+import os
 
 # Ignore Matplotlib and Seaborn warnings related to styles
 warnings.filterwarnings("ignore")
@@ -291,6 +295,35 @@ def apply_custom_css():
 
 # Apply the custom CSS
 apply_custom_css()
+
+# ====================================================================
+# LOGO HANDLING FUNCTIONS
+# ====================================================================
+@st.cache_data
+def load_logo(logo_path):
+    """Load and encode logo image for display"""
+    try:
+        # Check if file exists
+        if not os.path.exists(logo_path):
+            st.warning(f"Logo file not found: {logo_path}")
+            return None
+        
+        # Read and encode the image
+        with open(logo_path, "rb") as f:
+            logo_bytes = f.read()
+        
+        # Encode to base64
+        logo_b64 = base64.b64encode(logo_bytes).decode()
+        return logo_b64
+    except Exception as e:
+        st.warning(f"Error loading logo {logo_path}: {e}")
+        return None
+
+def display_logo_html(logo_b64, alt_text="Logo", height=80):
+    """Display logo using HTML img tag"""
+    if logo_b64:
+        return f'<img src="data:image/png;base64,{logo_b64}" alt="{alt_text}" style="max-height: {height}px; max-width: 200px; object-fit: contain;">'
+    return ""
 
 # ====================================================================
 # 0. Helper Functions and Data Loading (Initial Data Prep)
@@ -648,27 +681,44 @@ def main():
     # --- LOGOS AT THE TOP ---
     col1, col2, col3 = st.columns([1, 2, 1])
     
+    # Load logos
+    left_logo_path = "Sustainability-Python/Logo_project.png"  # Replace with your left logo path
+    right_logo_path = "Sustainability-Python/Logo_ministry.png"  # Replace with your right logo path
+    
+    left_logo_b64 = load_logo(left_logo_path)
+    right_logo_b64 = load_logo(right_logo_path)
+    
     with col1:
-        # Left Logo - Replace with your actual logo path or URL
-        st.markdown("""
-        <div style="display: flex; justify-content: flex-start; align-items: center; height: 80px;">
-            <img src="Sustainability-Python/logo_ministry.png" 
-                 class="logo" alt="Left Logo" style="max-height: 80px; max-width: 200px;">
-        </div>
-        """, unsafe_allow_html=True)
+        if left_logo_b64:
+            st.markdown(f"""
+            <div style="display: flex; justify-content: flex-start; align-items: center; height: 80px;">
+                {display_logo_html(left_logo_b64, "Left Logo")}
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.markdown("""
+            <div style="display: flex; justify-content: flex-start; align-items: center; height: 80px; color: #1B5E20; font-weight: bold;">
+                LEFT LOGO
+            </div>
+            """, unsafe_allow_html=True)
     
     with col2:
         # Center content - main title will go here
         pass
     
     with col3:
-        # Right Logo - Replace with your actual logo path or URL
-        st.markdown("""
-        <div style="display: flex; justify-content: flex-end; align-items: center; height: 80px;">
-            <img src="logo_project.png" 
-                 class="logo" alt="Right Logo" style="max-height: 80px; max-width: 200px;">
-        </div>
-        """, unsafe_allow_html=True)
+        if right_logo_b64:
+            st.markdown(f"""
+            <div style="display: flex; justify-content: flex-end; align-items: center; height: 80px;">
+                {display_logo_html(right_logo_b64, "Right Logo")}
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.markdown("""
+            <div style="display: flex; justify-content: flex-end; align-items: center; height: 80px; color: #1B5E20; font-weight: bold;">
+                RIGHT LOGO
+            </div>
+            """, unsafe_allow_html=True)
 
     # --- Enhanced Header with Consistent Background ---
     st.markdown("""
@@ -1056,6 +1106,3 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
-
-
-
