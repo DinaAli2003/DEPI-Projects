@@ -652,7 +652,7 @@ def main():
         # Left Logo - Replace with your actual logo path or URL
         st.markdown("""
         <div style="display: flex; justify-content: flex-start; align-items: center; height: 80px;">
-            <img src="Sustainability-Python/Logo_ministry.png" 
+            <img src="Sustainability-Python/logo_ministry.png" 
                  class="logo" alt="Left Logo" style="max-height: 80px; max-width: 200px;">
         </div>
         """, unsafe_allow_html=True)
@@ -1056,4 +1056,5 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
+
 
