@@ -24,23 +24,6 @@ st.set_page_config(
 def apply_custom_css():
     st.markdown("""
     <style>
-
-    .chart-container {
-    overflow: hidden;
-    position: relative;
-    align-items: center;
-    justify-content: center;
-}
-
-.chart-container .stPyplot {
-    width: 100% !important;
-    height: 100% !important;
-    display: flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-}
-
-
     /* Complete background - consistent green theme */
     .stApp {
         background: linear-gradient(135deg, #F0F9F0 0%, #E8F5E8 50%, #F0F9F0 100%) !important;
@@ -183,7 +166,7 @@ def apply_custom_css():
         padding: 0;
     }
     
-    /* PROFESSIONAL CHART CONTAINERS - PERFECTLY CONTAINED */
+    /* PROFESSIONAL CHART CONTAINERS - FIXED CONTAINMENT */
     .chart-container {
         background: linear-gradient(135deg, #FFFFFF 0%, #F8FDF8 100%);
         padding: 20px;
@@ -206,17 +189,24 @@ def apply_custom_css():
         box-shadow: 0 6px 16px rgba(27, 94, 32, 0.2);
     }
     
-    /* Chart figure styling - PERFECT CONTAINMENT */
+    /* Fix chart containment - ensure proper sizing */
+    .chart-container > div {
+        width: 100% !important;
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+    }
+    
+    /* Ensure matplotlib figures are properly contained */
     .chart-container .stPyplot {
         width: 100% !important;
         height: 100% !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
-        flex-grow: 1 !important;
     }
     
-    /* Ensure matplotlib figures are properly contained */
     .chart-container .stPyplot figure {
         width: 100% !important;
         height: 100% !important;
@@ -330,6 +320,11 @@ def apply_custom_css():
     
     /* Ensure proper column containment */
     [data-testid="column"] {
+        width: 100% !important;
+    }
+    
+    /* Fix for Streamlit columns to properly contain charts */
+    [data-testid="column"] > div {
         width: 100% !important;
     }
     
@@ -970,12 +965,10 @@ def main():
         top_categories_chart = plot_top_product_lines(df_top_categories)
         
         if top_brands_chart is not None:
-            with col1:
-                display_chart(top_brands_chart)
+            display_chart(top_brands_chart, col1)
         
         if top_categories_chart is not None:
-            with col2:
-                display_chart(top_categories_chart)
+            display_chart(top_categories_chart, col2)
 
     # ====================================================
     # Tab 2: Geographic & Material - PERFECTLY CONTAINED
@@ -1018,12 +1011,10 @@ def main():
         trend_chart = plot_market_trend(trend_avg)
         
         if time_chart is not None:
-            with col1:
-                display_chart(time_chart)
+            display_chart(time_chart, col1)
                 
         if trend_chart is not None:
-            with col2:
-                display_chart(trend_chart)
+            display_chart(trend_chart, col2)
 
     # ====================================================
     # Tab 4: Environmental Metrics - PERFECTLY CONTAINED
@@ -1047,12 +1038,10 @@ def main():
         audience_chart = plot_audience_sustainability(audience_sustainability)
         
         if price_chart is not None:
-            with col1:
-                display_chart(price_chart)
+            display_chart(price_chart, col1)
                 
         if audience_chart is not None:
-            with col2:
-                display_chart(audience_chart)
+            display_chart(audience_chart, col2)
     
     # ====================================================
     # Tab 6: Certifications - PERFECTLY CONTAINED
@@ -1089,4 +1078,3 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
-
