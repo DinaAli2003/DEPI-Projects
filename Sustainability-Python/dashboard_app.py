@@ -6,6 +6,8 @@ import streamlit as st
 import warnings
 from PIL import Image
 import os
+import base64
+from io import BytesIO
 
 # Ignore Matplotlib and Seaborn warnings related to styles
 warnings.filterwarnings("ignore")
@@ -106,36 +108,12 @@ def apply_custom_css():
         color: white;
         margin-bottom: 2rem;
         box-shadow: 0 4px 15px rgba(27, 94, 32, 0.3);
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        min-height: 80px;
     }
     
-    /* Header content wrapper */
-    .header-content {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        gap: 20px;
-    }
-    
-    /* Logo containers - extremely small and professional */
-    .logo-container {
-        flex-shrink: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-    }
-    
-    .logo-left {
-        order: 1;
-    }
-    
-    .logo-right {
-        order: 3;
+    /* Header title styling */
+    .header-title {
+        text-align: center;
+        margin: 0;
     }
     
     /* Ultra small logo styling */
@@ -145,21 +123,13 @@ def apply_custom_css():
         height: 25px !important;
         width: auto !important;
         object-fit: contain !important;
-        filter: brightness(0) invert(1) !important; /* Make logos white */
+        filter: brightness(0) invert(1) !important;
         opacity: 0.9;
         transition: opacity 0.3s ease;
     }
     
     .logo-image:hover {
         opacity: 1;
-    }
-    
-    /* Title container */
-    .title-container {
-        order: 2;
-        flex-grow: 1;
-        text-align: center;
-        padding: 0 15px;
     }
     
     /* Ultra small logo placeholder */
@@ -342,7 +312,6 @@ def apply_custom_css():
     @media (max-width: 768px) {
         .main-header {
             padding: 1rem;
-            min-height: 60px;
         }
         
         .logo-image {
@@ -355,14 +324,6 @@ def apply_custom_css():
             width: 30px;
             height: 20px;
             font-size: 0.4rem;
-        }
-        
-        .title-container h1 {
-            font-size: 2rem !important;
-        }
-        
-        .title-container p {
-            font-size: 1rem !important;
         }
     }
     
@@ -731,20 +692,6 @@ def load_logo(image_path):
         st.warning(f"Error loading logo {image_path}: {e}")
         return None
 
-def display_logo(logo, position):
-    """Display logo with ultra small professional sizing"""
-    if logo:
-        # Ultra small size for professional logo placement
-        st.image(logo, width=40, use_column_width=False)
-    else:
-        # Fallback placeholder with ultra small sizing
-        placeholder_text = "L" if position == "left" else "R"
-        st.markdown(f"""
-        <div class="logo-placeholder">
-            {placeholder_text}
-        </div>
-        """, unsafe_allow_html=True)
-
 # ====================================================================
 # 3. CLEAN STREAMLIT APP - WITH ULTRA SMALL INTEGRATED LOGOS
 # ====================================================================
@@ -760,25 +707,41 @@ def main():
     left_logo = load_logo('Sustainability-Python/logo_ministry.png')
     right_logo = load_logo('Sustainability-Python/logo_project.png')
     
-    # Single header with integrated small logos
-    st.markdown(f"""
-    <div class="main-header">
-        <div class="header-content">
-            <div class="logo-container logo-left">
-                {"<img src='data:image/png;base64,{0}' class='logo-image' />".format(left_logo) if left_logo else "<div class='logo-placeholder'>L</div>"}
+    # Professional header with ultra small logos using Streamlit columns
+    col1, col2, col3 = st.columns([1, 3, 1])
+    
+    with col1:
+        # Left logo - ultra small (25px height)
+        if left_logo:
+            st.image(left_logo, width=40, use_column_width=False)
+        else:
+            st.markdown("""
+            <div class="logo-placeholder">
+                L
             </div>
-            
-            <div class="title-container">
+            """, unsafe_allow_html=True)
+    
+    with col2:
+        # Center title
+        st.markdown("""
+        <div class="main-header">
+            <div class="header-title">
                 <h1 style="margin: 0; font-size: 2.5rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 0.5px;">🌱 Sustainability Analytics Dashboard</h1>
                 <p style="margin: 8px 0 0 0; font-size: 1.1rem; opacity: 0.95; font-weight: 300; line-height: 1.4;">Comprehensive Environmental Impact & Sustainable Performance Tracking</p>
             </div>
-            
-            <div class="logo-container logo-right">
-                {"<img src='data:image/png;base64,{0}' class='logo-image' />".format(right_logo) if right_logo else "<div class='logo-placeholder'>R</div>"}
-            </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        # Right logo - ultra small (25px height)
+        if right_logo:
+            st.image(right_logo, width=40, use_column_width=False)
+        else:
+            st.markdown("""
+            <div class="logo-placeholder">
+                R
+            </div>
+            """, unsafe_allow_html=True)
     
     # ----------------------------------------------------
     # 2. Enhanced Filtering Section with White Text Labels
