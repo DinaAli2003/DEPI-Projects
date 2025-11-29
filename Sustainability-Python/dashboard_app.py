@@ -21,7 +21,7 @@ st.set_page_config(
 ) 
 
 # ====================================================================
-# CLEAN CSS STYLING - NO CONTAINERS, JUST THEME AND SPACING
+# CLEAN CSS STYLING - WITH PROFESSIONAL SMALL LOGO PLACEMENT
 # ====================================================================
 def apply_custom_css():
     st.markdown("""
@@ -98,14 +98,86 @@ def apply_custom_css():
         border: none !important;
     }
     
-    /* Main header styling */
+    /* Enhanced Main Header with Integrated Small Logos */
     .main-header {
         background: linear-gradient(135deg, #1B5E20 0%, #388E3C 100%);
-        padding: 2rem;
+        padding: 1.5rem 2rem;
         border-radius: 15px;
         color: white;
         margin-bottom: 2rem;
         box-shadow: 0 4px 15px rgba(27, 94, 32, 0.3);
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 80px;
+    }
+    
+    /* Header content wrapper */
+    .header-content {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        gap: 20px;
+    }
+    
+    /* Logo containers - extremely small and professional */
+    .logo-container {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .logo-left {
+        order: 1;
+    }
+    
+    .logo-right {
+        order: 3;
+    }
+    
+    /* Ultra small logo styling */
+    .logo-image {
+        max-height: 25px !important;
+        max-width: 40px !important;
+        height: 25px !important;
+        width: auto !important;
+        object-fit: contain !important;
+        filter: brightness(0) invert(1) !important; /* Make logos white */
+        opacity: 0.9;
+        transition: opacity 0.3s ease;
+    }
+    
+    .logo-image:hover {
+        opacity: 1;
+    }
+    
+    /* Title container */
+    .title-container {
+        order: 2;
+        flex-grow: 1;
+        text-align: center;
+        padding: 0 15px;
+    }
+    
+    /* Ultra small logo placeholder */
+    .logo-placeholder {
+        width: 40px;
+        height: 25px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 3px;
+        color: white;
+        font-weight: bold;
+        font-size: 0.5rem;
+        text-align: center;
+        line-height: 1;
+        padding: 2px;
+        background: rgba(255, 255, 255, 0.2);
+        border: 1px solid rgba(255, 255, 255, 0.3);
     }
     
     /* KPI metrics styling - enhanced green cards */
@@ -266,62 +338,32 @@ def apply_custom_css():
         box-shadow: none !important;
     }
     
-    /* Logo container styling - OPTIMIZED FOR SMALL LOGOS */
-    .logo-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.5rem;
-        height: 25px; /* Fixed container height */
-    }
-    
-    /* Consistent small logo sizing */
-    .logo, .logo-image {
-        max-height: 20px !important;
-        max-width: 80px !important; /* Allow some width for landscape logos */
-        height: 20px !important;
-        width: auto !important;
-        object-fit: contain !important;
-    }
-    
-    .logo-left {
-        margin-right: auto;
-    }
-    
-    .logo-right {
-        margin-left: auto;
-    }
-    
-    /* Logo placeholder styling - matching small size */
-    .logo-placeholder {
-        width: 80px;
-        height: 20px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 4px;
-        color: white;
-        font-weight: bold;
-        font-size: 0.6rem;
-        text-align: center;
-        line-height: 1;
-        padding: 2px;
-    }
-    
-    /* Adjust header spacing for smaller logos */
-    .logo-header-row {
-        margin-bottom: 0.5rem !important;
-    }
-    
-    /* Additional professional logo alignment */
-    [data-testid="column"]:first-child .stImage {
-        display: flex;
-        justify-content: flex-start;
-    }
-    
-    [data-testid="column"]:last-child .stImage {
-        display: flex;
-        justify-content: flex-end;
+    /* Mobile responsiveness for header */
+    @media (max-width: 768px) {
+        .main-header {
+            padding: 1rem;
+            min-height: 60px;
+        }
+        
+        .logo-image {
+            max-height: 20px !important;
+            max-width: 30px !important;
+            height: 20px !important;
+        }
+        
+        .logo-placeholder {
+            width: 30px;
+            height: 20px;
+            font-size: 0.4rem;
+        }
+        
+        .title-container h1 {
+            font-size: 2rem !important;
+        }
+        
+        .title-container p {
+            font-size: 1rem !important;
+        }
     }
     
     </style>
@@ -673,11 +715,11 @@ def plot_market_trend(df_trend_avg):
     return fig
 
 # ====================================================================
-# 2. LOGO HANDLING FUNCTIONS - MODIFIED FOR CONSISTENT SMALL SIZING
+# 2. LOGO HANDLING FUNCTIONS - ULTRA SMALL SIZING
 # ====================================================================
 
-def load_logo(image_path, default_width=80):
-    """Load logo with consistent small sizing and error handling"""
+def load_logo(image_path):
+    """Load logo with ultra small sizing and error handling"""
     try:
         if os.path.exists(image_path):
             logo = Image.open(image_path)
@@ -689,22 +731,22 @@ def load_logo(image_path, default_width=80):
         st.warning(f"Error loading logo {image_path}: {e}")
         return None
 
-def display_logo_column(logo, position, width=80):  # Increased default width for better aspect ratio
-    """Display logo in a column with consistent small sizing"""
+def display_logo(logo, position):
+    """Display logo with ultra small professional sizing"""
     if logo:
-        # Use consistent small size for all logos
-        st.image(logo, width=width, use_column_width=False)
+        # Ultra small size for professional logo placement
+        st.image(logo, width=40, use_column_width=False)
     else:
-        # Fallback placeholder with consistent small sizing
-        placeholder_color = "#1B5E20" if position == "left" else "#2E7D32"
+        # Fallback placeholder with ultra small sizing
+        placeholder_text = "L" if position == "left" else "R"
         st.markdown(f"""
-        <div class="logo-placeholder" style="background: {placeholder_color};">
-            {position.upper()}<br>LOGO
+        <div class="logo-placeholder">
+            {placeholder_text}
         </div>
         """, unsafe_allow_html=True)
 
 # ====================================================================
-# 3. CLEAN STREAMLIT APP - WITH PROFESSIONAL SMALL LOGO HANDLING
+# 3. CLEAN STREAMLIT APP - WITH ULTRA SMALL INTEGRATED LOGOS
 # ====================================================================
 
 def main():
@@ -714,30 +756,25 @@ def main():
     if df.empty:
         return
 
-    # --- PROFESSIONAL SMALL LOGOS AT THE TOP WITH CONSISTENT SIZING ---
-    col1, col2, col3 = st.columns([1, 2, 1])
-    
-    # Load logos with consistent small size
+    # --- ULTRA SMALL LOGOS INTEGRATED INTO HEADER ---
     left_logo = load_logo('Sustainability-Python/logo_ministry.png')
     right_logo = load_logo('Sustainability-Python/logo_project.png')
     
-    with col1:
-        display_logo_column(left_logo, "left", width=80)  # Consistent small size
-    
-    with col2:
-        # Center content - main title will go here
-        pass
-    
-    with col3:
-        display_logo_column(right_logo, "right", width=80)  # Consistent small size
-
-    # --- Enhanced Header with Consistent Background ---
-    st.markdown("""
+    # Single header with integrated small logos
+    st.markdown(f"""
     <div class="main-header">
-        <div style="display: flex; align-items: center; justify-content: center; gap: 25px; text-align: center;">
-            <div>
-                <h1 style="margin: 0; font-size: 2.8rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">🌱 Sustainability Analytics Dashboard</h1>
-                <p style="margin: 10px 0 0 0; font-size: 1.3rem; opacity: 0.95; font-weight: 300;">Comprehensive Environmental Impact & Sustainable Performance Tracking</p>
+        <div class="header-content">
+            <div class="logo-container logo-left">
+                {"<img src='data:image/png;base64,{0}' class='logo-image' />".format(left_logo) if left_logo else "<div class='logo-placeholder'>L</div>"}
+            </div>
+            
+            <div class="title-container">
+                <h1 style="margin: 0; font-size: 2.5rem; color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.3); letter-spacing: 0.5px;">🌱 Sustainability Analytics Dashboard</h1>
+                <p style="margin: 8px 0 0 0; font-size: 1.1rem; opacity: 0.95; font-weight: 300; line-height: 1.4;">Comprehensive Environmental Impact & Sustainable Performance Tracking</p>
+            </div>
+            
+            <div class="logo-container logo-right">
+                {"<img src='data:image/png;base64,{0}' class='logo-image' />".format(right_logo) if right_logo else "<div class='logo-placeholder'>R</div>"}
             </div>
         </div>
     </div>
