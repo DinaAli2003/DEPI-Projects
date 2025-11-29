@@ -266,18 +266,22 @@ def apply_custom_css():
         box-shadow: none !important;
     }
     
-    /* Logo container styling */
+    /* Logo container styling - OPTIMIZED FOR SMALL LOGOS */
     .logo-container {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 0.5rem;
+        height: 25px; /* Fixed container height */
     }
     
-    .logo {
-        max-height: 20px;
-        max-width: 30px;
-        object-fit: contain;
+    /* Consistent small logo sizing */
+    .logo, .logo-image {
+        max-height: 20px !important;
+        max-width: 80px !important; /* Allow some width for landscape logos */
+        height: 20px !important;
+        width: auto !important;
+        object-fit: contain !important;
     }
     
     .logo-left {
@@ -288,32 +292,36 @@ def apply_custom_css():
         margin-left: auto;
     }
     
-    /* Consistent logo sizing */
-    .logo-image {
-        max-height: 20px;
-        max-width: 30px;
-        object-fit: contain;
-        border-radius: 6px;
-    }
-    
-    /* Logo placeholder styling */
+    /* Logo placeholder styling - matching small size */
     .logo-placeholder {
-        width: 30px;
+        width: 80px;
         height: 20px;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 6px;
+        border-radius: 4px;
         color: white;
         font-weight: bold;
-        font-size: 0.7rem;
+        font-size: 0.6rem;
         text-align: center;
-        line-height: 1.1;
+        line-height: 1;
+        padding: 2px;
     }
     
     /* Adjust header spacing for smaller logos */
     .logo-header-row {
         margin-bottom: 0.5rem !important;
+    }
+    
+    /* Additional professional logo alignment */
+    [data-testid="column"]:first-child .stImage {
+        display: flex;
+        justify-content: flex-start;
+    }
+    
+    [data-testid="column"]:last-child .stImage {
+        display: flex;
+        justify-content: flex-end;
     }
     
     </style>
@@ -665,11 +673,11 @@ def plot_market_trend(df_trend_avg):
     return fig
 
 # ====================================================================
-# 2. LOGO HANDLING FUNCTIONS
+# 2. LOGO HANDLING FUNCTIONS - MODIFIED FOR CONSISTENT SMALL SIZING
 # ====================================================================
 
-def load_logo(image_path, default_width=30):
-    """Load logo with consistent sizing and error handling"""
+def load_logo(image_path, default_width=80):
+    """Load logo with consistent small sizing and error handling"""
     try:
         if os.path.exists(image_path):
             logo = Image.open(image_path)
@@ -681,12 +689,13 @@ def load_logo(image_path, default_width=30):
         st.warning(f"Error loading logo {image_path}: {e}")
         return None
 
-def display_logo_column(logo, position, width=30):
-    """Display logo in a column with consistent sizing"""
+def display_logo_column(logo, position, width=80):  # Increased default width for better aspect ratio
+    """Display logo in a column with consistent small sizing"""
     if logo:
+        # Use consistent small size for all logos
         st.image(logo, width=width, use_column_width=False)
     else:
-        # Fallback placeholder with consistent sizing
+        # Fallback placeholder with consistent small sizing
         placeholder_color = "#1B5E20" if position == "left" else "#2E7D32"
         st.markdown(f"""
         <div class="logo-placeholder" style="background: {placeholder_color};">
@@ -695,7 +704,7 @@ def display_logo_column(logo, position, width=30):
         """, unsafe_allow_html=True)
 
 # ====================================================================
-# 3. CLEAN STREAMLIT APP - WITH PROPER LOGO HANDLING
+# 3. CLEAN STREAMLIT APP - WITH PROFESSIONAL SMALL LOGO HANDLING
 # ====================================================================
 
 def main():
@@ -705,22 +714,22 @@ def main():
     if df.empty:
         return
 
-    # --- VERY SMALL LOGOS AT THE TOP WITH CONSISTENT SIZING ---
+    # --- PROFESSIONAL SMALL LOGOS AT THE TOP WITH CONSISTENT SIZING ---
     col1, col2, col3 = st.columns([1, 2, 1])
     
-    # Load logos with very small size
+    # Load logos with consistent small size
     left_logo = load_logo('Sustainability-Python/logo_ministry.png')
     right_logo = load_logo('Sustainability-Python/logo_project.png')
     
     with col1:
-        display_logo_column(left_logo, "left", width=30)
+        display_logo_column(left_logo, "left", width=80)  # Consistent small size
     
     with col2:
         # Center content - main title will go here
         pass
     
     with col3:
-        display_logo_column(right_logo, "right", width=30)
+        display_logo_column(right_logo, "right", width=80)  # Consistent small size
 
     # --- Enhanced Header with Consistent Background ---
     st.markdown("""
@@ -1108,5 +1117,3 @@ def main():
 # Run the main function
 if __name__ == "__main__":
     main()
-
-
