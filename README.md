@@ -91,8 +91,8 @@ Each project systematically applied the full data analysis workflow, from prepar
 ## ▶️ Watch the Demo Video
 
 **Click below to watch our project demo:**
+(https://drive.google.com/file/d/1ZpvRaBTxLZqOxXs7hZN26jRij-lwW1au/view?usp=sharing)
 
-**\[https://drive.google.com/file/d/1ZpvRaBTxLZqOxXs7hZN26jRij-lwW1au/view?usp=sharing] **
 ---
 
 I welcome your feedback and look forward to discussing the technical details further!
